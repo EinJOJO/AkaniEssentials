@@ -6,7 +6,6 @@ import it.einjojo.akani.core.api.network.NetworkLocation;
 import it.einjojo.akani.core.paper.AkaniBukkitAdapter;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import org.bukkit.Location;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -20,12 +19,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WarpManager {
     private final Map<String, Warp> warps = new ConcurrentHashMap<>();
     private final WarpStorage storage;
-    private final JavaPlugin plugin;
-    private final AkaniCore core;
+    private final AkaniEssentialsPlugin plugin;
 
     public WarpManager(AkaniEssentialsPlugin plugin) {
-        this.storage = new WarpStorage(plugin.core().dataSource(), plugin.gson());
-        this.core = plugin.core();
+        storage = new WarpStorage(plugin.core().dataSource(), plugin.gson());
+        storage.init();
         this.plugin = plugin;
     }
 
@@ -66,11 +64,15 @@ public class WarpManager {
                 name,
                 WarpIcon.DEFAULT,
                 AkaniBukkitAdapter.networkLocation(location).type(type)
-                        .referenceName(type == NetworkLocation.Type.SERVER ? core.brokerService().brokerName() :
-                                type == NetworkLocation.Type.GROUP ? core.brokerService().groupName() : null)
+                        .referenceName(type == NetworkLocation.Type.SERVER ? core().brokerService().brokerName() :
+                                type == NetworkLocation.Type.GROUP ? core().brokerService().groupName() : null)
                         .build());
         warps.put(name, warp);
         storage.createWarp(warp);
         return warp;
+    }
+
+    protected AkaniCore core() {
+        return plugin.core();
     }
 }

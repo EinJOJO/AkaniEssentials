@@ -3,20 +3,21 @@ package it.einjojo.akani.essentials;
 import com.google.gson.Gson;
 import dev.rollczi.litecommands.LiteCommands;
 import dev.rollczi.litecommands.bukkit.LiteCommandsBukkit;
-import it.einjojo.akani.core.api.AkaniCore;
 import it.einjojo.akani.core.api.AkaniCoreProvider;
 import it.einjojo.akani.core.api.litecommands.OfflinePlayerResolver;
 import it.einjojo.akani.core.api.litecommands.OnlinePlayerResolver;
 import it.einjojo.akani.core.api.player.AkaniOfflinePlayer;
 import it.einjojo.akani.core.api.player.AkaniPlayer;
+import it.einjojo.akani.core.paper.PaperAkaniCore;
 import it.einjojo.akani.essentials.command.TeleportCommand;
+import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
 import it.einjojo.akani.essentials.warp.WarpManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AkaniEssentialsPlugin extends JavaPlugin {
     public static final String PERMISSION_BASE = "akani.essentials.";
-    private AkaniCore core;
+    private PaperAkaniCore core;
     private WarpManager warpManager;
     private LiteCommands<CommandSender> commands;
     private Gson gson;
@@ -34,7 +35,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         commands.register();
     }
 
-    public AkaniCore core() {
+    public PaperAkaniCore core() {
         return core;
     }
 
@@ -51,11 +52,12 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
     }
 
     private void initClasses() {
+        core.registerMessageProvider(new EssentialsMessageProvider());
         gson = new Gson();
-        core = AkaniCoreProvider.get();
-        warpManager = new WarpManager(this, core);
-        getLogger().info("Loading warps...");
+        core = (PaperAkaniCore) AkaniCoreProvider.get();
+        warpManager = new WarpManager(this);
         warpManager.load();
+
     }
 
     @Override
