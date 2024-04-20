@@ -6,28 +6,27 @@ import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.annotations.permission.Permission;
-import it.einjojo.akani.core.api.AkaniCore;
 import it.einjojo.akani.core.api.player.AkaniPlayer;
+import it.einjojo.akani.core.paper.PaperAkaniCore;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
-import net.kyori.adventure.text.Component;
+import it.einjojo.akani.essentials.util.EssentialMessage;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 @Command(name = "teleport", aliases = {"tp"})
 @Permission(AkaniEssentialsPlugin.PERMISSION_BASE + "teleport")
-public record TeleportCommand(AkaniCore core) {
-
+public record TeleportCommand(PaperAkaniCore core) {
 
     @Execute
     @Async
     @Permission(AkaniEssentialsPlugin.PERMISSION_BASE + "teleport.others")
     public void teleportPlayerToPlayer(@Arg AkaniPlayer player, @Arg AkaniPlayer target) {
         if (player.uuid().equals(target.uuid())) {
-            player.sendMessage(Component.text("noSelfTeleport"));
+            core.messageManager().sendMessage(player, EssentialMessage.TELEPORT_NOT_SELF.key());
             return;
         }
         target.location().thenAccept(player::teleport).exceptionally((e) -> {
-            player.sendMessage(Component.text("GENERAL_ERROR"));
+            core.messageManager().sendMessage(player, EssentialMessage.GENERIC_ERROR.key());
             e.printStackTrace();
             return null;
         });
@@ -39,12 +38,12 @@ public record TeleportCommand(AkaniCore core) {
     @Async
     public void teleportPlayer(@Context Player player, @Arg AkaniPlayer target) {
         if (player.getUniqueId().equals(target.uuid())) {
-            player.sendMessage(Component.text("noSelfTeleport"));
+            core.messageManager().sendMessage(player, EssentialMessage.TELEPORT_NOT_SELF.key());
             return;
         }
         AkaniPlayer sender = core.playerManager().onlinePlayer(player.getUniqueId()).orElseThrow();
         target.location().thenAccept(sender::teleport).exceptionally((e) -> {
-            player.sendMessage(Component.text("GENERAL_ERROR"));
+            core.messageManager().sendMessage(player, EssentialMessage.GENERIC_ERROR.key());
             e.printStackTrace();
             return null;
         });

@@ -19,8 +19,10 @@ public class EssentialsMessageProvider implements MessageProvider {
     @Override
     public void insertMessages(MessageStorage messageStorage) {
         storage = messageStorage;
-        registerMessage(EssentialMessage.TELEPORT_SUCCESS, "<green>Teleport erfolgreich");
-        registerMessage(EssentialMessage.TELEPORT_CANCEL, "<red>Teleport abgebrochen");
+        registerMessage(EssentialMessage.GENERIC_ERROR, "%prefix% <red>Ein Fehler ist aufgetreten");
+        registerMessage(EssentialMessage.TELEPORT_NOT_SELF, "%prefix% <red>Du kannst dich nicht zu dir selbst teleportieren");
+        registerMessage(EssentialMessage.TELEPORT_SUCCESS, "%prefix% <green>Teleport erfolgreich");
+        registerMessage(EssentialMessage.TELEPORT_CANCEL, "%prefix% <red>Teleport abgebrochen");
     }
 
     void registerMessage(EssentialMessage key, String message) {
