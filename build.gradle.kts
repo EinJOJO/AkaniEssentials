@@ -1,6 +1,7 @@
 plugins {
     id("java")
     alias(libs.plugins.shadow)
+    alias(libs.plugins.runpaper)
 }
 
 group = "it.einjojo.akani"
@@ -17,6 +18,7 @@ repositories {
 
 dependencies {
     compileOnly(libs.akanicore) // clone https://github.com/EinJojo/AkaniCore and run `./gradlew api:publishMavenLocal` so that this works
+    compileOnly(libs.caffeine)
     compileOnly(libs.paper)
     implementation(libs.litecommands)
 }
