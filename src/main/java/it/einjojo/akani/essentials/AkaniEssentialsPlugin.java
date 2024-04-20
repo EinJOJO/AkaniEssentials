@@ -52,9 +52,9 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
     }
 
     private void initClasses() {
+        core = (PaperAkaniCore) AkaniCoreProvider.get();
         core.registerMessageProvider(new EssentialsMessageProvider());
         gson = new Gson();
-        core = (PaperAkaniCore) AkaniCoreProvider.get();
         warpManager = new WarpManager(this);
         warpManager.load();
 
