@@ -1,54 +1,41 @@
 package it.einjojo.akani.essentials.command;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.*;
 import it.einjojo.akani.core.api.player.AkaniPlayer;
-import it.einjojo.akani.core.paper.PaperAkaniCore;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
-import it.einjojo.akani.essentials.util.EssentialMessage;
-import org.bukkit.command.CommandSender;
+import it.einjojo.akani.essentials.util.MessageKey;
+import org.apache.logging.log4j.message.Message;
 import org.bukkit.entity.Player;
 
 @CommandAlias("teleport|tp")
 public class TeleportCommand extends BaseCommand {
-    private final PaperAkaniCore core;
+    private final AkaniEssentialsPlugin plugin;
 
     public TeleportCommand(AkaniEssentialsPlugin plugin) {
-        this.core = plugin.core();
+        this.plugin = plugin;
         plugin.commandManager().registerCommand(this);
     }
 
 
     @Default
     @Description("Teleport to a player")
-    @CommandCompletion("@akaniplayers")
-    public void teleportPlayer(Player player, AkaniPlayer target) {
-        if (player.getUniqueId().equals(target.uuid())) {
-            core.messageManager().sendMessage(player, EssentialMessage.TELEPORT_NOT_SELF.key());
+    @CommandCompletion("@akaniplayers @akaniplayers")
+    public void teleportPlayer(Player bukkitSender, AkaniPlayer target, @Optional @Flags("includeSender") AkaniPlayer target2) {
+        if (bukkitSender.getUniqueId().equals(target.uuid())) {
+            plugin.sendMessage(bukkitSender, MessageKey.of("teleport.not_self"));
             return;
         }
-        AkaniPlayer sender = core.playerManager().onlinePlayer(player.getUniqueId()).orElseThrow();
-        target.location().thenAccept(sender::teleport).exceptionally((e) -> {
-            core.messageManager().sendMessage(player, EssentialMessage.GENERIC_ERROR.key());
+        AkaniPlayer sender = plugin.core().playerManager().onlinePlayer(bukkitSender.getUniqueId()).orElseThrow();
+        target.location().thenAccept((loc) -> {
+            plugin.core().messageManager().sendMessage(target, MessageKey.of("teleport.teleporting"));
+            sender.teleport(loc);
+        }).exceptionally((e) -> {
+            plugin.sendMessage(bukkitSender, MessageKey.GENERIC_ERROR);
             e.printStackTrace();
             return null;
         });
 
-    }
-
-    @Default
-    @Description("Teleport to a player ")
-    @CommandCompletion("@akaniplayers @akaniplayers")
-
-    public void teleportPlayerToPlayer(CommandSender commandSender, AkaniPlayer player, AkaniPlayer target) {
-        target.location().thenAccept(player::teleport).exceptionally((e) -> {
-            core.messageManager().sendMessage(commandSender, EssentialMessage.GENERIC_ERROR.key());
-            e.printStackTrace();
-            return null;
-        });
     }
 
 

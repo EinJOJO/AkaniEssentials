@@ -1,6 +1,7 @@
 package it.einjojo.akani.essentials.util;
 
-public enum EssentialMessage {
+@Deprecated
+public enum Message {
     GENERIC_ERROR("generic.error"),
     TELEPORT_SUCCESS("teleport.success"),
     TELEPORT_NOT_SELF("teleport.not_self"),
@@ -8,7 +9,7 @@ public enum EssentialMessage {
     TELEPORT_REQUEST("teleport.request");
     private final String key;
 
-    EssentialMessage(String key) {
+    Message(String key) {
         this.key = "essentials." + key;
     }
 

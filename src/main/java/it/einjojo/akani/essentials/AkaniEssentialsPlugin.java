@@ -11,8 +11,14 @@ import it.einjojo.akani.essentials.command.WarpCommand;
 import it.einjojo.akani.essentials.listener.ChatListener;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
 import it.einjojo.akani.essentials.warp.WarpManager;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Function;
 
 public class AkaniEssentialsPlugin extends JavaPlugin {
     public static final String PERMISSION_BASE = "akani.essentials.";
@@ -45,15 +51,45 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         commandManager.enableUnstableAPI("brigadier");
         commandManager.getCommandCompletions().registerAsyncCompletion("warps", c -> warpManager.warpNames());
         // all online players except the sender
-        commandManager.getCommandCompletions().registerAsyncCompletion("akaniplayers", c -> core().playerManager().onlinePlayers().stream().map(AkaniPlayer::name).filter(name -> !name.equals(c.getSender().getName())).toList());
+        commandManager.getCommandCompletions().registerAsyncCompletion("akaniplayers", c -> {
+            boolean includeSender = c.hasConfig("includeSender");
+            getLogger().info("Include sender: " + includeSender);
+            return core().playerManager().onlinePlayers().stream().map(AkaniPlayer::name).filter(name -> includeSender || !(name.equals(c.getSender().getName()))).toList();
+        });
         commandManager.getCommandContexts().registerContext(AkaniPlayer.class, c -> core().playerManager().onlinePlayerByName(c.popFirstArg()).orElse(null));
         //register commands
         new TeleportCommand(this);
         new WarpCommand(this);
         new GamemodeCommand(this);
 
+    }
 
 
+    /**
+     * Sends a translated message
+     *
+     * @param sender the receiver of the message
+     * @param key    the key of the message
+     */
+    public void sendMessage(@NotNull CommandSender sender, @NotNull String key) {
+        sendMessage(sender, key, null);
+    }
+
+    /**
+     * Sends a translated message
+     *
+     * @param sender   the receiver of the message
+     * @param key      the key of the message
+     * @param modifier a function that modifies the message before its sent
+     */
+    public void sendMessage(@NotNull CommandSender sender, @NotNull String key, @Nullable Function<String, String> modifier) {
+        Component message;
+        if (modifier != null) {
+            message = miniMessage().deserialize(modifier.apply(core().messageManager().plainMessage(key)));
+        } else {
+            message = core().messageManager().message(key);
+        }
+        sender.sendMessage(message);
     }
 
     public MiniMessage miniMessage() {

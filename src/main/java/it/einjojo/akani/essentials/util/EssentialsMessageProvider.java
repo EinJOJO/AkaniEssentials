@@ -5,7 +5,6 @@ import it.einjojo.akani.core.api.message.MessageStorage;
 
 public class EssentialsMessageProvider implements MessageProvider {
 
-    private MessageStorage storage;
 
     @Override
     public String providerName() {
@@ -18,15 +17,17 @@ public class EssentialsMessageProvider implements MessageProvider {
     }
 
     @Override
-    public void insertMessages(MessageStorage messageStorage) {
-        storage = messageStorage;
-        registerMessage(EssentialMessage.GENERIC_ERROR, "%prefix% <red>Ein Fehler ist aufgetreten");
-        registerMessage(EssentialMessage.TELEPORT_NOT_SELF, "%prefix% <red>Du kannst dich nicht zu dir selbst teleportieren");
-        registerMessage(EssentialMessage.TELEPORT_SUCCESS, "%prefix% <green>Teleport erfolgreich");
-        registerMessage(EssentialMessage.TELEPORT_CANCEL, "%prefix% <red>Teleport abgebrochen");
+    public void insertMessages(MessageStorage s) {
+        s.registerMessage("de", MessageKey.GENERIC_ERROR, "%prefix% <red>Ein Fehler ist aufgetreten!");
+        s.registerMessage("de", MessageKey.SPECIFY_PLAYER, "%prefix% <red>Du musst einen Spieler angeben!");
+        //teleport
+        s.registerMessage("de", MessageKey.of("teleport.not_self"), "%prefix% <red>Du kannst dich nicht zu dir selbst teleportieren!");
+        s.registerMessage("de", MessageKey.of("teleport.teleporting"), "%prefix% <yellow>Du wirst zu %player% teleportiert!");
+        // gamemode
+        s.registerMessage("de", MessageKey.of("gamemode.invalid"), "%prefix% <red>Ungültiger Spielmodus!");
+        s.registerMessage("de", MessageKey.of("gamemode.success"), "%prefix% <yellow>Dein Spielmodus wurde geändert!");
+        s.registerMessage("de", MessageKey.of("gamemode.success.other"), "%prefix% <yellow>%player% Spielmodus wurde geändert!");
     }
 
-    void registerMessage(EssentialMessage key, String message) {
-        storage.registerMessage("de", key.key(), message);
-    }
+
 }
