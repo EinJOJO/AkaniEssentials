@@ -15,6 +15,7 @@ import it.einjojo.akani.essentials.command.TeleportCommand;
 import it.einjojo.akani.essentials.command.WarpCommand;
 import it.einjojo.akani.essentials.command.resolver.GamemodeResolver;
 import it.einjojo.akani.essentials.command.resolver.WarpResolver;
+import it.einjojo.akani.essentials.listener.ChatListener;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
 import it.einjojo.akani.essentials.warp.Warp;
 import it.einjojo.akani.essentials.warp.WarpManager;
@@ -39,7 +40,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
                 .argument(AkaniOfflinePlayer.class, new OfflinePlayerResolver<>(core))
                 .argument(Warp.class, new WarpResolver(warpManager))
                 .argument(GameMode.class, new GamemodeResolver())
-                .message(LiteBukkitMessages.MISSING_PERMISSIONS, input -> "")
+                .message(LiteBukkitMessages.MISSING_PERMISSIONS, input -> "Keine Rechte.")
                 .invalidUsage(new InvalidUsageCommandHandler())
                 .commands(
                         new TeleportCommand(core),
@@ -75,6 +76,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         gson = new Gson();
         warpManager = new WarpManager(this);
         warpManager.load();
+        new ChatListener(this);
 
     }
 
