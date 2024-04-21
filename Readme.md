@@ -14,4 +14,5 @@ Makes everything cross server.
 - akani.essentials.teleport.others | /tp
 - akani.essentials.warp.create | /warp create
 - akani.essentials.warp.delete | /warp delete
+- akani.essentials.warp.reload | /warp reload
 - akani.essentials.chatcolor | Farbig schreiben

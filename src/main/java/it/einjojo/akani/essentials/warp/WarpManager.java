@@ -60,6 +60,9 @@ public class WarpManager {
     }
 
     public Warp createWarp(String name, Location location, NetworkLocation.Type type) {
+        if (warp(name) != null) {
+            return null;
+        }
         var warp = new Warp(
                 name,
                 WarpIcon.DEFAULT,

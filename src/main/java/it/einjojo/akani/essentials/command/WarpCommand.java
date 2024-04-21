@@ -11,6 +11,7 @@ import it.einjojo.akani.core.api.network.NetworkLocation;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.warp.Warp;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -48,14 +49,17 @@ public record WarpCommand(AkaniEssentialsPlugin plugin) {
 
     @Execute
     public void teleportToWarp(@Context Player sender, @Arg Warp warp) {
+        sender.playSound(sender, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
         plugin.core().playerManager().onlinePlayer(sender.getUniqueId()).ifPresent(warp::warp);
     }
 
 
-    @Execute
+    @Execute(name = "reload")
+    @Permission(AkaniEssentialsPlugin.PERMISSION_BASE + "warp.reload")
     @Async
-    public void reloadWarps() {
+    public void reloadWarps(@Context CommandSender sender) {
         plugin.warpManager().load();
+        sender.sendMessage(plugin.miniMessage().deserialize("<green>Warps neu geladen."));
     }
 
 }
