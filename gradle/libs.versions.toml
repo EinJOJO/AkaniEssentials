@@ -4,7 +4,7 @@ vpaper-api = "1.19.4-R0.1-SNAPSHOT"
 vfawe-bom = "1.42"
 vluckperms = "5.4"
 vakanicore = "1.1.4"
-
+cloudcommands = "2.0.0-beta.2"
 # Libraries
 
 vpacketevents = "2.2.1"
@@ -27,6 +27,13 @@ luckperms = { group = "net.luckperms", name = "api", version.ref = "vluckperms" 
 hikaricp = { group = "com.zaxxer", name = "HikariCP", version = "5.1.0" }
 akanicore = { group = "it.einjojo.akani.core", name = "paper", version.ref = "vakanicore" }
 caffeine = { group = "com.github.ben-manes.caffeine", name = "caffeine", version = "3.1.8" }
+cloudcore = { group = "org.incendo", name = "cloud-core", version.ref="cloudcommands"}
+cloudannotations = { group = "org.incendo", name = "cloud-annotations", version.ref="cloudcommands"}
+cloudpaper = { group = "org.incendo", name = "cloud-paper", version.ref="cloudcommands"}
+cloudminecraft = { group = "org.incendo", name = "cloud-minecraft-extras", version.ref="cloudcommands"}
+
+
+[bundles]
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
 runpaper = { id = "xyz.jpenilla.run-paper", version = "2.2.3" }

@@ -20,7 +20,11 @@ dependencies {
     compileOnly(libs.akanicore) // clone https://github.com/EinJojo/AkaniCore and run `./gradlew api:publishMavenLocal` so that this works
     compileOnly(libs.caffeine)
     compileOnly(libs.paper)
-    implementation(libs.litecommands)
+    implementation(libs.cloudcore)
+    implementation(libs.cloudannotations)
+    implementation(libs.cloudpaper)
+    implementation(libs.cloudminecraft)
+    annotationProcessor(libs.cloudannotations)
 }
 
 java {

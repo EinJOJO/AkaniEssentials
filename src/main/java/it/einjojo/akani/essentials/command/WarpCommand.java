@@ -1,12 +1,5 @@
 package it.einjojo.akani.essentials.command;
 
-import dev.rollczi.litecommands.annotations.argument.Arg;
-import dev.rollczi.litecommands.annotations.async.Async;
-import dev.rollczi.litecommands.annotations.command.Command;
-import dev.rollczi.litecommands.annotations.context.Context;
-import dev.rollczi.litecommands.annotations.execute.Execute;
-import dev.rollczi.litecommands.annotations.flag.Flag;
-import dev.rollczi.litecommands.annotations.permission.Permission;
 import it.einjojo.akani.core.api.network.NetworkLocation;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.warp.Warp;
@@ -14,12 +7,19 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.incendo.cloud.annotations.*;
+import org.incendo.cloud.annotations.parser.Parser;
+import org.incendo.cloud.annotations.suggestion.Suggestions;
+import org.incendo.cloud.context.CommandContext;
+import org.incendo.cloud.context.CommandInput;
 
-@Command(name = "warp", aliases = "warps")
+
 public record WarpCommand(AkaniEssentialsPlugin plugin) {
 
-    @Execute()
-    public void listWarps(@Context CommandSender sender) {
+    @Command("warp list")
+    @Command("warps")
+    @CommandDescription("List all warps")
+    public void listWarps(CommandSender sender) {
         for (String warpName : plugin.warpManager().warpNames()) {
             Component c = plugin.miniMessage().deserialize("<click:suggest_command:'/warp %s'><hover:show_text:'<yellow>Klicke zum Teleportieren.'><gray>- <green>%s</hover></click>".formatted(warpName, warpName));
             sender.sendMessage(c);
@@ -28,9 +28,12 @@ public record WarpCommand(AkaniEssentialsPlugin plugin) {
 
 
     @Permission(AkaniEssentialsPlugin.PERMISSION_BASE + "warp.create")
-    @Execute(name = "create")
-    @Async
-    public void createWarp(@Context Player sender, @Arg("name") String warpName, @Flag("--groupSpecific") boolean isGroupSpecific) {
+    @Command("warps create <name>")
+    public void createWarp(Player sender, @Argument("name") String warpName, @Flag("--groupSpecific") boolean isGroupSpecific) {
+        if (plugin.warpManager().warp(warpName) != null) {
+            sender.sendMessage(plugin.miniMessage().deserialize("<red>Warp <yellow>%s <red>existiert bereits.".formatted(warpName)));
+            return;
+        }
         plugin.warpManager().createWarp(
                 warpName,
                 sender.getLocation(),
@@ -41,23 +44,37 @@ public record WarpCommand(AkaniEssentialsPlugin plugin) {
 
 
     @Permission(AkaniEssentialsPlugin.PERMISSION_BASE + "warp.delete")
-    @Execute(name = "delete")
-    @Async
-    public void deleteWarp(@Context Player sender, @Arg Warp warp) {
+    @Command("warp <warp> delete")
+    public void deleteWarp(Player sender, @Argument("warp") Warp warp) {
         plugin.warpManager().deleteWarp(warp);
     }
 
-    @Execute
-    public void teleportToWarp(@Context Player sender, @Arg Warp warp) {
+    @Command("warp|warps <warp>")
+    public void teleportToWarp(Player sender, @Argument("warp") Warp warp) {
         sender.playSound(sender, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
         plugin.core().playerManager().onlinePlayer(sender.getUniqueId()).ifPresent(warp::warp);
     }
 
+    @Parser(suggestions = "warps")
+    public Warp parseWarp(CommandContext<CommandSender> context, CommandInput input) {
+        String warpName = input.input();
+        Warp warp = plugin.warpManager().warp(warpName);
+        if (warp == null) {
+            context.sender().sendMessage(plugin.miniMessage().deserialize("<red>Warp <yellow>%s <red>existiert nicht.".formatted(warpName)));
+            return null;
+        }
+        return warp;
+    }
 
-    @Execute(name = "reload")
+    @Suggestions("warps")
+    public Iterable<String> suggestWarps(CommandContext<CommandSender> context, String input) {
+        return plugin.warpManager().warpNames();
+    }
+
+
+    @Command("warps reload")
     @Permission(AkaniEssentialsPlugin.PERMISSION_BASE + "warp.reload")
-    @Async
-    public void reloadWarps(@Context CommandSender sender) {
+    public void reloadWarps(CommandSender sender) {
         plugin.warpManager().load();
         sender.sendMessage(plugin.miniMessage().deserialize("<green>Warps neu geladen."));
     }
