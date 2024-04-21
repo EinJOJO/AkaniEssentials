@@ -5,26 +5,20 @@ plugins {
 }
 
 group = "it.einjojo.akani"
-version = "1.1"
+version = "1.2"
 
 repositories {
     mavenLocal()
     mavenCentral()
-    maven {
-        name = "LiteCommands"
-        url = uri("https://repo.panda-lang.org/releases")
-    }
+    maven("https://repo.aikar.co/content/groups/aikar/")
 }
 
 dependencies {
     compileOnly(libs.akanicore) // clone https://github.com/EinJojo/AkaniCore and run `./gradlew api:publishMavenLocal` so that this works
     compileOnly(libs.caffeine)
     compileOnly(libs.paper)
-    implementation(libs.cloudcore)
-    implementation(libs.cloudannotations)
-    implementation(libs.cloudpaper)
-    implementation(libs.cloudminecraft)
-    annotationProcessor(libs.cloudannotations)
+    implementation(libs.acf)
+    annotationProcessor(libs.acf)
 }
 
 java {
@@ -47,6 +41,7 @@ tasks {
         options.encoding = "UTF-8"
         options.isIncremental = true
         options.compilerArgs.add("-parameters")
+
     }
 
     assemble {
@@ -56,6 +51,7 @@ tasks {
     shadowJar {
         archiveClassifier.set("")
         archiveVersion.set("")
+        relocate("co.aikar.commands", "it.einjojo.akani.essentials.command.acf")
 
     }
 }

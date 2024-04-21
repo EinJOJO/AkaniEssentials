@@ -5,6 +5,7 @@ vfawe-bom = "1.42"
 vluckperms = "5.4"
 vakanicore = "1.1.4"
 cloudcommands = "2.0.0-beta.2"
+acf = "0.5.1-SNAPSHOT"
 # Libraries
 
 vpacketevents = "2.2.1"
@@ -16,6 +17,7 @@ vjedis = "5.1.0"
 vdialog-api = "1.2" #https://repo.wandoria.net/#/snapshots/net/wandoria/api/DialogAPI/
 
 [libraries]
+acf = { group = "co.aikar", name = "acf-paper", version.ref = "acf" }
 fawe = { group = "com.intellectualsites.bom", name = "bom-newest", version.ref = "vfawe-bom" }
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "vpaper-api" }
 litecommands = { group = "dev.rollczi", name = "litecommands-bukkit", version.ref = "vlitecommands" }

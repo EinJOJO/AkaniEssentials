@@ -4,6 +4,7 @@ import it.einjojo.akani.core.api.message.MessageProvider;
 import it.einjojo.akani.core.api.message.MessageStorage;
 
 public class EssentialsMessageProvider implements MessageProvider {
+
     private MessageStorage storage;
 
     @Override

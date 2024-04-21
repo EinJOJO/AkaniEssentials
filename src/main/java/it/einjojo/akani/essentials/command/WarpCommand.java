@@ -1,82 +1,76 @@
 package it.einjojo.akani.essentials.command;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.*;
 import it.einjojo.akani.core.api.network.NetworkLocation;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.warp.Warp;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Sound;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.incendo.cloud.annotations.*;
-import org.incendo.cloud.annotations.parser.Parser;
-import org.incendo.cloud.annotations.suggestion.Suggestions;
-import org.incendo.cloud.context.CommandContext;
-import org.incendo.cloud.context.CommandInput;
 
 
-public record WarpCommand(AkaniEssentialsPlugin plugin) {
+@CommandAlias("warp|warps")
+public class WarpCommand extends BaseCommand {
+    private final AkaniEssentialsPlugin plugin;
 
-    @Command("warp list")
-    @Command("warps")
-    @CommandDescription("List all warps")
-    public void listWarps(CommandSender sender) {
-        for (String warpName : plugin.warpManager().warpNames()) {
-            Component c = plugin.miniMessage().deserialize("<click:suggest_command:'/warp %s'><hover:show_text:'<yellow>Klicke zum Teleportieren.'><gray>- <green>%s</hover></click>".formatted(warpName, warpName));
-            sender.sendMessage(c);
+    public WarpCommand(AkaniEssentialsPlugin plugin) {
+        this.plugin = plugin;
+        plugin.commandManager().getCommandContexts().registerContext(Warp.class, c -> plugin.warpManager().warp(c.popFirstArg()));
+        plugin.commandManager().registerCommand(this);
+    }
+
+
+    @Default
+    @CommandCompletion("@warps")
+    public void listWarps(Player sender, @Optional Warp warp) {
+        if (warp == null) {
+            for (String warpName : plugin.warpManager().warpNames()) {
+                Component c = plugin.miniMessage().deserialize("<click:suggest_command:'/warp %s'><hover:show_text:'<yellow>Klicke zum Teleportieren.'><gray>- <green>%s</hover></click>".formatted(warpName, warpName));
+                sender.sendMessage(c);
+            }
+        } else {
+            plugin.core().playerManager().onlinePlayer(sender.getUniqueId()).ifPresentOrElse((p) -> {
+                warp.warp(p);
+            }, () -> {
+                sender.sendMessage(plugin.miniMessage().deserialize("<red>Es ist ein Fehler aufgetreten."));
+            });
+
         }
     }
 
 
-    @Permission(AkaniEssentialsPlugin.PERMISSION_BASE + "warp.create")
-    @Command("warps create <name>")
-    public void createWarp(Player sender, @Argument("name") String warpName, @Flag("--groupSpecific") boolean isGroupSpecific) {
+    @Subcommand("create")
+    @Syntax("<name> [--groupSpecific]")
+    @CommandCompletion("name --groupSpecific")
+    @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "warp.create")
+    @Description("Erstellt einen neuen Warp")
+    public void createWarp(Player sender, String warpName, String arg) {
+        boolean isGroupSpecific = arg != null && arg.equals("--groupSpecific");
         if (plugin.warpManager().warp(warpName) != null) {
             sender.sendMessage(plugin.miniMessage().deserialize("<red>Warp <yellow>%s <red>existiert bereits.".formatted(warpName)));
             return;
         }
-        plugin.warpManager().createWarp(
-                warpName,
-                sender.getLocation(),
-                isGroupSpecific ? NetworkLocation.Type.GROUP : NetworkLocation.Type.SERVER
-        );
+        plugin.warpManager().createWarp(warpName, sender.getLocation(), isGroupSpecific ? NetworkLocation.Type.GROUP : NetworkLocation.Type.SERVER);
         sender.sendMessage(plugin.miniMessage().deserialize("<green>Warp <yellow>%s <green>erstellt.".formatted(warpName)));
     }
 
-
-    @Permission(AkaniEssentialsPlugin.PERMISSION_BASE + "warp.delete")
-    @Command("warp <warp> delete")
-    public void deleteWarp(Player sender, @Argument("warp") Warp warp) {
+    @Subcommand("delete")
+    @Syntax("<warp>")
+    @CommandCompletion("@warps")
+    @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "warp.delete")
+    @Description("Löscht einen Warp")
+    public void deleteWarp(Player sender, Warp warp) {
         plugin.warpManager().deleteWarp(warp);
+        sender.sendMessage(plugin.miniMessage().deserialize("<red>Warp <yellow>%s <red>gelöscht.".formatted(warp.name())));
     }
 
-    @Command("warp|warps <warp>")
-    public void teleportToWarp(Player sender, @Argument("warp") Warp warp) {
-        sender.playSound(sender, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
-        plugin.core().playerManager().onlinePlayer(sender.getUniqueId()).ifPresent(warp::warp);
-    }
-
-    @Parser(suggestions = "warps")
-    public Warp parseWarp(CommandContext<CommandSender> context, CommandInput input) {
-        String warpName = input.input();
-        Warp warp = plugin.warpManager().warp(warpName);
-        if (warp == null) {
-            context.sender().sendMessage(plugin.miniMessage().deserialize("<red>Warp <yellow>%s <red>existiert nicht.".formatted(warpName)));
-            return null;
-        }
-        return warp;
-    }
-
-    @Suggestions("warps")
-    public Iterable<String> suggestWarps(CommandContext<CommandSender> context, String input) {
-        return plugin.warpManager().warpNames();
-    }
-
-
-    @Command("warps reload")
-    @Permission(AkaniEssentialsPlugin.PERMISSION_BASE + "warp.reload")
-    public void reloadWarps(CommandSender sender) {
+    @Subcommand("reload")
+    @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "warp.reload")
+    @Description("Lädt die Warps neu")
+    public void reloadWarps(Player sender) {
         plugin.warpManager().load();
         sender.sendMessage(plugin.miniMessage().deserialize("<green>Warps neu geladen."));
     }
+
 
 }
