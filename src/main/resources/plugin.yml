@@ -7,4 +7,4 @@ website: https://kalypzo.de
 description: AkaniCore has been created to provide a core for all Akani plugins.
 depend: [ AkaniCore ]
 libraries:
-  - "com.github.ben-manes.caffeine:caffeine:3.1.8" }
+  - "com.github.ben-manes.caffeine:caffeine:3.1.8"

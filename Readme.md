@@ -1,2 +1,4 @@
 ## Permissions
-- akani.essentials.teleport.others | /tp [player] [target]
+- akani.essentials.teleport.others | /tp 
+- akani.essentials.warp.create | /warp create
+- akani.essentials.warp.delete | /warp delete

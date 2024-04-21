@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "it.einjojo.akani"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenLocal()
@@ -30,7 +30,7 @@ java {
 
 tasks {
     withType<Jar> {
-        enabled = false
+        enabled = true
     }
 
     processResources {
@@ -45,11 +45,13 @@ tasks {
         options.compilerArgs.add("-parameters")
     }
 
-    build {
+    assemble {
         dependsOn("shadowJar")
     }
 
     shadowJar {
         archiveClassifier.set("")
+        archiveVersion.set("")
+
     }
 }
