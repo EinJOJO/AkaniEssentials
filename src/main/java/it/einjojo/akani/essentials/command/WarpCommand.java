@@ -15,6 +15,7 @@ public class WarpCommand extends BaseCommand {
 
     public WarpCommand(AkaniEssentialsPlugin plugin) {
         this.plugin = plugin;
+        plugin.commandManager().getCommandCompletions().registerAsyncCompletion("warps", c -> plugin.warpManager().warpNames());
         plugin.commandManager().getCommandContexts().registerContext(Warp.class, c -> plugin.warpManager().warp(c.popFirstArg()));
         plugin.commandManager().registerCommand(this);
     }

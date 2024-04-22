@@ -3,20 +3,28 @@ package it.einjojo.akani.essentials;
 import co.aikar.commands.PaperCommandManager;
 import com.google.gson.Gson;
 import it.einjojo.akani.core.api.AkaniCoreProvider;
+import it.einjojo.akani.core.api.player.AkaniOfflinePlayer;
 import it.einjojo.akani.core.api.player.AkaniPlayer;
 import it.einjojo.akani.core.paper.PaperAkaniCore;
 import it.einjojo.akani.essentials.command.GamemodeCommand;
+import it.einjojo.akani.essentials.command.TargetNotFoundException;
 import it.einjojo.akani.essentials.command.TeleportCommand;
 import it.einjojo.akani.essentials.command.WarpCommand;
+import it.einjojo.akani.essentials.command.economy.MoneyCommand;
 import it.einjojo.akani.essentials.listener.ChatListener;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
+import it.einjojo.akani.essentials.util.MessageKey;
 import it.einjojo.akani.essentials.warp.WarpManager;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Function;
 
 public class AkaniEssentialsPlugin extends JavaPlugin {
@@ -48,18 +56,40 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         getLogger().info("Registering commands");
         commandManager = new PaperCommandManager(this);
         commandManager.enableUnstableAPI("brigadier");
-        commandManager.getCommandCompletions().registerAsyncCompletion("warps", c -> warpManager.warpNames());
         // all online players except the sender
         commandManager.getCommandCompletions().registerAsyncCompletion("akaniplayers", c -> {
             boolean includeSender = c.hasConfig("includeSender");
             getLogger().info("Include sender: " + includeSender);
             return core().playerManager().onlinePlayers().stream().map(AkaniPlayer::name).filter(name -> includeSender || !(name.equals(c.getSender().getName()))).toList();
         });
-        commandManager.getCommandContexts().registerContext(AkaniPlayer.class, c -> core().playerManager().onlinePlayerByName(c.popFirstArg()).orElse(null));
+        commandManager.getCommandCompletions().registerAsyncCompletion("akaniofflineplayers", c -> {
+            int limit = c.hasConfig("limit") ? Integer.parseInt(c.getConfig("limit")) : 10;
+            return Arrays.stream(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName)
+                    .filter(Objects::nonNull)
+                    .filter(n -> n.toLowerCase().startsWith(c.getInput().toLowerCase()))
+                    .limit(limit).toList();
+        });
+        commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
+            if (t instanceof TargetNotFoundException) {
+                sendMessage(sender.getIssuer(), MessageKey.PLAYER_NOT_FOUND);
+                return true;
+            }
+            return false;
+        });
+        commandManager.getCommandContexts().registerContext(AkaniOfflinePlayer.class, c -> {
+            String s = c.popFirstArg();
+            return core().playerManager().loadPlayerByName(s).join().orElseThrow(() -> new TargetNotFoundException(s));
+
+        });
+        commandManager.getCommandContexts().registerContext(AkaniPlayer.class, c -> {
+            String s = c.popFirstArg();
+            return core().playerManager().onlinePlayerByName(s).orElseThrow(() -> new TargetNotFoundException(s));
+        });
         //register commands
         new TeleportCommand(this);
         new WarpCommand(this);
         new GamemodeCommand(this);
+        new MoneyCommand(this);
 
     }
 

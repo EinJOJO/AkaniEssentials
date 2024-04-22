@@ -19,8 +19,8 @@ public class TeleportCommand extends BaseCommand {
 
     @Default
     @Description("Teleport to a player")
-    @CommandCompletion("@akaniplayers @akaniplayers")
-    public void teleportPlayer(Player bukkitSender, AkaniPlayer target, @Optional @Flags("includeSender") AkaniPlayer target2) {
+    @CommandCompletion("@akaniplayers @akaniplayers:includeSender")
+    public void teleportPlayer(Player bukkitSender, AkaniPlayer target, @Optional AkaniPlayer target2) {
         if (bukkitSender.getUniqueId().equals(target.uuid())) {
             plugin.sendMessage(bukkitSender, MessageKey.of("teleport.not_self"));
             return;

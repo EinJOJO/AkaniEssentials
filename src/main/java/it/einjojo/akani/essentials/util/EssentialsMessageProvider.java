@@ -13,10 +13,14 @@ public record EssentialsMessageProvider() implements MessageProvider {
     public boolean shouldInsert(MessageStorage messageStorage) {
         return true;
     }
+
     @Override
     public void insertMessages(MessageStorage s) {
         s.registerMessage("de", MessageKey.GENERIC_ERROR, "%prefix% <red>Ein Fehler ist aufgetreten!");
         s.registerMessage("de", MessageKey.SPECIFY_PLAYER, "%prefix% <red>Du musst einen Spieler angeben!");
+        s.registerMessage("de", MessageKey.PLAYER_NOT_FOUND, "%prefix% <red>Der Spieler wurde nicht gefunden!");
+        s.registerMessage("de", MessageKey.PLAYER_NOT_ONLINE, "%prefix% <red>Der Spieler ist nicht online!");
+
         //teleport
         s.registerMessage("de", MessageKey.of("teleport.not_self"), "%prefix% <red>Du kannst dich nicht zu dir selbst teleportieren!");
         s.registerMessage("de", MessageKey.of("teleport.teleporting"), "%prefix% <yellow>Du wirst zu %player% teleportiert!");
@@ -28,5 +32,9 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", MessageKey.of("warp.not_found"), "%prefix% <red>Der Warp wurde nicht gefunden!");
         s.registerMessage("de", MessageKey.of("warp.teleporting"), "%prefix% <yellow>Du wirst zum Warp %warp% teleportiert!");
         s.registerMessage("de", MessageKey.of("warp.success"), "%prefix% <yellow>Du wurdest zum Warp teleportiert!");
+        // economy
+        s.registerMessage("de", MessageKey.of("economy.not_enough"), "%prefix% <red>Du hast nicht genug Geld!");
+        s.registerMessage("de", MessageKey.of("economy.success"), "%prefix% <yellow>Transaktion erfolgreich!");
+        s.registerMessage("de", MessageKey.of("economy.balance"), "%prefix% <yellow>Dein Kontostand beträgt %balance% Coins!");
     }
 }
