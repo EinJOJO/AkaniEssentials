@@ -45,7 +45,7 @@ public class WarpCommand extends BaseCommand {
     @CommandCompletion("name --groupSpecific")
     @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "warp.create")
     @Description("Erstellt einen neuen Warp")
-    public void createWarp(Player sender, String warpName, String arg) {
+    public void createWarp(Player sender, String warpName, @Optional String arg) {
         boolean isGroupSpecific = arg != null && arg.equals("--groupSpecific");
         if (plugin.warpManager().warp(warpName) != null) {
             sender.sendMessage(plugin.miniMessage().deserialize("<red>Warp <yellow>%s <red>existiert bereits.".formatted(warpName)));
