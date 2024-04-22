@@ -25,7 +25,7 @@ public class TeleportCommand extends BaseCommand {
             plugin.sendMessage(bukkitSender, MessageKey.of("teleport.not_self"));
             return;
         }
-        AkaniPlayer teleported = (target2 != null) ? target2 : plugin.core().playerManager().onlinePlayer(bukkitSender.getUniqueId()).orElse(null);
+        AkaniPlayer teleported = (target2 != null) ? target2 : plugin.core().playerManager().onlinePlayer(bukkitSender.getUniqueId()).orElseThrow();
         if (teleported == null) {
             plugin.sendMessage(bukkitSender, MessageKey.GENERIC_ERROR);
             return;
