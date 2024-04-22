@@ -105,12 +105,10 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
     private void initClasses() {
         core = (PaperAkaniCore) AkaniCoreProvider.get();
         core.registerMessageProvider(new EssentialsMessageProvider());
-        core.delayedMessageReload();
         gson = new Gson();
         warpManager = new WarpManager(this);
         warpManager.load();
         new ChatListener(this);
-
     }
 
     @Override

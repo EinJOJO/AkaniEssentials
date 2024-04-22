@@ -3,9 +3,7 @@ package it.einjojo.akani.essentials.util;
 import it.einjojo.akani.core.api.message.MessageProvider;
 import it.einjojo.akani.core.api.message.MessageStorage;
 
-public class EssentialsMessageProvider implements MessageProvider {
-
-
+public record EssentialsMessageProvider() implements MessageProvider {
     @Override
     public String providerName() {
         return "Essentials";
@@ -15,7 +13,6 @@ public class EssentialsMessageProvider implements MessageProvider {
     public boolean shouldInsert(MessageStorage messageStorage) {
         return true;
     }
-
     @Override
     public void insertMessages(MessageStorage s) {
         s.registerMessage("de", MessageKey.GENERIC_ERROR, "%prefix% <red>Ein Fehler ist aufgetreten!");
@@ -32,6 +29,4 @@ public class EssentialsMessageProvider implements MessageProvider {
         s.registerMessage("de", MessageKey.of("warp.teleporting"), "%prefix% <yellow>Du wirst zum Warp %warp% teleportiert!");
         s.registerMessage("de", MessageKey.of("warp.success"), "%prefix% <yellow>Du wurdest zum Warp teleportiert!");
     }
-
-
 }

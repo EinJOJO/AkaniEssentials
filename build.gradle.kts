@@ -8,9 +8,10 @@ group = "it.einjojo.akani"
 version = "1.2"
 
 repositories {
-    mavenLocal()
+
     mavenCentral()
     maven("https://repo.aikar.co/content/groups/aikar/")
+    maven("https://repo.akani.dev/releases")
 }
 
 dependencies {
