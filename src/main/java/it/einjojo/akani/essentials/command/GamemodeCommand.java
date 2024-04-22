@@ -6,7 +6,7 @@ import co.aikar.commands.annotation.*;
 import it.einjojo.akani.core.api.player.AkaniPlayer;
 import it.einjojo.akani.core.paper.AkaniBukkitAdapter;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
-import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
+import it.einjojo.akani.essentials.util.MessageKey;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -50,22 +50,22 @@ public class GamemodeCommand extends BaseCommand {
             // command executed by player
             if (player == null) {
                 senderPlayer.setGameMode(mode);
-                plugin.sendMessage(senderPlayer, "essentials.gamemode.success");
+                plugin.sendMessage(senderPlayer, MessageKey.of("gamemode.success"));
                 return;
             } else {
                 player.server().runCommand("gamemode " + gameMode + " " + player.name());
-                plugin.sendMessage(senderPlayer, "essentials.gamemode.success.other", (s) -> s.replaceAll("%player%", player.name()));
+                plugin.sendMessage(senderPlayer, MessageKey.of("gamemode.success.other"), (s) -> s.replaceAll("%player%", player.name()));
             }
         } else {
             // Sender is console:
             if (player == null) {
-                plugin.sendMessage(sender, (EssentialsMessageProvider.SPECIFY_PLAYER));
+                plugin.sendMessage(sender, MessageKey.SPECIFY_PLAYER);
                 return;
             }
             AkaniBukkitAdapter.bukkitPlayer(player.uuid()).ifPresentOrElse((bukkitPlayer) -> {
                 bukkitPlayer.setGameMode(mode);
-                plugin.sendMessage(sender, "essentials.gamemode.success.other", (s) -> s.replaceAll("%player%", player.name()));
-                plugin.sendMessage(bukkitPlayer, "essentials.gamemode.success");
+                plugin.sendMessage(sender, MessageKey.of("gamemode.success.other"), (s) -> s.replaceAll("%player%", player.name()));
+                plugin.sendMessage(bukkitPlayer, MessageKey.of("gamemode.success"));
             }, () -> {
                 player.server().runCommand("gamemode " + gameMode + " " + player.name());
             });

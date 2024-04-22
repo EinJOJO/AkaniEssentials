@@ -30,6 +30,7 @@ public class WarpCommand extends BaseCommand {
             }
         } else {
             plugin.core().playerManager().onlinePlayer(sender.getUniqueId()).ifPresentOrElse((p) -> {
+                plugin.sendMessage(sender, "warp.teleporting", (s) -> s.replaceAll("%warp%", warp.name()));
                 warp.warp(p);
             }, () -> {
                 sender.sendMessage(plugin.miniMessage().deserialize("<red>Es ist ein Fehler aufgetreten."));

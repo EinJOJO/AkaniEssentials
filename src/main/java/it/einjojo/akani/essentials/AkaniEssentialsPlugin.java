@@ -11,7 +11,6 @@ import it.einjojo.akani.essentials.command.WarpCommand;
 import it.einjojo.akani.essentials.listener.ChatListener;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
 import it.einjojo.akani.essentials.warp.WarpManager;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -83,13 +82,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
      * @param modifier a function that modifies the message before its sent
      */
     public void sendMessage(@NotNull CommandSender sender, @NotNull String key, @Nullable Function<String, String> modifier) {
-        Component message;
-        if (modifier != null) {
-            message = miniMessage().deserialize(modifier.apply(core().messageManager().plainMessage(key)));
-        } else {
-            message = core().messageManager().message(key);
-        }
-        sender.sendMessage(message);
+        core().messageManager().sendMessage(sender, key, modifier);
     }
 
     public MiniMessage miniMessage() {
@@ -112,6 +105,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
     private void initClasses() {
         core = (PaperAkaniCore) AkaniCoreProvider.get();
         core.registerMessageProvider(new EssentialsMessageProvider());
+        core.delayedMessageReload();
         gson = new Gson();
         warpManager = new WarpManager(this);
         warpManager.load();

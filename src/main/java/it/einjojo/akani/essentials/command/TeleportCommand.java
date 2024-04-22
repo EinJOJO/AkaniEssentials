@@ -5,7 +5,6 @@ import co.aikar.commands.annotation.*;
 import it.einjojo.akani.core.api.player.AkaniPlayer;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.util.MessageKey;
-import org.apache.logging.log4j.message.Message;
 import org.bukkit.entity.Player;
 
 @CommandAlias("teleport|tp")
@@ -26,10 +25,14 @@ public class TeleportCommand extends BaseCommand {
             plugin.sendMessage(bukkitSender, MessageKey.of("teleport.not_self"));
             return;
         }
-        AkaniPlayer sender = plugin.core().playerManager().onlinePlayer(bukkitSender.getUniqueId()).orElseThrow();
+        AkaniPlayer teleported = (target2 != null) ? target2 : plugin.core().playerManager().onlinePlayer(bukkitSender.getUniqueId()).orElse(null);
+        if (teleported == null) {
+            plugin.sendMessage(bukkitSender, MessageKey.GENERIC_ERROR);
+            return;
+        }
         target.location().thenAccept((loc) -> {
-            plugin.core().messageManager().sendMessage(target, MessageKey.of("teleport.teleporting"));
-            sender.teleport(loc);
+            plugin.core().messageManager().sendMessage(teleported, MessageKey.of("teleport.teleporting"), (s) -> s.replaceAll("%player%", target.name()));
+            teleported.teleport(loc);
         }).exceptionally((e) -> {
             plugin.sendMessage(bukkitSender, MessageKey.GENERIC_ERROR);
             e.printStackTrace();

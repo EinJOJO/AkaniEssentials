@@ -27,6 +27,10 @@ public class EssentialsMessageProvider implements MessageProvider {
         s.registerMessage("de", MessageKey.of("gamemode.invalid"), "%prefix% <red>Ungültiger Spielmodus!");
         s.registerMessage("de", MessageKey.of("gamemode.success"), "%prefix% <yellow>Dein Spielmodus wurde geändert!");
         s.registerMessage("de", MessageKey.of("gamemode.success.other"), "%prefix% <yellow>%player% Spielmodus wurde geändert!");
+        // warp
+        s.registerMessage("de", MessageKey.of("warp.not_found"), "%prefix% <red>Der Warp wurde nicht gefunden!");
+        s.registerMessage("de", MessageKey.of("warp.teleporting"), "%prefix% <yellow>Du wirst zum Warp %warp% teleportiert!");
+        s.registerMessage("de", MessageKey.of("warp.success"), "%prefix% <yellow>Du wurdest zum Warp teleportiert!");
     }
 
 
