@@ -8,12 +8,12 @@ import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.util.MessageKey;
 import org.bukkit.entity.Player;
 
-@CommandAlias("money|balance")
-public class MoneyCommand extends BaseCommand {
+@CommandAlias("thaler|taler")
+public class ThalerCommand extends BaseCommand {
 
     private final AkaniEssentialsPlugin plugin;
 
-    public MoneyCommand(AkaniEssentialsPlugin plugin) {
+    public ThalerCommand(AkaniEssentialsPlugin plugin) {
         this.plugin = plugin;
         plugin.commandManager().registerCommand(this);
     }
@@ -29,8 +29,8 @@ public class MoneyCommand extends BaseCommand {
     }
 
     private void displayOtherBalance(Player sender, AkaniOfflinePlayer target) {
-        target.coinsAsync().thenAccept((c) -> {
-            plugin.sendMessage(sender, MessageKey.of("coins.balance.other"),
+        target.thalerAsync().thenAccept((c) -> {
+            plugin.sendMessage(sender, MessageKey.of("thaler.balance.other"),
                     (s) -> s.replaceAll("%player%", target.name())
                             .replaceAll("%balance%", String.valueOf(c.balance())));
         }).exceptionally((ex) -> {
@@ -43,8 +43,8 @@ public class MoneyCommand extends BaseCommand {
 
     private void displayOwnBalance(Player sender) {
         plugin.core().playerManager().onlinePlayer(sender.getUniqueId()).ifPresentOrElse((p) -> {
-            p.coinsAsync().thenAccept((c) -> {
-                plugin.sendMessage(sender, MessageKey.of("coins.balance.own"), (s) ->
+            p.thalerAsync().thenAccept((c) -> {
+                plugin.sendMessage(sender, MessageKey.of("thaler.balance.own"), (s) ->
                         s.replaceAll("%balance%", String.valueOf(c.balance())));
             }).exceptionally((ex) -> {
                 plugin.getLogger().warning("Could not get economy balance for player " + sender.getName() + ".");
@@ -59,42 +59,47 @@ public class MoneyCommand extends BaseCommand {
     }
 
     @Subcommand("set")
-    @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "money.set")
+    @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "thaler.set")
     @CommandCompletion("@akaniofflineplayers:limit=8 0")
     @Syntax("<player> <amount>")
     public void setBalance(Player sender, AkaniOfflinePlayer target, long coins) {
-        target.coinsAsync().thenAccept((c) -> {
+        target.thalerAsync().thenAccept((c) -> {
             try {
                 c.setBalance(coins);
-                plugin.sendMessage(sender, MessageKey.of("coins.set"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
+                plugin.sendMessage(sender, MessageKey.of("thaler.set"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
             } catch (BadBalanceException e) {
                 plugin.sendMessage(sender, MessageKey.of("economy.error"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
             }
         });
-        plugin.sendMessage(sender, MessageKey.of("coins.set"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
+        plugin.sendMessage(sender, MessageKey.of("thaler.set"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
     }
 
     @Subcommand("remove")
-    @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "money.remove")
+    @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "thaler.remove")
     @CommandCompletion("@akaniofflineplayers:limit=8 0")
     @Syntax("<player> <amount>")
     public void removeBalance(Player sender, AkaniOfflinePlayer target, long coins) {
-        try {
-            target.coins().removeBalance(coins);
-            plugin.sendMessage(sender, MessageKey.of("coins.remove"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
-        } catch (BadBalanceException e) {
-            plugin.sendMessage(sender, MessageKey.of("economy.error"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
-        }
+        target.thalerAsync().thenAccept((t) -> {
+            try {
+                t.removeBalance(coins);
+                plugin.sendMessage(sender, MessageKey.of("thaler.remove"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
+            } catch (BadBalanceException e) {
+                plugin.sendMessage(sender, MessageKey.of("economy.error"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
+            }
+        }).exceptionally((ex) -> {
+            plugin.sendMessage(sender, MessageKey.GENERIC_ERROR);
+            return null;
+        });
     }
 
     @Subcommand("add")
-    @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "money.add")
+    @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "thaler.add")
     @CommandCompletion("@akaniofflineplayers:limit=8 0")
     @Syntax("<player> <amount>")
     public void addBalance(Player sender, AkaniOfflinePlayer target, long coins) {
         try {
             target.coins().addBalance(coins);
-            plugin.sendMessage(sender, MessageKey.of("coins.add"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
+            plugin.sendMessage(sender, MessageKey.of("thaler.add"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
         } catch (BadBalanceException e) {
             plugin.sendMessage(sender, MessageKey.of("economy.error"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
         }

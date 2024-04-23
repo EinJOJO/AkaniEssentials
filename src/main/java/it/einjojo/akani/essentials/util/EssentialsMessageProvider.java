@@ -33,10 +33,21 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", MessageKey.of("warp.teleporting"), "%prefix% <yellow>Du wirst zum Warp %warp% teleportiert!");
         s.registerMessage("de", MessageKey.of("warp.success"), "%prefix% <yellow>Du wurdest zum Warp teleportiert!");
         // economy
-        s.registerMessage("de", MessageKey.of("economy.not_enough"), "%prefix% <red>Du hast nicht genug Geld!");
-        s.registerMessage("de", MessageKey.of("economy.balance"), "%prefix% <yellow>Dein Kontostand beträgt %balance% Coins!");
-        s.registerMessage("de", MessageKey.of("economy.set"), "%prefix% <yellow>Der Kontostand von %player% wurde auf %balance% Coins gesetzt!");
-s.registerMessage("de", MessageKey.of("economy.error"), "%prefix% <red>Der Kontostand von %player% konnte nicht auf %balance% Coins gesetzt werden!");
+        s.registerMessage("de", MessageKey.of("economy.error"), "%prefix% <red>Der Kontostand von %player% konnte nicht auf %balance% Coins gesetzt werden!");
+        //coins
+        s.registerMessage("de", MessageKey.of("coins.not_enough"), "%prefix% <red>Du hast nicht genug Geld!");
+        s.registerMessage("de", MessageKey.of("coins.balance.own"), "%prefix% <yellow>Dein Kontostand beträgt %balance% Coins!");
+        s.registerMessage("de", MessageKey.of("coins.balance.other"), "%prefix% <yellow>Dein Kontostand beträgt %balance% Coins!");
+        s.registerMessage("de", MessageKey.of("coins.set"), "%prefix% <yellow>Der Kontostand von %player% wurde auf %balance% Coins gesetzt!");
+        s.registerMessage("de", MessageKey.of("coins.add"), "%prefix% <yellow>Dem Konto von %player% wurden %balance% Coins hinzugefügt!");
+        s.registerMessage("de", MessageKey.of("coins.remove"), "%prefix% <yellow>Dem Konto von %player% wurden %balance% Coins abgezogen!");
+        // thaler
+        s.registerMessage("de", MessageKey.of("thaler.not_enough"), "%prefix% <red>Du hast nicht genug Thaler!");
+        s.registerMessage("de", MessageKey.of("thaler.balance.own"), "%prefix% <yellow>Dein Kontostand beträgt %balance% Thaler!");
+        s.registerMessage("de", MessageKey.of("thaler.balance.other"), "%prefix% <yellow>Dein Kontostand beträgt %balance% Thaler!");
+        s.registerMessage("de", MessageKey.of("thaler.set"), "%prefix% <yellow>Der Kontostand von %player% wurde auf %balance% Thaler gesetzt!");
+        s.registerMessage("de", MessageKey.of("thaler.add"), "%prefix% <yellow>Dem Konto von %player% wurden %balance% Thaler hinzugefügt!");
+        s.registerMessage("de", MessageKey.of("thaler.remove"), "%prefix% <yellow>Dem Konto von %player% wurden %balance% Thaler abgezogen!");
 
 
         //heal/feed

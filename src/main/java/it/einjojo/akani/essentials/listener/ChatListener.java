@@ -92,6 +92,7 @@ public class ChatListener implements Listener, MessageProcessor {
 
     @Override
     public void processMessage(ChannelMessage channelMessage) {
+        plugin.getLogger().info("Processing chat message");
         var payload = ByteStreams.newDataInput(channelMessage.contentBytes());
         var uuid = UUID.fromString(payload.readUTF());
         var optionalPlayer = plugin.core().playerManager().onlinePlayer(uuid);
