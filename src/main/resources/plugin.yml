@@ -1,7 +1,7 @@
 name: AkaniEssentials
 main: it.einjojo.akani.essentials.AkaniEssentialsPlugin
 version: ${version}
-api-version: "1.20"
+api-version: "1.19"
 author: "EinJOJO @ Kalypzo.de"
 website: https://kalypzo.de
 description: AkaniCore has been created to provide a core for all Akani plugins.
