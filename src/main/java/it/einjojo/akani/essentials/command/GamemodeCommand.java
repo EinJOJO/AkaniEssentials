@@ -15,8 +15,7 @@ import java.util.Map;
 
 @CommandAlias("gamemode|gm")
 public class GamemodeCommand extends BaseCommand {
-
-    private static Map<String, GameMode> gameModeMap = Map.ofEntries(
+    private final static Map<String, GameMode> GAMEMODE_MAP = Map.ofEntries(
             Map.entry("survival", GameMode.SURVIVAL),
             Map.entry("creative", GameMode.CREATIVE),
             Map.entry("adventure", GameMode.ADVENTURE),
@@ -32,18 +31,18 @@ public class GamemodeCommand extends BaseCommand {
     public GamemodeCommand(AkaniEssentialsPlugin plugin) {
         this.plugin = plugin;
         PaperCommandManager manager = plugin.commandManager();
-        manager.getCommandCompletions().registerStaticCompletion("gamemodes", gameModeMap.keySet());
+        manager.getCommandCompletions().registerStaticCompletion("gamemodes", GAMEMODE_MAP.keySet());
         manager.registerCommand(this);
     }
 
     @Default
     @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "gamemode")
     @CommandCompletion("@gamemodes @akaniplayers")
-    @Syntax("<0|1|2|3> [player]")
+    @Syntax("<gamemode> [player]")
     public void changeGameMode(CommandSender sender, String gameMode, @Optional AkaniPlayer player) {
-        GameMode mode = gameModeMap.get(gameMode);
+        GameMode mode = GAMEMODE_MAP.get(gameMode);
         if (mode == null) {
-            sender.sendMessage(plugin.miniMessage().deserialize("<red>Invalid gamemode"));
+            plugin.sendMessage(sender, MessageKey.of("gamemode.invalid"));
             return;
         }
         if (sender instanceof Player senderPlayer) {

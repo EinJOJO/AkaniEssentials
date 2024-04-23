@@ -24,7 +24,6 @@ public class MoneyCommand extends BaseCommand {
     @Default
     @CommandCompletion("@akaniofflineplayers:limit=8")
     public void showBalance(Player sender, @Optional AkaniOfflinePlayer optionalTarget) {
-        long balance = 0;
         if (optionalTarget != null) {
             optionalTarget.coinsAsync().thenAccept((c) -> {
                 displayCoins(sender, c.balance());
