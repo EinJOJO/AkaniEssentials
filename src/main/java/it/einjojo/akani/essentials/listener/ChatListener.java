@@ -85,22 +85,20 @@ public class ChatListener implements Listener, MessageProcessor {
 
     }
 
-    @Override
-    public String processingChannel() {
-        return "chat";
-    }
 
     @Override
     public void processMessage(ChannelMessage channelMessage) {
-        plugin.getLogger().info("Processing chat message");
-        var payload = ByteStreams.newDataInput(channelMessage.contentBytes());
-        var uuid = UUID.fromString(payload.readUTF());
-        var optionalPlayer = plugin.core().playerManager().onlinePlayer(uuid);
-        if (optionalPlayer.isEmpty()) return;
-        var plainMessage = payload.readUTF();
-        Component message = plugin.miniMessage().deserialize("<gray>%s» <white>%s".formatted(optionalPlayer.get().name(), plainMessage));
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(message);
+        if (channelMessage.messageTypeID().equals(TYPE)) {
+            plugin.getLogger().info("Processing chat message");
+            var payload = ByteStreams.newDataInput(channelMessage.contentBytes());
+            var uuid = UUID.fromString(payload.readUTF());
+            var optionalPlayer = plugin.core().playerManager().onlinePlayer(uuid);
+            if (optionalPlayer.isEmpty()) return;
+            var plainMessage = payload.readUTF();
+            Component message = plugin.miniMessage().deserialize("<gray>%s» <white>%s".formatted(optionalPlayer.get().name(), plainMessage));
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.sendMessage(message);
+            }
         }
     }
 }

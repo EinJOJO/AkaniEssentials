@@ -8,6 +8,8 @@ import it.einjojo.akani.core.api.player.AkaniPlayer;
 import it.einjojo.akani.core.paper.PaperAkaniCore;
 import it.einjojo.akani.essentials.command.*;
 import it.einjojo.akani.essentials.command.economy.MoneyCommand;
+import it.einjojo.akani.essentials.command.economy.PayCommand;
+import it.einjojo.akani.essentials.command.economy.ThalerCommand;
 import it.einjojo.akani.essentials.listener.ChatListener;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
 import it.einjojo.akani.essentials.util.MessageKey;
@@ -92,6 +94,8 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         new SpeedCommand(this);
         new FlyCommand(this);
         new WorkbenchCommand(this);
+        new ThalerCommand(this);
+        new PayCommand(this);
     }
 
 
