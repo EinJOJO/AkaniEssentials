@@ -6,10 +6,7 @@ import it.einjojo.akani.core.api.AkaniCoreProvider;
 import it.einjojo.akani.core.api.player.AkaniOfflinePlayer;
 import it.einjojo.akani.core.api.player.AkaniPlayer;
 import it.einjojo.akani.core.paper.PaperAkaniCore;
-import it.einjojo.akani.essentials.command.GamemodeCommand;
-import it.einjojo.akani.essentials.command.TargetNotFoundException;
-import it.einjojo.akani.essentials.command.TeleportCommand;
-import it.einjojo.akani.essentials.command.WarpCommand;
+import it.einjojo.akani.essentials.command.*;
 import it.einjojo.akani.essentials.command.economy.MoneyCommand;
 import it.einjojo.akani.essentials.listener.ChatListener;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
@@ -90,7 +87,11 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         new WarpCommand(this);
         new GamemodeCommand(this);
         new MoneyCommand(this);
-
+        new TimeCommand(this);
+        new HealFeedCommand(this);
+        new SpeedCommand(this);
+        new FlyCommand(this);
+        new WorkbenchCommand(this);
     }
 
 

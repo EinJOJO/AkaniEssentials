@@ -36,5 +36,17 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", MessageKey.of("economy.not_enough"), "%prefix% <red>Du hast nicht genug Geld!");
         s.registerMessage("de", MessageKey.of("economy.success"), "%prefix% <yellow>Transaktion erfolgreich!");
         s.registerMessage("de", MessageKey.of("economy.balance"), "%prefix% <yellow>Dein Kontostand beträgt %balance% Coins!");
+
+        //heal/feed
+        s.registerMessage("de", MessageKey.HEAL_SELF, "%prefix% <yellow>Du wurdest geheilt!");
+        s.registerMessage("de", MessageKey.HEAL_OTHER, "%prefix% <yellow>%player% wurde geheilt!");
+        s.registerMessage("de", MessageKey.FEED_SELF, "%prefix% <yellow>Dein Hunger wurde gestillt!");
+        s.registerMessage("de", MessageKey.FEED_OTHER, "%prefix% <yellow>%player% Hunger wurde gestillt!");
+
+        //fly
+        s.registerMessage("de", MessageKey.FLY_DISABLED, "%prefix% <yellow>Flugmodus deaktiviert!");
+        s.registerMessage("de", MessageKey.FLY_ENABLED, "%prefix% <yellow>Flugmodus aktiviert!");
+        s.registerMessage("de", MessageKey.FLY_DISABLED_OTHER, "%prefix% <yellow>Flugmodus von %player% deaktiviert!");
+        s.registerMessage("de", MessageKey.FLY_ENABLED_OTHER, "%prefix% <yellow>Flugmodus von %player% aktiviert!");
     }
 }
