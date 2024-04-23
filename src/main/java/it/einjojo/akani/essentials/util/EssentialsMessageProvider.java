@@ -34,8 +34,10 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", MessageKey.of("warp.success"), "%prefix% <yellow>Du wurdest zum Warp teleportiert!");
         // economy
         s.registerMessage("de", MessageKey.of("economy.not_enough"), "%prefix% <red>Du hast nicht genug Geld!");
-        s.registerMessage("de", MessageKey.of("economy.success"), "%prefix% <yellow>Transaktion erfolgreich!");
         s.registerMessage("de", MessageKey.of("economy.balance"), "%prefix% <yellow>Dein Kontostand beträgt %balance% Coins!");
+        s.registerMessage("de", MessageKey.of("economy.set"), "%prefix% <yellow>Der Kontostand von %player% wurde auf %balance% Coins gesetzt!");
+s.registerMessage("de", MessageKey.of("economy.error"), "%prefix% <red>Der Kontostand von %player% konnte nicht auf %balance% Coins gesetzt werden!");
+
 
         //heal/feed
         s.registerMessage("de", MessageKey.HEAL_SELF, "%prefix% <yellow>Du wurdest geheilt!");

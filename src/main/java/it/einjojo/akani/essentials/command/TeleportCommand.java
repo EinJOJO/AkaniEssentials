@@ -26,10 +26,6 @@ public class TeleportCommand extends BaseCommand {
             return;
         }
         AkaniPlayer teleported = (target2 != null) ? target2 : plugin.core().playerManager().onlinePlayer(bukkitSender.getUniqueId()).orElseThrow();
-        if (teleported == null) {
-            plugin.sendMessage(bukkitSender, MessageKey.GENERIC_ERROR);
-            return;
-        }
         target.location().thenAccept((loc) -> {
             plugin.core().messageManager().sendMessage(teleported, MessageKey.of("teleport.teleporting"), (s) -> s.replaceAll("%player%", target.name()));
             teleported.teleport(loc);

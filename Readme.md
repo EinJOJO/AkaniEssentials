@@ -29,3 +29,9 @@ Makes everything cross server.
 - akani.essentials.speed | /flyspeed
 - akani.essentials.fly | /fly
 - akani.essentials.workbench | /workbench
+- "" | /money
+- akani.essentials.money.set | /money set
+- akani.essentials.money.add | /money add
+- akani.essentials.money.remove | /money remove
+- akani.essentials.money.reset | /money reset
+
