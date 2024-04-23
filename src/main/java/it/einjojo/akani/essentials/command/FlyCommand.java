@@ -20,9 +20,9 @@ public class FlyCommand extends BaseCommand {
 
     @Default
     @Description("Schalte den Flugmodus ein oder aus")
-    @CommandCompletion("@akaniplayers:includeSender")
+    @CommandCompletion("@players")
     @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "fly")
-    public void toggleFly(Player sender, @Optional AkaniPlayer target) {
+    public void toggleFly(Player sender, @Optional Player target) {
         if (target == null) {
             if (sender.getAllowFlight()) {
                 sender.setAllowFlight(false);
@@ -32,19 +32,18 @@ public class FlyCommand extends BaseCommand {
                 plugin.sendMessage(sender, MessageKey.FLY_ENABLED);
             }
         } else {
-            Player targetPlayer = Bukkit.getPlayer(target.name());
-            if (targetPlayer == null) {
+            if (target.isEmpty()) {
                 plugin.sendMessage(sender, MessageKey.PLAYER_NOT_ONLINE);
                 return;
             }
-            if (targetPlayer.getAllowFlight()) {
-                targetPlayer.setAllowFlight(false);
-                plugin.sendMessage(sender, MessageKey.FLY_DISABLED_OTHER, (s) -> s.replaceAll("%player%", target.name()));
-                plugin.sendMessage(targetPlayer, MessageKey.FLY_DISABLED);
+            if (target.getAllowFlight()) {
+                target.setAllowFlight(false);
+                plugin.sendMessage(sender, MessageKey.FLY_DISABLED_OTHER, (s) -> s.replaceAll("%player%", target.getName()));
+                plugin.sendMessage(target, MessageKey.FLY_DISABLED);
             } else {
-                targetPlayer.setAllowFlight(true);
-                plugin.sendMessage(sender, MessageKey.FLY_ENABLED_OTHER, (s) -> s.replaceAll("%player%", target.name()));
-                plugin.sendMessage(targetPlayer, MessageKey.FLY_ENABLED);
+                target.setAllowFlight(true);
+                plugin.sendMessage(sender, MessageKey.FLY_ENABLED_OTHER, (s) -> s.replaceAll("%player%", target.getName()));
+                plugin.sendMessage(target, MessageKey.FLY_ENABLED);
             }
         }
     }
