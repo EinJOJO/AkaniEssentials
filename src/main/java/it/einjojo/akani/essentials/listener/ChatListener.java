@@ -59,7 +59,7 @@ public class ChatListener implements Listener, MessageProcessor {
     }
 
     public String translateColor(String s) {
-        if (!COLOR_PATTERN.matcher(s).matches()) return s;
+        if (!COLOR_PATTERN.matcher(s).find()) return s;
         String t = s.replaceAll("&a", "<green>");
         t = t.replaceAll("&b", "<aqua>");
         t = t.replaceAll("&c", "<red>");

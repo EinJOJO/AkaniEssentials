@@ -63,15 +63,15 @@ public class MoneyCommand extends BaseCommand {
     @CommandCompletion("@akaniofflineplayers:limit=8 0")
     @Syntax("<player> <amount>")
     public void setBalance(Player sender, AkaniOfflinePlayer target, long coins) {
-        target.coinsAsync().thenAccept((c) -> {
+        target.coinsAsync().thenAccept((ecoHolder) -> {
             try {
-                c.setBalance(coins);
+                ecoHolder.setBalance(coins);
+                plugin.core().coinsEconomyManager().updateEconomy(ecoHolder);
                 plugin.sendMessage(sender, MessageKey.of("coins.set"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
             } catch (BadBalanceException e) {
                 plugin.sendMessage(sender, MessageKey.of("economy.error"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
             }
         });
-        plugin.sendMessage(sender, MessageKey.of("coins.set"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
     }
 
     @Subcommand("remove")
@@ -79,12 +79,16 @@ public class MoneyCommand extends BaseCommand {
     @CommandCompletion("@akaniofflineplayers:limit=8 0")
     @Syntax("<player> <amount>")
     public void removeBalance(Player sender, AkaniOfflinePlayer target, long coins) {
-        try {
-            target.coins().removeBalance(coins);
-            plugin.sendMessage(sender, MessageKey.of("coins.remove"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
-        } catch (BadBalanceException e) {
-            plugin.sendMessage(sender, MessageKey.of("economy.error"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
-        }
+        target.coinsAsync().thenAccept((ecoHolder) -> {
+            try {
+                ecoHolder.removeBalance(coins);
+                plugin.core().coinsEconomyManager().updateEconomy(ecoHolder);
+                plugin.sendMessage(sender, MessageKey.of("coins.remove"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
+            } catch (BadBalanceException e) {
+                plugin.sendMessage(sender, MessageKey.of("economy.error"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
+            }
+        });
+
     }
 
     @Subcommand("add")
@@ -92,12 +96,16 @@ public class MoneyCommand extends BaseCommand {
     @CommandCompletion("@akaniofflineplayers:limit=8 0")
     @Syntax("<player> <amount>")
     public void addBalance(Player sender, AkaniOfflinePlayer target, long coins) {
-        try {
-            target.coins().addBalance(coins);
-            plugin.sendMessage(sender, MessageKey.of("coins.add"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
-        } catch (BadBalanceException e) {
-            plugin.sendMessage(sender, MessageKey.of("economy.error"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
-        }
+        target.coinsAsync().thenAccept(ecoHolder -> {
+            try {
+                ecoHolder.addBalance(coins);
+                plugin.core().coinsEconomyManager().updateEconomy(ecoHolder);
+                plugin.sendMessage(sender, MessageKey.of("coins.add"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
+            } catch (BadBalanceException e) {
+                plugin.sendMessage(sender, MessageKey.of("economy.error"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
+            }
+        });
+
     }
 
 

@@ -6,6 +6,7 @@ import it.einjojo.akani.core.api.AkaniCoreProvider;
 import it.einjojo.akani.core.api.player.AkaniOfflinePlayer;
 import it.einjojo.akani.core.api.player.AkaniPlayer;
 import it.einjojo.akani.core.paper.PaperAkaniCore;
+import it.einjojo.akani.core.paper.player.PaperAkaniPlayer;
 import it.einjojo.akani.essentials.command.*;
 import it.einjojo.akani.essentials.command.economy.MoneyCommand;
 import it.einjojo.akani.essentials.command.economy.PayCommand;
@@ -60,7 +61,6 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         // all online players except the sender
         commandManager.getCommandCompletions().registerAsyncCompletion("akaniplayers", c -> {
             boolean includeSender = c.hasConfig("includeSender");
-            getLogger().info("Include sender: " + includeSender);
             return core().playerManager().onlinePlayers().stream().map(AkaniPlayer::name).filter(name -> includeSender || !(name.equals(c.getSender().getName()))).toList();
         });
         commandManager.getCommandCompletions().registerAsyncCompletion("akaniofflineplayers", c -> {
@@ -75,8 +75,11 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
                 sendMessage(sender.getIssuer(), MessageKey.PLAYER_NOT_FOUND);
                 return true;
             }
+            getLogger().severe("Error while executing command " + registeredCommand.getCommand() + " " + String.join(" ", args));
+            t.printStackTrace();
             return false;
-        });
+        }, false);
+
         commandManager.getCommandContexts().registerContext(AkaniOfflinePlayer.class, c -> {
             String s = c.popFirstArg();
             return core().playerManager().loadPlayerByName(s).join().orElseThrow(() -> new TargetNotFoundException(s));
@@ -84,7 +87,15 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         });
         commandManager.getCommandContexts().registerContext(AkaniPlayer.class, c -> {
             String s = c.popFirstArg();
+            System.out.println(c);
+            System.out.println("Resolve AkaniPlayer Context: " + s);
             return core().playerManager().onlinePlayerByName(s).orElseThrow(() -> new TargetNotFoundException(s));
+
+        });
+        commandManager.getCommandContexts().registerContext(PaperAkaniPlayer.class, c -> {
+            String s = c.popFirstArg();
+            System.out.println("Resolve PaperAkaniPlayer Context: " + s);
+            return (PaperAkaniPlayer) core().playerManager().onlinePlayerByName(s).orElseThrow(() -> new TargetNotFoundException(s));
         });
         //register commands
         new TeleportCommand(this);
