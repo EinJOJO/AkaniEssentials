@@ -73,7 +73,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         });
         commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
             if (t instanceof TargetNotFoundException) {
-                sendMessage(sender.getIssuer(), MessageKey.PLAYER_NOT_FOUND);
+                sendMessage((CommandSender) sender.getIssuer(), MessageKey.PLAYER_NOT_FOUND);
                 return true;
             }
             getLogger().severe("Error while executing command " + registeredCommand.getCommand() + " " + String.join(" ", args));
@@ -133,6 +133,14 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
      */
     public void sendMessage(@NotNull CommandSender sender, @NotNull String key, @Nullable Function<String, String> modifier) {
         core().messageManager().sendMessage(sender, key, modifier);
+    }
+
+    public void sendMessage(@NotNull AkaniPlayer player, @NotNull String key) {
+        core().messageManager().sendMessage(player, key);
+    }
+
+    public void sendMessage(@NotNull AkaniPlayer player, @NotNull String key, @Nullable Function<String, String> modifier) {
+        core().messageManager().sendMessage(player, key, modifier);
     }
 
     public void sendCommandUsageMessage(@NotNull CommandSender sender, @NotNull String syntax) {

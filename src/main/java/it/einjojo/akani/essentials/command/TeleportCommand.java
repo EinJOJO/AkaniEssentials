@@ -28,9 +28,9 @@ public class TeleportCommand extends BaseCommand {
             return;
         }
         if (destinationPlayer != null) { // Tp target -> destination
-            destinationPlayer.location().thenAccept((loc) -> {
+            destinationPlayer.location().thenAccept((networkLocation) -> {
                 plugin.core().messageManager().sendMessage(target, MessageKey.of("teleport.teleporting"), (s) -> s.replaceAll("%player%", destinationPlayer.name()));
-                target.teleport(loc);
+                target.teleport(networkLocation);
             }).exceptionally((ex) -> {
                 plugin.sendMessage(bukkitSender, MessageKey.GENERIC_ERROR);
                 plugin.getLogger().warning("Could not teleport player " + target.name() + " to " + destinationPlayer.name() + ".");
@@ -38,10 +38,10 @@ public class TeleportCommand extends BaseCommand {
                 return null;
             });
         } else {
-            target.location().thenAccept((loc) -> {
+            target.location().thenAccept((networkLocation) -> {
                 plugin.core().messageManager().sendMessage(bukkitSender, MessageKey.of("teleport.teleporting"), (s) -> s.replaceAll("%player%", target.name()));
                 plugin.core().playerManager().onlinePlayer(bukkitSender.getUniqueId()).ifPresent((p) -> {
-                    p.teleport(loc);
+                    p.teleport(networkLocation);
                 });
             }).exceptionally((ex) -> {
                 plugin.sendMessage(bukkitSender, MessageKey.GENERIC_ERROR);
@@ -52,7 +52,6 @@ public class TeleportCommand extends BaseCommand {
         }
     }
 
-    @Default
     @CatchUnknown
     public void unknown(Player sender) {
         plugin.sendCommandUsageMessage(sender, "/tp <player> [player]");
