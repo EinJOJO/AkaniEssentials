@@ -11,9 +11,11 @@ import it.einjojo.akani.essentials.command.economy.MoneyCommand;
 import it.einjojo.akani.essentials.command.economy.PayCommand;
 import it.einjojo.akani.essentials.command.economy.ThalerCommand;
 import it.einjojo.akani.essentials.listener.ChatListener;
+import it.einjojo.akani.essentials.listener.MessageCancelListener;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
 import it.einjojo.akani.essentials.util.MessageKey;
 import it.einjojo.akani.essentials.warp.WarpManager;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -120,6 +122,12 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         core().messageManager().sendMessage(sender, key, modifier);
     }
 
+    public void sendCommandUsageMessage(@NotNull CommandSender sender, @NotNull String syntax) {
+        Component prefix = core().messageManager().message("prefix");
+
+
+    }
+
     public MiniMessage miniMessage() {
         return miniMessage;
     }
@@ -144,6 +152,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         warpManager = new WarpManager(this);
         warpManager.load();
         new ChatListener(this);
+        new MessageCancelListener(this);
     }
 
 
