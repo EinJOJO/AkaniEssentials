@@ -2,6 +2,7 @@ package it.einjojo.akani.essentials.command;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.util.MessageKey;
 import org.bukkit.entity.Player;
@@ -20,25 +21,19 @@ public class FlyCommand extends BaseCommand {
     @Description("Schalte den Flugmodus ein oder aus")
     @CommandCompletion("@players")
     @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "fly")
-    public void toggleFly(Player sender, @Optional Player target) {
-        if (target == null) {
-            if (sender.getAllowFlight()) {
-                sender.setAllowFlight(false);
-                plugin.sendMessage(sender, MessageKey.FLY_DISABLED);
-            } else {
-                sender.setAllowFlight(true);
-                plugin.sendMessage(sender, MessageKey.FLY_ENABLED);
-            }
-        } else {
-            if (target.getAllowFlight()) {
-                target.setAllowFlight(false);
+    public void toggleFly(Player sender, @Optional OnlinePlayer targetPlayer) {
+        Player target = targetPlayer != null ? targetPlayer.getPlayer() : sender;
+        boolean other = target != sender;
+        if (target.getAllowFlight()) {
+            target.setAllowFlight(false);
+            if (other)
                 plugin.sendMessage(sender, MessageKey.FLY_DISABLED_OTHER, (s) -> s.replaceAll("%player%", target.getName()));
-                plugin.sendMessage(target, MessageKey.FLY_DISABLED);
-            } else {
-                target.setAllowFlight(true);
+            plugin.sendMessage(target, MessageKey.FLY_DISABLED);
+        } else {
+            target.setAllowFlight(true);
+            if (other)
                 plugin.sendMessage(sender, MessageKey.FLY_ENABLED_OTHER, (s) -> s.replaceAll("%player%", target.getName()));
-                plugin.sendMessage(target, MessageKey.FLY_ENABLED);
-            }
+            plugin.sendMessage(target, MessageKey.FLY_ENABLED);
         }
     }
 

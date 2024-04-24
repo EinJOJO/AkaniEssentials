@@ -35,9 +35,9 @@ public record EssentialsMessageProvider() implements MessageProvider {
         // economy
         s.registerMessage("de", MessageKey.of("economy.error"), "%prefix% <red>Der Kontostand von %player% konnte nicht auf %balance% Coins gesetzt werden!");
         //coins
-        s.registerMessage("de", MessageKey.of("coins.not_enough"), "%prefix% <red>Du hast nicht genug Geld!");
-        s.registerMessage("de", MessageKey.of("coins.balance.own"), "%prefix% <yellow>Dein Kontostand beträgt %balance% Coins!");
-        s.registerMessage("de", MessageKey.of("coins.balance.other"), "%prefix% <yellow>Dein Kontostand beträgt %balance% Coins!");
+        s.registerMessage("de", MessageKey.of("coins.not_enough"), "%prefix% <red>Du hast nicht genügend Coins!");
+        s.registerMessage("de", MessageKey.of("coins.balance.own"), "%prefix% <yellow>Du hast %balance% Coins!");
+        s.registerMessage("de", MessageKey.of("coins.balance.other"), "%prefix% <yellow>%name% hat %balance% Coins!");
         s.registerMessage("de", MessageKey.of("coins.set"), "%prefix% <yellow>Der Kontostand von %player% wurde auf %balance% Coins gesetzt!");
         s.registerMessage("de", MessageKey.of("coins.add"), "%prefix% <yellow>Dem Konto von %player% wurden %balance% Coins hinzugefügt!");
         s.registerMessage("de", MessageKey.of("coins.remove"), "%prefix% <yellow>Dem Konto von %player% wurden %balance% Coins abgezogen!");

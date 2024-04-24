@@ -19,22 +19,43 @@ public class TeleportCommand extends BaseCommand {
 
     @Default
     @Description("Teleport to a player")
+    @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "teleport")
+    @Syntax("<player> [player]")
     @CommandCompletion("@akaniplayers @akaniplayers:includeSender")
-    public void teleportPlayer(Player bukkitSender, AkaniPlayer target, @Optional AkaniPlayer target2) {
+    public void teleportPlayer(Player bukkitSender, AkaniPlayer target, @Optional AkaniPlayer destinationPlayer) {
         if (bukkitSender.getUniqueId().equals(target.uuid())) {
             plugin.sendMessage(bukkitSender, MessageKey.of("teleport.not_self"));
             return;
         }
-        AkaniPlayer teleported = (target2 != null) ? target2 : plugin.core().playerManager().onlinePlayer(bukkitSender.getUniqueId()).orElseThrow();
-        target.location().thenAccept((loc) -> {
-            plugin.core().messageManager().sendMessage(teleported, MessageKey.of("teleport.teleporting"), (s) -> s.replaceAll("%player%", target.name()));
-            teleported.teleport(loc);
-        }).exceptionally((e) -> {
-            plugin.sendMessage(bukkitSender, MessageKey.GENERIC_ERROR);
-            e.printStackTrace();
-            return null;
-        });
+        if (destinationPlayer != null) { // Tp target -> destination
+            destinationPlayer.location().thenAccept((loc) -> {
+                plugin.core().messageManager().sendMessage(target, MessageKey.of("teleport.teleporting"), (s) -> s.replaceAll("%player%", destinationPlayer.name()));
+                target.teleport(loc);
+            }).exceptionally((ex) -> {
+                plugin.sendMessage(bukkitSender, MessageKey.GENERIC_ERROR);
+                plugin.getLogger().warning("Could not teleport player " + target.name() + " to " + destinationPlayer.name() + ".");
+                plugin.getLogger().warning(ex.getMessage());
+                return null;
+            });
+        } else {
+            target.location().thenAccept((loc) -> {
+                plugin.core().messageManager().sendMessage(bukkitSender, MessageKey.of("teleport.teleporting"), (s) -> s.replaceAll("%player%", target.name()));
+                plugin.core().playerManager().onlinePlayer(bukkitSender.getUniqueId()).ifPresent((p) -> {
+                    p.teleport(loc);
+                });
+            }).exceptionally((ex) -> {
+                plugin.sendMessage(bukkitSender, MessageKey.GENERIC_ERROR);
+                plugin.getLogger().warning("Could not teleport player " + bukkitSender.name() + " to " + target.name() + ".");
+                plugin.getLogger().warning(ex.getMessage());
+                return null;
+            });
+        }
+    }
 
+    @Default
+    @CatchUnknown
+    public void unknown(Player sender) {
+        plugin.sendCommandUsageMessage(sender, "/tp <player> [player]");
     }
 
 
