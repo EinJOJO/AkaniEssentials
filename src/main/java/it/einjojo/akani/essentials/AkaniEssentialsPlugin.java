@@ -123,9 +123,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
     }
 
     public void sendCommandUsageMessage(@NotNull CommandSender sender, @NotNull String syntax) {
-        Component prefix = core().messageManager().message("prefix");
-
-
+        sender.sendMessage(Component.text("[TEMP-DEV] Usage: ").append(Component.text(syntax)));
     }
 
     public MiniMessage miniMessage() {

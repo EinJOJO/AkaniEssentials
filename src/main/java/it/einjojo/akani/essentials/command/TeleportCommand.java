@@ -19,6 +19,7 @@ public class TeleportCommand extends BaseCommand {
 
     @Default
     @Description("Teleport to a player")
+    @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "teleport")
     @CommandCompletion("@akaniplayers @akaniplayers:includeSender")
     public void teleportPlayer(Player bukkitSender, AkaniPlayer target, @Optional AkaniPlayer target2) {
         if (bukkitSender.getUniqueId().equals(target.uuid())) {
@@ -34,7 +35,11 @@ public class TeleportCommand extends BaseCommand {
             e.printStackTrace();
             return null;
         });
+    }
 
+    @CatchUnknown
+    public void unknown(Player sender) {
+        plugin.sendCommandUsageMessage(sender, "/tp <player> [player]");
     }
 
 
