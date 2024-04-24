@@ -3,6 +3,7 @@ package it.einjojo.akani.essentials.command;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.PaperCommandManager;
 import co.aikar.commands.annotation.*;
+import it.einjojo.akani.core.api.player.AkaniPlayer;
 import it.einjojo.akani.core.paper.player.PaperAkaniPlayer;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.util.MessageKey;
@@ -26,8 +27,8 @@ public class HealFeedCommand extends BaseCommand {
     @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "feed")
     @Description("Feed yourself or another player")
     @CommandCompletion("@akaniplayers:includeSender")
-    public void feed(CommandSender sender, @Optional PaperAkaniPlayer targetAkaniPlayer) {
-        if (targetAkaniPlayer == null) {
+    public void feed(CommandSender sender, @Optional AkaniPlayer akaniPlayer) {
+        if (akaniPlayer == null) {
             if (sender instanceof Player player) {
                 player.setFoodLevel(20);
                 plugin.sendMessage(sender, MessageKey.FEED_SELF);
@@ -35,6 +36,7 @@ public class HealFeedCommand extends BaseCommand {
                 plugin.sendMessage(sender, MessageKey.GENERIC_ERROR);
             }
         } else {
+            PaperAkaniPlayer targetAkaniPlayer = (PaperAkaniPlayer) akaniPlayer;
             java.util.Optional<Player> target = targetAkaniPlayer.bukkitPlayer();
             target.ifPresentOrElse(targetPlayer -> {
                 targetPlayer.setFoodLevel(20);
@@ -49,8 +51,8 @@ public class HealFeedCommand extends BaseCommand {
     @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "heal")
     @Description("Heal yourself or another player")
     @CommandCompletion("@akaniplayers:includeSender")
-    public void heal(CommandSender sender, @Optional PaperAkaniPlayer targetAkaniPlayer) {
-        if (targetAkaniPlayer == null) {
+    public void heal(CommandSender sender, @Optional AkaniPlayer akaniPlayer) {
+        if (akaniPlayer == null) {
             if (sender instanceof Player player) {
                 player.setHealth(player.getMaxHealth());
                 plugin.sendMessage(sender, MessageKey.HEAL_SELF);
@@ -58,6 +60,7 @@ public class HealFeedCommand extends BaseCommand {
                 plugin.sendMessage(sender, MessageKey.GENERIC_ERROR);
             }
         } else {
+            PaperAkaniPlayer targetAkaniPlayer = (PaperAkaniPlayer) akaniPlayer;
             java.util.Optional<Player> target = targetAkaniPlayer.bukkitPlayer();
             target.ifPresentOrElse(targetPlayer -> {
                 targetPlayer.setHealth(targetPlayer.getMaxHealth());
