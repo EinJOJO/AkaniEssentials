@@ -105,8 +105,5 @@ public class MoneyCommand extends BaseCommand {
                 plugin.sendMessage(sender, MessageKey.of("economy.error"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
             }
         });
-
     }
-
-
 }
