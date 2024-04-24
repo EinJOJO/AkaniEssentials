@@ -88,14 +88,11 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         });
         commandManager.getCommandContexts().registerContext(AkaniPlayer.class, c -> {
             String s = c.popFirstArg();
-            System.out.println(c);
-            System.out.println("Resolve AkaniPlayer Context: " + s);
             return core().playerManager().onlinePlayerByName(s).orElseThrow(() -> new TargetNotFoundException(s));
 
         });
         commandManager.getCommandContexts().registerContext(PaperAkaniPlayer.class, c -> {
             String s = c.popFirstArg();
-            System.out.println("Resolve PaperAkaniPlayer Context: " + s);
             return (PaperAkaniPlayer) core().playerManager().onlinePlayerByName(s).orElseThrow(() -> new TargetNotFoundException(s));
         });
         //register commands
