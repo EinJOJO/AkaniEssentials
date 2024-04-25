@@ -12,12 +12,14 @@ repositories {
     mavenCentral()
     maven("https://repo.aikar.co/content/groups/aikar/")
     maven("https://repo.akani.dev/releases")
+    maven("https://repo.oraxen.com/releases")
 }
 
 dependencies {
     compileOnly(libs.akanicore) // clone https://github.com/EinJojo/AkaniCore and run `./gradlew api:publishMavenLocal` so that this works
     compileOnly(libs.caffeine)
     compileOnly(libs.paper)
+    compileOnly(libs.oraxen)
     implementation(libs.acf)
     annotationProcessor(libs.acf)
 }
