@@ -7,20 +7,21 @@ import org.bukkit.entity.Player;
 
 
 @CommandAlias("speed|flyspeed")
+@Description("Ändert die Lauf- oder Fluggeschwindigkeit.")
 public class SpeedCommand extends BaseCommand {
     private final AkaniEssentialsPlugin plugin;
 
     public SpeedCommand(AkaniEssentialsPlugin plugin) {
         this.plugin = plugin;
-        plugin.commandManager().getCommandCompletions().registerStaticCompletion("speed", new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
         plugin.commandManager().registerCommand(this);
     }
 
     @Default
     @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "speed")
     @Syntax("[speed]")
-    @CommandCompletion("@speed")
+    @CommandCompletion("@range:1-10")
     public void setSpeed(Player sender, @Default("2") @Single String speed) {
+        //Check if speed is number
         try {
             int speedInt = Integer.parseInt(speed);
             if (speedInt < 1 || speedInt > 10) {
