@@ -12,6 +12,7 @@ build/
 .idea/workspace.xml
 .idea/runConfigurations/
 .idea/tasks.xml
+.idea/shelf/
 .idea/uiDesigner.xml
 .idea/gradle.xml
 .idea/datasources.xml

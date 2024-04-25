@@ -65,5 +65,9 @@ public record EssentialsMessageProvider() implements MessageProvider {
         //give
         s.registerMessage("de", MessageKey.of("give.success"), "%prefix% <yellow>Das Item %item% wurde %amount%x an %player% gegeben!");
         s.registerMessage("de", MessageKey.of("give.item_not_found"), "%prefix% <red>Das OraxenItem mit der ID %item% wurde nicht gefunden!");
+
+        //scoreboard
+        s.registerMessage("de", MessageKey.of("sb.default.title"), "<red><bold>ᴀᴋᴀɴɪ.ɴᴇᴛ <white>ɴᴇᴛᴢᴡᴇʀᴋ");
+        s.registerMessage("de", MessageKey.of("sb.default.server_key"), "<red>Server");
     }
 }

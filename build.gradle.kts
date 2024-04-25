@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "it.einjojo.akani"
-version = "1.3.2"
+version = "1.3.3"
 
 repositories {
 
@@ -21,6 +21,7 @@ dependencies {
     compileOnly(libs.paper)
     compileOnly(libs.oraxen)
     implementation(libs.acf)
+    implementation(libs.fastboard)
     annotationProcessor(libs.acf)
 }
 
@@ -55,6 +56,7 @@ tasks {
         archiveClassifier.set("")
         archiveVersion.set("")
         relocate("co.aikar.commands", "it.einjojo.akani.essentials.command.acf")
+        relocate("fr.mrmicky.fastboard", "it.einjojo.akani.essentials.scoreboard.fastboard")
 
     }
 }
