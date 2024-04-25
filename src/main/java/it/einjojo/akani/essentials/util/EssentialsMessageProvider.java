@@ -61,5 +61,9 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", MessageKey.FLY_ENABLED, "%prefix% <yellow>Flugmodus aktiviert!");
         s.registerMessage("de", MessageKey.FLY_DISABLED_OTHER, "%prefix% <yellow>Flugmodus von %player% deaktiviert!");
         s.registerMessage("de", MessageKey.FLY_ENABLED_OTHER, "%prefix% <yellow>Flugmodus von %player% aktiviert!");
+
+        //give
+        s.registerMessage("de", MessageKey.of("give.success"), "%prefix% <yellow>Das Item %item% wurde %amount%x an %player% gegeben!");
+        s.registerMessage("de", MessageKey.of("give.item_not_found"), "%prefix% <red>Das OraxenItem mit der ID %item% wurde nicht gefunden!");
     }
 }

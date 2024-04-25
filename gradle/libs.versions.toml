@@ -11,6 +11,8 @@ vpacketevents = "2.2.1"
 vlitecommands = "3.2.0"
 vgson = "2.10.1"
 vjedis = "5.1.0"
+# Other
+voraxen = "1.173.0"
 
 [libraries]
 acf = { group = "co.aikar", name = "acf-paper", version.ref = "acf" }
@@ -24,6 +26,7 @@ luckperms = { group = "net.luckperms", name = "api", version.ref = "vluckperms" 
 hikaricp = { group = "com.zaxxer", name = "HikariCP", version = "5.1.0" }
 akanicore = { group = "it.einjojo.akani.core", name = "paper", version.ref = "vakanicore" }
 caffeine = { group = "com.github.ben-manes.caffeine", name = "caffeine", version = "3.1.8" }
+oraxen = { group = "io.th0rgal", name = "oraxen", version.ref = "voraxen" }
 
 [bundles]
 [plugins]

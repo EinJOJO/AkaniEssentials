@@ -12,35 +12,33 @@ public class SpeedCommand extends BaseCommand {
 
     public SpeedCommand(AkaniEssentialsPlugin plugin) {
         this.plugin = plugin;
-        plugin.commandManager().getCommandCompletions().registerStaticCompletion("speeds", new String[]{"0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0"});
+        plugin.commandManager().getCommandCompletions().registerStaticCompletion("speed", new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
         plugin.commandManager().registerCommand(this);
     }
 
     @Default
     @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "speed")
-    @Syntax("<speed>")
-    @CommandCompletion("@speeds")
-    public void setSpeed(Player sender, @Default("0.2") String speed) {
-        if (Float.parseFloat(speed) < 0.1 || Float.parseFloat(speed) > 1.0) {
-            sender.sendMessage(plugin.miniMessage().deserialize("<red>Die Geschwindigkeit muss zwischen <yellow>0.1 <red>und <yellow>1.0 <red>liegen."));
+    @Syntax("[speed]")
+    @CommandCompletion("@speed")
+    public void setSpeed(Player sender, @Default("2") @Single String speed) {
+        int speedInt = Integer.parseInt(speed);
+        if (speedInt < 1 || speedInt > 10) {
+            sender.sendMessage(plugin.miniMessage().deserialize("<red>Die Geschwindigkeit muss zwischen <yellow>1 <red>und <yellow>1 <red>liegen."));
             return;
         }
+        float speedFloat = (float) speedInt / 10;
         if (getExecCommandLabel().equals("speed")) {
-            setWalkingSpeed(sender, Float.parseFloat(speed));
+            sender.setWalkSpeed(speedFloat);
+            sender.sendMessage(plugin.miniMessage().deserialize("<green>Deine Laufgeschwindigkeit wurde auf <yellow>%s <green>gesetzt.".formatted(speedInt)));
         } else {
-            setFlyingSpeed(sender, Float.parseFloat(speed));
+            sender.setFlySpeed(speedFloat);
+            sender.sendMessage(plugin.miniMessage().deserialize("<green>Deine Fluggeschwindigkeit wurde auf <yellow>%s <green>gesetzt.".formatted(speedInt)));
         }
     }
 
-    public void setWalkingSpeed(Player player, float speed) {
-        player.setWalkSpeed(speed);
-        player.sendMessage(plugin.miniMessage().deserialize("<green>Deine Laufgeschwindigkeit wurde auf <yellow>%s <green>gesetzt.".formatted(speed)));
+    @CatchUnknown
+    @HelpCommand
+    public void unknownCommand(Player sender) {
+        sender.sendMessage(plugin.miniMessage().deserialize("<red>Unbekannter Befehl. Verwende <yellow>/speed <dark_gray>[<yellow>speed<dark_gray>] <red>oder <yellow>/flyspeed <dark_gray>[<yellow>speed<dark_gray>]."));
     }
-
-    public void setFlyingSpeed(Player player, float speed) {
-        player.setFlySpeed(speed);
-        player.sendMessage(plugin.miniMessage().deserialize("<green>Deine Fluggeschwindigkeit wurde auf <yellow>%s <green>gesetzt.".formatted(speed)));
-    }
-
-
 }
