@@ -14,6 +14,7 @@ import it.einjojo.akani.essentials.command.economy.PayCommand;
 import it.einjojo.akani.essentials.command.economy.ThalerCommand;
 import it.einjojo.akani.essentials.listener.ChatListener;
 import it.einjojo.akani.essentials.listener.MessageCancelListener;
+import it.einjojo.akani.essentials.service.BackService;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
 import it.einjojo.akani.essentials.util.MessageKey;
 import it.einjojo.akani.essentials.warp.WarpManager;
@@ -36,6 +37,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
     private PaperAkaniCore core;
     private WarpManager warpManager;
     private PaperCommandManager commandManager;
+    private BackService backService;
     private Gson gson;
 
     @Override
@@ -167,6 +169,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         gson = new Gson();
         warpManager = new WarpManager(this);
         warpManager.load();
+        new BackService(this);
         new ChatListener(this);
         new MessageCancelListener(this);
     }
@@ -175,5 +178,10 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
 
+    }
+
+
+    public BackService backService() {
+        return backService;
     }
 }

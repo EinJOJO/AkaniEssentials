@@ -3,8 +3,7 @@
 vpaper-api = "1.19.4-R0.1-SNAPSHOT"
 vfawe-bom = "1.42"
 vluckperms = "5.4"
-vakanicore = "1.1.9"
-cloudcommands = "2.0.0-beta.2"
+vakanicore = "1.2.0"
 acf = "0.5.1-SNAPSHOT"
 # Libraries
 
@@ -13,15 +12,11 @@ vlitecommands = "3.2.0"
 vgson = "2.10.1"
 vjedis = "5.1.0"
 
-# Wandoria Specific
-vdialog-api = "1.2" #https://repo.wandoria.net/#/snapshots/net/wandoria/api/DialogAPI/
-
 [libraries]
 acf = { group = "co.aikar", name = "acf-paper", version.ref = "acf" }
 fawe = { group = "com.intellectualsites.bom", name = "bom-newest", version.ref = "vfawe-bom" }
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "vpaper-api" }
 litecommands = { group = "dev.rollczi", name = "litecommands-bukkit", version.ref = "vlitecommands" }
-dialog-api = { group = "net.wandoria.api", name = "dialog-api", version.ref = "vdialog-api" }
 packetevents-spigot = { group = "com.github.retrooper.packetevents", name = "spigot", version.ref = "vpacketevents" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "vgson" }
 jedis = { group = "redis.clients", name = "jedis", version.ref = "vjedis" }
@@ -29,11 +24,6 @@ luckperms = { group = "net.luckperms", name = "api", version.ref = "vluckperms" 
 hikaricp = { group = "com.zaxxer", name = "HikariCP", version = "5.1.0" }
 akanicore = { group = "it.einjojo.akani.core", name = "paper", version.ref = "vakanicore" }
 caffeine = { group = "com.github.ben-manes.caffeine", name = "caffeine", version = "3.1.8" }
-cloudcore = { group = "org.incendo", name = "cloud-core", version.ref = "cloudcommands" }
-cloudannotations = { group = "org.incendo", name = "cloud-annotations", version.ref = "cloudcommands" }
-cloudpaper = { group = "org.incendo", name = "cloud-paper", version.ref = "cloudcommands" }
-cloudminecraft = { group = "org.incendo", name = "cloud-minecraft-extras", version.ref = "cloudcommands" }
-
 
 [bundles]
 [plugins]
