@@ -1,6 +1,7 @@
 package it.einjojo.akani.essentials.scoreboard.defaults;
 
 import fr.mrmicky.fastboard.adventure.FastBoard;
+import it.einjojo.akani.core.api.economy.EconomyHolder;
 import it.einjojo.akani.core.paper.PaperMessageManager;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.scoreboard.ScoreboardProvider;
@@ -27,20 +28,25 @@ public class DefaultScoreboardProvider implements ScoreboardProvider {
 
     @Override
     public void updateScoreboard(FastBoard sb) {
+        EconomyHolder coinsHolder = plugin.core().coinsEconomyManager().playerEconomy(sb.getPlayer().getUniqueId()).orElse(null);
+        EconomyHolder thalerHolder = plugin.core().thalerEconomyManager().playerEconomy(sb.getPlayer().getUniqueId()).orElse(null);
+        long coinsBalance = coinsHolder != null ? coinsHolder.balance() : 0;
+        long thalerBalance = thalerHolder != null ? thalerHolder.balance() : 0;
         sb.updateTitle(messageManager().message(MessageKey.of("sb.default.title")));
         sb.updateLines(
-                deserialize("   <dark_gray>◆<st>                                  </st>◆"),
+                deserialize("  <dark_gray>◆<st>                                  </st>◆  "),
                 deserialize("   <#E5FBFD><b>ᴘʟᴀʏᴇʀ"),
-                deserialize("      <dark_gray>▪ <gray>ʀᴀɴᴋ: <white>ᴅᴇғᴀᴜʟᴛ"),
-                deserialize("      <dark_gray>▪ <gray>ᴄᴏɪɴs: <white>0"),
+                deserialize("     <dark_gray>▪ <gray>ʀᴀɴᴋ: <white>ᴅᴇғᴀᴜʟᴛ"),
+                deserialize("     <dark_gray>▪ <gray>ᴄᴏɪɴs: <white>" + coinsBalance),
+                deserialize("     <dark_gray>▪ <gray>ᴛᴀʟᴇʀ: <white>" + thalerBalance),
                 Component.empty(),
                 deserialize("   <#E5FBFD><b>ꜱᴇʀᴠᴇʀ"),
-                deserialize("      <dark_gray>▪ <gray>ᴏɴʟɪɴᴇ: <white>" + plugin.getServer().getOnlinePlayers().size()),
-                deserialize("      <dark_gray>▪ <gray>ᴛᴘs: <white>" + plugin.getServer().getTPS()[0]),
+                deserialize("     <dark_gray>▪ <gray>ᴏɴʟɪɴᴇ: <white>" + plugin.getServer().getOnlinePlayers().size()),
+                deserialize("     <dark_gray>▪ <gray>ᴛᴘs: <white>" + "%.2f".formatted(plugin.getServer().getTPS()[0])),
                 Component.empty(),
                 deserialize("   <#E5FBFD><b>ᴇᴠᴇɴᴛꜱ"),
-                deserialize("      <dark_gray>▪ <red>ɴᴏɴᴇ"),
-                deserialize("   <dark_gray>◆<st>                                  </st>◆")
+                deserialize("     <dark_gray>▪ <red>ɴᴏɴᴇ"),
+                deserialize("  <dark_gray>◆<st>                                  </st>◆   ")
         );
 
 
