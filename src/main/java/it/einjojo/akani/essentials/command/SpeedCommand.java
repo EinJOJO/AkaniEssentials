@@ -40,10 +40,4 @@ public class SpeedCommand extends BaseCommand {
             sender.sendMessage(plugin.miniMessage().deserialize("<red>Die Geschwindigkeit muss eine Zahl sein."));
         }
     }
-
-    @CatchUnknown
-    @HelpCommand
-    public void unknownCommand(Player sender) {
-        sender.sendMessage(plugin.miniMessage().deserialize("<red>Unbekannter Befehl. Verwende <yellow>/speed <dark_gray>[<yellow>speed<dark_gray>] <red>oder <yellow>/flyspeed <dark_gray>[<yellow>speed<dark_gray>]."));
-    }
 }
