@@ -1,29 +1,27 @@
 [versions]
 # APIs
-vpaper-api = "1.19.4-R0.1-SNAPSHOT"
-vfawe-bom = "1.42"
-vluckperms = "5.4"
-vakanicore = "1.2.0"
+paper-api = "1.19.4-R0.1-SNAPSHOT"
+fawe-bom = "1.42"
+luckperms = "5.4"
+akanicore = "1.2.0"
 acf = "0.5.1-SNAPSHOT"
-# Libraries
-
-vpacketevents = "2.2.1"
-vlitecommands = "3.2.0"
-vgson = "2.10.1"
-vjedis = "5.1.0"
+caffeine = "3.1.8" # When changed update plugin.yml
+packetevents = "2.2.1"
+gson = "2.10.1"
+jedis = "5.1.0"
+hikaricp = "5.1.0"
 
 [libraries]
 acf = { group = "co.aikar", name = "acf-paper", version.ref = "acf" }
-fawe = { group = "com.intellectualsites.bom", name = "bom-newest", version.ref = "vfawe-bom" }
-paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "vpaper-api" }
-litecommands = { group = "dev.rollczi", name = "litecommands-bukkit", version.ref = "vlitecommands" }
-packetevents-spigot = { group = "com.github.retrooper.packetevents", name = "spigot", version.ref = "vpacketevents" }
-gson = { group = "com.google.code.gson", name = "gson", version.ref = "vgson" }
-jedis = { group = "redis.clients", name = "jedis", version.ref = "vjedis" }
-luckperms = { group = "net.luckperms", name = "api", version.ref = "vluckperms" }
-hikaricp = { group = "com.zaxxer", name = "HikariCP", version = "5.1.0" }
-akanicore = { group = "it.einjojo.akani.core", name = "paper", version.ref = "vakanicore" }
-caffeine = { group = "com.github.ben-manes.caffeine", name = "caffeine", version = "3.1.8" }
+fawe = { group = "com.intellectualsites.bom", name = "bom-newest", version.ref = "fawe-bom" }
+paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper-api" }
+packetevents-spigot = { group = "com.github.retrooper.packetevents", name = "spigot", version.ref = "packetevents" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+jedis = { group = "redis.clients", name = "jedis", version.ref = "jedis" }
+luckperms = { group = "net.luckperms", name = "api", version.ref = "luckperms" }
+hikaricp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikaricp" }
+akanicore = { group = "it.einjojo.akani.core", name = "paper", version.ref = "akanicore" }
+caffeine = { group = "com.github.ben-manes.caffeine", name = "caffeine", version.ref = "caffeine" }
 
 [bundles]
 [plugins]
