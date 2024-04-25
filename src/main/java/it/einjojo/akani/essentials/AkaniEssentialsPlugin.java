@@ -111,6 +111,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         new AkaniPlayersCommand(this);
         new BackCommand(this);
         new GiveCommand(this);
+        new BackCommand(this);
     }
 
 
