@@ -15,8 +15,8 @@ import it.einjojo.akani.essentials.command.economy.ThalerCommand;
 import it.einjojo.akani.essentials.listener.ChatListener;
 import it.einjojo.akani.essentials.listener.MessageListener;
 import it.einjojo.akani.essentials.listener.ScoreboardListener;
-import it.einjojo.akani.essentials.scoreboard.ScoreboardManager;
 import it.einjojo.akani.essentials.scoreboard.AsyncScoreboardUpdateTask;
+import it.einjojo.akani.essentials.scoreboard.ScoreboardManager;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
 import it.einjojo.akani.essentials.util.MessageKey;
 import it.einjojo.akani.essentials.warp.WarpManager;
@@ -26,6 +26,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -180,6 +181,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         warpManager = new WarpManager(this);
         warpManager.load();
         scoreboardManager = new ScoreboardManager(this);
+        getServer().getServicesManager().register(ScoreboardManager.class, scoreboardManager, this, ServicePriority.Normal);
 
         // Listener
         new ChatListener(this);
