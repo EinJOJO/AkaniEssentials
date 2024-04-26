@@ -37,12 +37,6 @@ public record MessageListener(AkaniEssentialsPlugin plugin) implements Listener 
         event.deathMessage(null);
     }
 
-    @EventHandler
-    public void testEvent(AsyncBackCreateEvent event) {
-        boolean cancel = event.player().isInLava();
-        System.out.println(cancel);
-        event.setCancelled(cancel);
-    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void notifyBackUsage(AsyncBackCreateEvent event) {

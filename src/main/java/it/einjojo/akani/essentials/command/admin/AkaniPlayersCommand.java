@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-@CommandAlias("akaniplayers")
-@CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "akaniplayers")
+@CommandAlias("akani players")
+@CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "akani.players")
 public class AkaniPlayersCommand extends BaseCommand {
 
     private final AkaniEssentialsPlugin plugin;
@@ -21,7 +21,6 @@ public class AkaniPlayersCommand extends BaseCommand {
     }
 
     @Default
-    @Subcommand("list")
     @CommandCompletion("--redis")
     public void akaniPlayers(CommandSender sender, @Optional String arg) {
         boolean fromRedis = arg != null && arg.equals("--redis");
