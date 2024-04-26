@@ -16,7 +16,7 @@ import it.einjojo.akani.essentials.listener.ChatListener;
 import it.einjojo.akani.essentials.listener.MessageListener;
 import it.einjojo.akani.essentials.listener.ScoreboardListener;
 import it.einjojo.akani.essentials.scoreboard.ScoreboardManager;
-import it.einjojo.akani.essentials.scoreboard.SyncScoreboardUpdateTask;
+import it.einjojo.akani.essentials.scoreboard.AsyncScoreboardUpdateTask;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
 import it.einjojo.akani.essentials.util.MessageKey;
 import it.einjojo.akani.essentials.warp.WarpManager;
@@ -187,7 +187,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         new MessageListener(this);
 
         //Tasks
-        new SyncScoreboardUpdateTask(scoreboardManager).start(this);
+        new AsyncScoreboardUpdateTask(scoreboardManager).start(this);
     }
 
 

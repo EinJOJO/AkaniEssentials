@@ -38,7 +38,7 @@ public class ScoreboardManager {
     public void registerProvider(ScoreboardProvider provider) {
         ListIterator<ScoreboardProvider> iterator = providers.listIterator();
         while (iterator.hasNext()) {
-            if (iterator.next().priority() < provider.priority()) {
+            if (iterator.next().priority() < provider.priority()) { // Sort descending
                 iterator.previous();
                 break;
             }

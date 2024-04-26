@@ -36,17 +36,18 @@ public class DefaultScoreboardProvider implements ScoreboardProvider {
         sb.updateTitle(messageManager().message(MessageKey.of("sb.default.title")));
         sb.updateLines(
                 deserialize("  <dark_gray>◆<st>                                  </st>◆  "),
-                deserialize("   <#E5FBFD><b>ᴘʟᴀʏᴇʀ"),
-                deserialize("     <dark_gray>▪ <gray>ʀᴀɴᴋ: <white>" + akaniPlayer.plainPrefix().join()),
-                deserialize("     <dark_gray>▪ <gray>ᴄᴏɪɴs: <white>" + akaniPlayer.coins().balance()),
-                deserialize("     <dark_gray>▪ <gray>ᴛᴀʟᴇʀ: <white>" + akaniPlayer.thaler().balance()),
+                deserialize("   <#f8c1a1><b>ᴘʟᴀʏᴇʀ"),
+                deserialize("    <dark_gray>▪ <gray>ʀᴀɴɢ: <white>" + akaniPlayer.plainPrefix().join()),
+                deserialize("    <dark_gray>▪ <gray>ᴄᴏɪɴs: <white>" + akaniPlayer.coins().balance()),
+                deserialize("    <dark_gray>▪ <gray>ᴛᴀʟᴇʀ: <white>" + akaniPlayer.thaler().balance()),
                 Component.empty(),
-                deserialize("   <#E5FBFD><b>ꜱᴇʀᴠᴇʀ"),
-                deserialize("     <dark_gray>▪ <gray>ᴏɴʟɪɴᴇ: <white>" + plugin.getServer().getOnlinePlayers().size()),
-                deserialize("     <dark_gray>▪ <gray>ᴛᴘs: <white>" + "%.2f".formatted(plugin.getServer().getTPS()[0])),
+                deserialize("   <#f8c1a1><b>ꜱᴇʀᴠᴇʀ"),
+                deserialize("    <dark_gray>▪ <gray>ɴᴀᴍᴇ: <white>" + plugin.core().serverName()),
+                deserialize("    <dark_gray>▪ <gray>ᴏɴʟɪɴᴇ: <white>" + plugin.getServer().getOnlinePlayers().size()),
+                deserialize("    <dark_gray>▪ <gray>ᴛᴘs: <white>" + "%.2f".formatted(plugin.getServer().getTPS()[0])),
                 Component.empty(),
-                deserialize("   <#E5FBFD><b>ᴇᴠᴇɴᴛꜱ"),
-                deserialize("     <dark_gray>▪ <red>ɴᴏɴᴇ"),
+                deserialize("   <#f8c1a1><b>ᴇᴠᴇɴᴛꜱ"),
+                deserialize("    <dark_gray>▪ <red>ɴᴏɴᴇ"),
                 deserialize("  <dark_gray>◆<st>                                  </st>◆   ")
         );
 

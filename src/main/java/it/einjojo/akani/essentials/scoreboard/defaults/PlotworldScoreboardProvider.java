@@ -10,7 +10,7 @@ public class PlotworldScoreboardProvider implements ScoreboardProvider, Listener
 
     @Override
     public boolean shouldProvide(Player player) {
-        return player.getWorld().getName().equals("plotworld");
+        return player.getWorld().getName().equals("Plotwelt");
     }
 
     @Override
@@ -21,7 +21,7 @@ public class PlotworldScoreboardProvider implements ScoreboardProvider, Listener
     @Override
     public void updateScoreboard(FastBoard scoreboard) {
         scoreboard.updateLines(
-                Component.text("Plotworld")
+                Component.text("Plotworld Scoreboard")
         );
     }
 }
