@@ -1,25 +1,20 @@
 package it.einjojo.akani.essentials.scoreboard;
 
-import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
-import it.einjojo.akani.essentials.scoreboard.defaults.DefaultScoreboardProvider;
-import it.einjojo.akani.essentials.scoreboard.defaults.PlotworldScoreboardProvider;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 
 public class ScoreboardManager {
     private final Map<UUID, PlayerScoreboard> scoreboards = new HashMap<>();
-    private final List<ScoreboardProvider> providers = new LinkedList<>();
-    private final DefaultScoreboardProvider defaultScoreboardProvider;
+    private final Set<ScoreboardProvider> providers = new TreeSet<>();
+    private final ScoreboardProvider defaultScoreboardProvider;
 
-    public ScoreboardManager(AkaniEssentialsPlugin plugin) {
-        defaultScoreboardProvider = new DefaultScoreboardProvider(plugin);
+    public ScoreboardManager(ScoreboardProvider defaultScoreboardProvider) {
+        this.defaultScoreboardProvider = defaultScoreboardProvider;
         registerProvider(defaultScoreboardProvider);
-        registerProvider(new PlotworldScoreboardProvider());
     }
 
-    public PlayerScoreboard getScoreboard(UUID uuid) {
-
+    public PlayerScoreboard playerScoreboard(UUID uuid) {
         return scoreboards.get(uuid);
     }
 
@@ -36,15 +31,7 @@ public class ScoreboardManager {
     }
 
     public void registerProvider(ScoreboardProvider provider) {
-        ListIterator<ScoreboardProvider> iterator = providers.listIterator();
-        while (iterator.hasNext()) {
-            if (iterator.next().priority() < provider.priority()) { // Sort descending
-                iterator.previous();
-                break;
-            }
-        }
-        iterator.add(provider);
-
+        providers.add(provider); // TreeSet will automatically sort the providers
     }
 
     public void unregisterProvider(ScoreboardProvider provider) {

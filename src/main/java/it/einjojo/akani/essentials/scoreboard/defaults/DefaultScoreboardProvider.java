@@ -1,9 +1,9 @@
 package it.einjojo.akani.essentials.scoreboard.defaults;
 
-import fr.mrmicky.fastboard.adventure.FastBoard;
 import it.einjojo.akani.core.api.player.AkaniPlayer;
 import it.einjojo.akani.core.paper.PaperMessageManager;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
+import it.einjojo.akani.essentials.scoreboard.PlayerScoreboard;
 import it.einjojo.akani.essentials.scoreboard.ScoreboardProvider;
 import it.einjojo.akani.essentials.util.MessageKey;
 import net.kyori.adventure.text.Component;
@@ -27,7 +27,7 @@ public class DefaultScoreboardProvider implements ScoreboardProvider {
     }
 
     @Override
-    public void updateScoreboard(FastBoard sb) {
+    public void updateScoreboard(PlayerScoreboard sb) {
         AkaniPlayer akaniPlayer = plugin.core().playerManager().onlinePlayer(sb.getPlayer().getUniqueId()).orElse(null);
         if (akaniPlayer == null) {
             return;

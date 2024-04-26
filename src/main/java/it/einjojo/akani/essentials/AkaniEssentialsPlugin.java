@@ -17,6 +17,8 @@ import it.einjojo.akani.essentials.listener.MessageListener;
 import it.einjojo.akani.essentials.listener.ScoreboardListener;
 import it.einjojo.akani.essentials.scoreboard.AsyncScoreboardUpdateTask;
 import it.einjojo.akani.essentials.scoreboard.ScoreboardManager;
+import it.einjojo.akani.essentials.scoreboard.defaults.DefaultScoreboardProvider;
+import it.einjojo.akani.essentials.scoreboard.defaults.PlotworldScoreboardProvider;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
 import it.einjojo.akani.essentials.util.MessageKey;
 import it.einjojo.akani.essentials.warp.WarpManager;
@@ -180,7 +182,9 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         gson = new Gson();
         warpManager = new WarpManager(this);
         warpManager.load();
-        scoreboardManager = new ScoreboardManager(this);
+        DefaultScoreboardProvider defaultScoreboardProvider = new DefaultScoreboardProvider(this);
+        scoreboardManager = new ScoreboardManager(defaultScoreboardProvider);
+        scoreboardManager.registerProvider(new PlotworldScoreboardProvider());
         getServer().getServicesManager().register(ScoreboardManager.class, scoreboardManager, this, ServicePriority.Normal);
 
         // Listener

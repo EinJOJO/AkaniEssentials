@@ -4,7 +4,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 public class AsyncScoreboardUpdateTask implements Runnable {
-
+    public static final int UPDATE_SPEED = 20;
     private final ScoreboardManager scoreboardManager;
     private BukkitTask task;
 
@@ -14,7 +14,7 @@ public class AsyncScoreboardUpdateTask implements Runnable {
 
     public void start(JavaPlugin plugin) {
         stop();
-        task = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, this, 0, 20);
+        task = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, this, 0, UPDATE_SPEED);
     }
 
     public void stop() {
