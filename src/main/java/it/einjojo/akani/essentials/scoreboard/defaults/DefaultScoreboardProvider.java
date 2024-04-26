@@ -22,7 +22,7 @@ public class DefaultScoreboardProvider implements ScoreboardProvider {
     }
 
     @Override
-    public int priority() {
+    public short priority() {
         return 0;
     }
 

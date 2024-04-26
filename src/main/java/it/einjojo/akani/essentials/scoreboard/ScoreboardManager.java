@@ -14,6 +14,14 @@ public class ScoreboardManager {
         registerProvider(defaultScoreboardProvider);
     }
 
+    public Set<ScoreboardProvider> providers() {
+        return Collections.unmodifiableSet(providers);
+    }
+
+    public Collection<PlayerScoreboard> scoreboards() {
+        return Collections.unmodifiableCollection(scoreboards.values());
+    }
+
     public PlayerScoreboard playerScoreboard(UUID uuid) {
         return scoreboards.get(uuid);
     }

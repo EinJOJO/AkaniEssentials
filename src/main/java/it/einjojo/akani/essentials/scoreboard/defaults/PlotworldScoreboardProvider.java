@@ -13,8 +13,9 @@ public class PlotworldScoreboardProvider implements ScoreboardProvider {
     }
 
     @Override
-    public int priority() {
-        return 10; // above default
+    public short priority() {
+        return PRIORITY.NORMAL;
+
     }
 
     @Override
