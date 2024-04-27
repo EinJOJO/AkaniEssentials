@@ -10,9 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 public class ChatListener implements Listener {
-
-
-    private static final String TYPE = "c";
+    private static final PlainTextComponentSerializer plainTextComponentSerializer = PlainTextComponentSerializer.plainText();
     private final static String COLORED_PERMISSION = AkaniEssentialsPlugin.PERMISSION_BASE + "chatcolor";
 
     private final MessageService messageService;
@@ -31,15 +29,15 @@ public class ChatListener implements Listener {
         if (event.isCancelled()) return;
         event.setCancelled(true);
         // Serialize the message to plain text
-        var message = PlainTextComponentSerializer.plainText().serialize(event.message());
-        // prevent message injection
+        var message = plainTextComponentSerializer.serialize(event.message());
+        // prevent minimessage-message usage
         message = message.replaceAll("<", "‹");
         message = message.replaceAll(">", "›");
+
         if (event.getPlayer().hasPermission(COLORED_PERMISSION)) {
             message = TextUtil.translateColor(message);
         }
         messageService.publishPublicChatMessage(event.getPlayer(), message);
-
     }
 
 }

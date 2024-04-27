@@ -20,7 +20,7 @@ import it.einjojo.akani.essentials.scoreboard.defaults.DefaultScoreboardProvider
 import it.einjojo.akani.essentials.scoreboard.defaults.PlotworldScoreboardProvider;
 import it.einjojo.akani.essentials.service.MessageService;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
-import it.einjojo.akani.essentials.util.MessageKey;
+import it.einjojo.akani.essentials.util.EssentialKey;
 import it.einjojo.akani.essentials.warp.WarpManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -73,7 +73,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         scoreboardManager.registerProvider(new PlotworldScoreboardProvider());
         getServer().getServicesManager().register(ScoreboardManager.class, scoreboardManager, this, ServicePriority.Normal);
         //services
-        messageService = new MessageService(core().brokerService());
+        messageService = new MessageService(core().brokerService(), this);
 
 
         // Listener
@@ -113,7 +113,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         });
         commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
             if (t instanceof TargetNotFoundException) {
-                sendMessage((CommandSender) sender.getIssuer(), MessageKey.PLAYER_NOT_FOUND);
+                sendMessage((CommandSender) sender.getIssuer(), EssentialKey.PLAYER_NOT_FOUND);
                 return true;
             }
             getLogger().severe("Error while executing command " + registeredCommand.getCommand() + " " + String.join(" ", args));

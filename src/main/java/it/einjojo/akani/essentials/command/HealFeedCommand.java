@@ -5,7 +5,7 @@ import co.aikar.commands.PaperCommandManager;
 import co.aikar.commands.annotation.*;
 import it.einjojo.akani.core.paper.player.PaperAkaniPlayer;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
-import it.einjojo.akani.essentials.util.MessageKey;
+import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -30,17 +30,17 @@ public class HealFeedCommand extends BaseCommand {
         if (targetAkaniPlayer == null) {
             if (sender instanceof Player player) {
                 player.setFoodLevel(20);
-                plugin.sendMessage(sender, MessageKey.FEED_SELF);
+                plugin.sendMessage(sender, EssentialKey.FEED_SELF);
             } else {
-                plugin.sendMessage(sender, MessageKey.GENERIC_ERROR);
+                plugin.sendMessage(sender, EssentialKey.GENERIC_ERROR);
             }
         } else {
             java.util.Optional<Player> target = targetAkaniPlayer.bukkitPlayer();
             target.ifPresentOrElse(targetPlayer -> {
                 targetPlayer.setFoodLevel(20);
-                plugin.sendMessage(sender, MessageKey.FEED_OTHER, s -> s.replaceAll("%player%", targetPlayer.getName()));
+                plugin.sendMessage(sender, EssentialKey.FEED_OTHER, s -> s.replaceAll("%player%", targetPlayer.getName()));
             }, () -> {
-                plugin.sendMessage(sender, MessageKey.PLAYER_NOT_FOUND);
+                plugin.sendMessage(sender, EssentialKey.PLAYER_NOT_FOUND);
             });
         }
     }
@@ -53,17 +53,17 @@ public class HealFeedCommand extends BaseCommand {
         if (targetAkaniPlayer == null) {
             if (sender instanceof Player player) {
                 player.setHealth(player.getMaxHealth());
-                plugin.sendMessage(sender, MessageKey.HEAL_SELF);
+                plugin.sendMessage(sender, EssentialKey.HEAL_SELF);
             } else {
-                plugin.sendMessage(sender, MessageKey.GENERIC_ERROR);
+                plugin.sendMessage(sender, EssentialKey.GENERIC_ERROR);
             }
         } else {
             java.util.Optional<Player> target = targetAkaniPlayer.bukkitPlayer();
             target.ifPresentOrElse(targetPlayer -> {
                 targetPlayer.setHealth(targetPlayer.getMaxHealth());
-                plugin.sendMessage(sender, MessageKey.HEAL_OTHER, s -> s.replaceAll("%player%", targetPlayer.getName()));
+                plugin.sendMessage(sender, EssentialKey.HEAL_OTHER, s -> s.replaceAll("%player%", targetPlayer.getName()));
             }, () -> {
-                plugin.sendMessage(sender, MessageKey.PLAYER_NOT_FOUND);
+                plugin.sendMessage(sender, EssentialKey.PLAYER_NOT_FOUND);
             });
         }
     }

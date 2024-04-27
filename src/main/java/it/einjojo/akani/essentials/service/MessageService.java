@@ -18,8 +18,12 @@ import java.util.UUID;
 
 public record MessageService(BrokerService brokerService, AkaniEssentialsPlugin plugin) implements MessageProcessor {
     private static final String PUBLIC_MESSAGE_TYPE = "c";
-    private static final Logger logger = LoggerFactory.getLogger(MessageService.class);
+    private static final Logger logger = LoggerFactory.getLogger("Essentials-ChatService");
 
+    public MessageService {
+        brokerService.registerMessageProcessor(this);
+        logger.info("Chat service initialized");
+    }
 
     public void publishPublicChatMessage(Player sender, String serializedMessage) {
         var payload = ByteStreams.newDataOutput();
@@ -35,7 +39,6 @@ public record MessageService(BrokerService brokerService, AkaniEssentialsPlugin 
                         .build()
         );
     }
-
 
     @Override
     public void processMessage(ChannelMessage channelMessage) {

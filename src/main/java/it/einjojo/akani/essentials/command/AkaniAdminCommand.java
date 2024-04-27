@@ -6,8 +6,11 @@ import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import it.einjojo.akani.core.api.player.AkaniPlayer;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.scoreboard.ScoreboardProvider;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.minecart.ExplosiveMinecart;
+import redis.clients.jedis.JedisPool;
 
 import java.util.List;
 
@@ -20,6 +23,22 @@ public class AkaniAdminCommand extends BaseCommand {
     public AkaniAdminCommand(AkaniEssentialsPlugin plugin) {
         this.plugin = plugin;
         plugin.commandManager().registerCommand(this);
+    }
+
+    @Subcommand("redis")
+    public void showRedisStatus(CommandSender sender) {
+        JedisPool pool = plugin.core().jedisPool();
+        Component message = Component.newline().append(Component.text("§cRedis Pool §7status: " + (!pool.isClosed() ? "§aConnected" : "§cDisconnected")).appendNewline()
+                .append(Component.text("§7Active: §a" + pool.getNumActive() + "§7, Idle: §a" + pool.getNumIdle() + "§7, Waiters: §a" + pool.getNumWaiters() + "§7.")).appendNewline()
+                .append(Component.text("§7Max Active: §a" + pool.getMaxTotal() + "§7, Max Idle: §a" + pool.getMaxIdle() + "§7.")).appendNewline()
+                .append(Component.text("§7Min Evictable Idle Time: §a" + pool.getMinEvictableIdleTimeMillis() + "§7, Time Between Eviction Runs: §a" + pool.getTimeBetweenEvictionRunsMillis() + "§7.")).appendNewline());
+        sender.sendMessage(message);
+    }
+
+    @Subcommand("redis subscribe")
+    public void subscribe(CommandSender sender, String channel) {
+        plugin.core().brokerService().subscribe(channel);
+        sender.sendMessage(Component.text("§7Subscribed to channel §e" + channel + "§7."));
     }
 
     @Subcommand("online-players")
@@ -41,6 +60,14 @@ public class AkaniAdminCommand extends BaseCommand {
         for (ScoreboardProvider provider : plugin.scoreboardManager().providers()) {
             sender.sendMessage("§8- §7" + provider.getClass().getSimpleName() + " §8(" + (provider.shouldProvide(target) ? "§a" : "§c") + provider.priority() + "§8)");
         }
+    }
+
+    @Subcommand("tnt-minecart")
+    public void tntMinecart(Player player, int amount) {
+        for (int i = 0; i < amount; i++) {
+            player.getWorld().spawn(player.getLocation(), ExplosiveMinecart.class);
+        }
+
     }
 
 

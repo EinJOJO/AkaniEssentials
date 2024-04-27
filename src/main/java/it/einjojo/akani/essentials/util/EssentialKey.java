@@ -1,6 +1,6 @@
 package it.einjojo.akani.essentials.util;
 
-public interface MessageKey {
+public interface EssentialKey {
     String PREFIX = "essentials.";
     String GENERIC_ERROR = "generic_error";
     String SPECIFY_PLAYER = "specify_player";
