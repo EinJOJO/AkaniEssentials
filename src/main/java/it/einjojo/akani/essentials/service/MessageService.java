@@ -20,6 +20,7 @@ public record MessageService(BrokerService brokerService, AkaniEssentialsPlugin 
     private static final String PUBLIC_MESSAGE_TYPE = "c";
     private static final Logger logger = LoggerFactory.getLogger("Essentials-ChatService");
 
+
     public MessageService {
         brokerService.registerMessageProcessor(this);
         logger.info("Chat service initialized");
@@ -48,7 +49,11 @@ public record MessageService(BrokerService brokerService, AkaniEssentialsPlugin 
                 var uuid = payload.readUTF();
                 var plainMessage = payload.readUTF();
                 AkaniPlayer player = core().playerManager().onlinePlayer(UUID.fromString(uuid)).orElseThrow();
-                Component message = plugin.miniMessage().deserialize("<gray>%s %s » <white>%s".formatted(player.plainPrefix(), player.name(), plainMessage));
+                Component message = plugin.miniMessage().deserialize(plugin.config().chatFormat()
+                        .replaceAll("%player%", player.name())
+                        .replaceAll("%message%", plainMessage)
+                        .replaceAll("%prefix%", player.plainPrefix().join()
+                        ));
                 for (Player bukkitPlayer : Bukkit.getOnlinePlayers()) {
                     bukkitPlayer.sendMessage(message);
                 }

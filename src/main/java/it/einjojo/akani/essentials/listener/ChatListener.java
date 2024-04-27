@@ -19,7 +19,6 @@ public class ChatListener implements Listener {
     public ChatListener(AkaniEssentialsPlugin plugin) {
         this.messageService = plugin.messageService();
         this.plugin = plugin;
-
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 

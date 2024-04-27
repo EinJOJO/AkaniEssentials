@@ -1,0 +1,2 @@
+chat:
+  format: "%prefix% <gray>⋆</gray> %player% <gray>» <white>%message%"

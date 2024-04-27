@@ -19,8 +19,9 @@ import it.einjojo.akani.essentials.scoreboard.ScoreboardManager;
 import it.einjojo.akani.essentials.scoreboard.defaults.DefaultScoreboardProvider;
 import it.einjojo.akani.essentials.scoreboard.defaults.PlotworldScoreboardProvider;
 import it.einjojo.akani.essentials.service.MessageService;
-import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
 import it.einjojo.akani.essentials.util.EssentialKey;
+import it.einjojo.akani.essentials.util.EssentialsConfig;
+import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
 import it.einjojo.akani.essentials.warp.WarpManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -46,11 +47,13 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
     private ScoreboardManager scoreboardManager;
     private MessageService messageService;
     private Gson gson;
+    private EssentialsConfig config;
 
 
     @Override
     public void onEnable() {
         try {
+            config = new EssentialsConfig(this);
             initClasses();
             registerCommands();
         } catch (Exception e) {
@@ -80,6 +83,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         new ChatListener(this);
         new ScoreboardListener(this);
         new MessageListener(this);
+        //new BlockThrower(this);
 
         //Tasks
         new AsyncScoreboardUpdateTask(scoreboardManager).start(this);
@@ -219,5 +223,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         return messageService;
     }
 
-
+    public EssentialsConfig config() {
+        return config;
+    }
 }
