@@ -19,6 +19,7 @@ dependencies {
     compileOnly(libs.akanicore) // clone https://github.com/EinJojo/AkaniCore and run `./gradlew api:publishMavenLocal` so that this works
     compileOnly(libs.caffeine)
     compileOnly(libs.paper)
+
     implementation(libs.acf)
     implementation(libs.fastboard)
     annotationProcessor(libs.acf)

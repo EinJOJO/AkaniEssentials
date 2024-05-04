@@ -155,6 +155,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         new BackCommand(this);
         new GiveCommand(this);
         new BackCommand(this);
+        new ServerCommand(this);
     }
 
 

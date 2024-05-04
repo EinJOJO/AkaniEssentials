@@ -20,6 +20,7 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.SPECIFY_PLAYER, "%prefix% <red>Du musst einen Spieler angeben!");
         s.registerMessage("de", EssentialKey.PLAYER_NOT_FOUND, "%prefix% <red>Der Spieler wurde nicht gefunden!");
         s.registerMessage("de", EssentialKey.PLAYER_NOT_ONLINE, "%prefix% <red>Der Spieler ist nicht online!");
+        s.registerMessage("de", EssentialKey.NO_PERMISSION, "%prefix% <red>Du hast keine Berechtigung für diesen Befehl!");
 
         //teleport
         s.registerMessage("de", EssentialKey.of("teleport.not_self"), "%prefix% <red>Du kannst dich nicht zu dir selbst teleportieren!");
@@ -69,5 +70,9 @@ public record EssentialsMessageProvider() implements MessageProvider {
         //scoreboard
         s.registerMessage("de", EssentialKey.of("sb.default.title"), "<red><bold>ᴀᴋᴀɴɪ.ɴᴇᴛ <white>ɴᴇᴛᴢᴡᴇʀᴋ");
         s.registerMessage("de", EssentialKey.of("sb.default.server_key"), "<red>Server");
+
+        // server
+        s.registerMessage("de", EssentialKey.of("server.connect"), "%prefix% <yellow>%player% wird auf %server% verbunden!");
+
     }
 }
