@@ -35,3 +35,6 @@ Makes everything cross server.
 - akani.essentials.money.remove | /money remove
 - akani.essentials.money.reset | /money reset
 
+## Contributors
+- QudarixYT 💙
+- EinJOJO [![wakatime](https://wakatime.com/badge/user/8604eeb7-fa00-4008-be52-a3985d373289/project/018ef2e3-79c0-430f-bcbe-5fb4a4f59510.svg)](https://wakatime.com/badge/user/8604eeb7-fa00-4008-be52-a3985d373289/project/018ef2e3-79c0-430f-bcbe-5fb4a4f59510)
