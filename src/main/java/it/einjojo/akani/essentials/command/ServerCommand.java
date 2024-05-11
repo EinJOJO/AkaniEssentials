@@ -16,20 +16,21 @@ public class ServerCommand extends BaseCommand {
     public ServerCommand(AkaniEssentialsPlugin plugin) {
         this.plugin = plugin;
         plugin.commandManager().getCommandCompletions().registerAsyncCompletion("servers", (c) -> plugin.core().networkManager().servers().stream().map(Server::name).toList());
+        plugin.commandManager().getCommandCompletions().registerAsyncCompletion("servergroups", (c) -> plugin.core().networkManager().groups());
         plugin.commandManager().registerCommand(this);
     }
 
-    @Subcommand("connect")
-    @CommandCompletion("@servers @akaniplayers")
+    @Subcommand("gconnect")
+    @CommandCompletion("@servergroups @akaniplayers")
     @Syntax("<server> [player]")
-    public void connect(Player sender, String server, @Optional AkaniPlayer optionalTarget) {
+    public void connect(Player sender, String serverGroup, @Optional AkaniPlayer optionalTarget) {
         if (optionalTarget != null && !sender.hasPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "server.connect.other")) {
             plugin.sendMessage(sender, EssentialKey.NO_PERMISSION);
             return;
         }
         AkaniPlayer target = optionalTarget == null ? plugin.core().playerManager().onlinePlayer(sender.getUniqueId()).orElseThrow() : optionalTarget;
-        plugin.sendMessage(sender, EssentialKey.of("server.connect"), (msg) -> msg.replaceAll("%player%", target.name()).replaceAll("%server%", server));
-        target.connect(server);
+        plugin.sendMessage(sender, EssentialKey.of("server.connect"), (msg) -> msg.replaceAll("%player%", target.name()).replaceAll("%server%", serverGroup));
+        target.connectGroup(serverGroup);
     }
 
     @Subcommand("list")
