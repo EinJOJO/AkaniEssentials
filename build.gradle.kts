@@ -2,6 +2,7 @@ plugins {
     id("java")
     alias(libs.plugins.shadow)
     alias(libs.plugins.runpaper)
+    kotlin("jvm")
 }
 
 group = "it.einjojo.akani"
@@ -23,11 +24,10 @@ dependencies {
     implementation(libs.acf)
     implementation(libs.fastboard)
     annotationProcessor(libs.acf)
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
 }
 
 tasks {
@@ -59,4 +59,7 @@ tasks {
         relocate("fr.mrmicky.fastboard", "it.einjojo.akani.essentials.scoreboard.fastboard")
 
     }
+}
+kotlin {
+    jvmToolchain(17)
 }
