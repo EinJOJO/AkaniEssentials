@@ -21,35 +21,26 @@ public class TeleportCommand extends BaseCommand {
     @Description("Teleport to a player")
     @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "teleport")
     @Syntax("<player> [player]")
-    @CommandCompletion("@akaniplayers|* @akaniplayers:includeSender")
-    public void teleportPlayer(Player bukkitSender, String targetString, @Optional AkaniPlayer destinationPlayer) {
-        AkaniPlayer target = !targetString.equals("*") ? plugin.core().playerManager().onlinePlayerByName(targetString).orElseThrow(() -> new TargetNotFoundException(targetString)) : null;
-        if (target != null && bukkitSender.getUniqueId().equals(target.uuid())) {
+    @CommandCompletion("@akaniplayers @akaniplayers:includeSender")
+    public void teleportPlayer(Player bukkitSender, @Single AkaniPlayer target, @Optional AkaniPlayer destinationPlayer) {
+        if (bukkitSender.getUniqueId().equals(target.uuid())) {
             plugin.sendMessage(bukkitSender, EssentialKey.of("teleport.not_self"));
             return;
         }
         if (destinationPlayer != null) { // Tp target -> destination
             destinationPlayer.location().thenAccept((networkLocation) -> {
-                if (target == null) {
-                    for (AkaniPlayer online : plugin.core().playerManager().onlinePlayers()) {
-                        plugin.core().messageManager().sendMessage(online, EssentialKey.of("teleport.teleporting"), (s) -> s.replaceAll("%player%", destinationPlayer.name()));
-                        online.teleport(networkLocation);
-                    }
-                } else {
-                    plugin.core().messageManager().sendMessage(target, EssentialKey.of("teleport.teleporting"), (s) -> s.replaceAll("%player%", destinationPlayer.name()));
-                    target.teleport(networkLocation);
-                }
+
+                plugin.core().messageManager().sendMessage(target, EssentialKey.of("teleport.teleporting"), (s) -> s.replaceAll("%player%", destinationPlayer.name()));
+                target.teleport(networkLocation);
+
             }).exceptionally((ex) -> {
                 plugin.sendMessage(bukkitSender, EssentialKey.GENERIC_ERROR);
-                plugin.getLogger().warning("Could not teleport player " + targetString + " to " + destinationPlayer.name() + ".");
+                plugin.getLogger().warning("Could not teleport player " + target.name() + " to " + destinationPlayer.name() + ".");
                 plugin.getLogger().warning(ex.getMessage());
                 return null;
             });
         } else {
-            if (target == null) {
-                plugin.sendMessage(bukkitSender, EssentialKey.of("teleport.not_found"));
-                return;
-            }
+
             target.location().thenAccept((networkLocation) -> {
                 plugin.core().messageManager().sendMessage(bukkitSender, EssentialKey.of("teleport.teleporting"), (s) -> s.replaceAll("%player%", target.name()));
                 plugin.core().playerManager().onlinePlayer(bukkitSender.getUniqueId()).ifPresent((p) -> {
@@ -61,6 +52,17 @@ public class TeleportCommand extends BaseCommand {
                 plugin.getLogger().warning(ex.getMessage());
                 return null;
             });
+        }
+    }
+
+    @Subcommand("*")
+    @Description("Teleport all players to a player")
+    @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "teleport.all")
+    @CommandCompletion("@akaniplayers:includeSender")
+    public void teleportAllPlayers(Player bukkitSender, AkaniPlayer target) {
+        for (AkaniPlayer online : plugin.core().playerManager().onlinePlayers()) {
+            if (online.equals(target)) continue;
+            teleportPlayer(bukkitSender, online, target);
         }
     }
 
