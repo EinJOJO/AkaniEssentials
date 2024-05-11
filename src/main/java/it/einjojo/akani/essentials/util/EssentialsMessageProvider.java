@@ -75,5 +75,15 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("server.connect"), "%prefix% <yellow>%player% wird auf %server% verbunden!");
         s.registerMessage("de", EssentialKey.of("server.stop"), "%prefix% <yellow>Der Server %server% wird gestoppt!");
         s.registerMessage("de", EssentialKey.of("server.not_found"), "%prefix% <red>Der Server wurde nicht gefunden!");
+
+        // msg
+        s.registerMessage("de", EssentialKey.of("msg.no_message"), "%prefix% <yellow>Bitte gib eine nachricht an!");
+        s.registerMessage("de", EssentialKey.of("msg.no_conversation"), "%prefix% <yellow>Du kannst niemandem Antworten!");
+
+        // socialspy
+        s.registerMessage("de", EssentialKey.of("socialspy.enabled"), "%prefix% <yellow>Socialspy für %player% aktiviert!");
+        s.registerMessage("de", EssentialKey.of("socialspy.disabled"), "%prefix% <yellow>Socialspy für %player% deaktiviert!");
+
+
     }
 }

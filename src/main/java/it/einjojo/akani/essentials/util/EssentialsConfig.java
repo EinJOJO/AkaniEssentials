@@ -8,6 +8,7 @@ public class EssentialsConfig {
 
     public EssentialsConfig(JavaPlugin plugin) {
         this.plugin = plugin;
+        plugin.getConfig().options().copyDefaults(true);
         plugin.saveDefaultConfig();
     }
 
@@ -16,7 +17,11 @@ public class EssentialsConfig {
     }
 
     public String chatFormat() {
-        return configuration().getString("chat.format");
+        return configuration().getString("chat.public.format");
+    }
+
+    public String privateChatFormat() {
+        return configuration().getString("chat.msg.format");
     }
 
 

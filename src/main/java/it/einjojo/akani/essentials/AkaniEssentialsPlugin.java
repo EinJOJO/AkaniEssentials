@@ -11,6 +11,9 @@ import it.einjojo.akani.essentials.command.*;
 import it.einjojo.akani.essentials.command.economy.MoneyCommand;
 import it.einjojo.akani.essentials.command.economy.PayCommand;
 import it.einjojo.akani.essentials.command.economy.ThalerCommand;
+import it.einjojo.akani.essentials.command.msg.MsgCommand;
+import it.einjojo.akani.essentials.command.msg.ReplyCommand;
+import it.einjojo.akani.essentials.command.msg.SocialSpyCommand;
 import it.einjojo.akani.essentials.listener.ChatListener;
 import it.einjojo.akani.essentials.listener.MessageListener;
 import it.einjojo.akani.essentials.listener.ScoreboardListener;
@@ -76,7 +79,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         scoreboardManager.registerProvider(new PlotworldScoreboardProvider());
         getServer().getServicesManager().register(ScoreboardManager.class, scoreboardManager, this, ServicePriority.Normal);
         //services
-        messageService = new MessageService(core().brokerService(), this);
+        messageService = new MessageService(core().brokerService(), this, core().jedisPool());
 
 
         // Listener
@@ -156,6 +159,11 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         new GiveCommand(this);
         new BackCommand(this);
         new ServerCommand(this);
+        new MsgCommand(this);
+        new ReplyCommand(this);
+        new SocialSpyCommand(this);
+
+
     }
 
 
