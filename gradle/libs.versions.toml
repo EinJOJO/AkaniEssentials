@@ -3,7 +3,7 @@
 paper-api = "1.19.4-R0.1-SNAPSHOT"
 fawe-bom = "1.42"
 luckperms = "5.4"
-akanicore = "1.2.0"
+akanicore = "1.2.3"
 acf = "0.5.1-SNAPSHOT"
 caffeine = "3.1.8" # When changed update plugin.yml
 packetevents = "2.2.1"
@@ -11,7 +11,6 @@ gson = "2.10.1"
 jedis = "5.1.0"
 hikaricp = "5.1.0"
 fastboard="2.1.0"
-oraxen = "1.173.0"
 
 [libraries]
 acf = { group = "co.aikar", name = "acf-paper", version.ref = "acf" }
@@ -25,7 +24,7 @@ hikaricp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikaricp" }
 akanicore = { group = "it.einjojo.akani.core", name = "paper", version.ref = "akanicore" }
 caffeine = { group = "com.github.ben-manes.caffeine", name = "caffeine", version.ref = "caffeine" }
 fastboard = { group = "fr.mrmicky", name = "fastboard", version.ref = "fastboard" }
-oraxen = { group = "io.th0rgal", name = "oraxen", version.ref = "oraxen" }
+
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }

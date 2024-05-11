@@ -5,7 +5,7 @@ import it.einjojo.akani.core.paper.PaperMessageManager;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.scoreboard.PlayerScoreboard;
 import it.einjojo.akani.essentials.scoreboard.ScoreboardProvider;
-import it.einjojo.akani.essentials.util.MessageKey;
+import it.einjojo.akani.essentials.util.EssentialKey;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
@@ -33,7 +33,7 @@ public class DefaultScoreboardProvider implements ScoreboardProvider {
             return;
         }
 
-        sb.updateTitle(messageManager().message(MessageKey.of("sb.default.title")));
+        sb.updateTitle(messageManager().message(EssentialKey.of("sb.default.title")));
         sb.updateLines(
                 deserialize("  <dark_gray>◆<st>                                  </st>◆  "),
                 deserialize("   <#f8c1a1><b>ᴘʟᴀʏᴇʀ"),

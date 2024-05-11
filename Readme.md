@@ -4,7 +4,8 @@ Makes everything cross server.
 
 ## Features
 
-- Chat
+- Chat (When writing)
+- MSG-System (/msg /r /socialspy)
 - Warps
 - Teleport
 - Money

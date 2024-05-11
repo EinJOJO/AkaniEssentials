@@ -8,10 +8,12 @@ import it.einjojo.akani.core.api.player.AkaniPlayer;
 import it.einjojo.akani.core.paper.PaperAkaniCore;
 import it.einjojo.akani.core.paper.player.PaperAkaniPlayer;
 import it.einjojo.akani.essentials.command.*;
-import it.einjojo.akani.essentials.command.AkaniAdminCommand;
 import it.einjojo.akani.essentials.command.economy.MoneyCommand;
 import it.einjojo.akani.essentials.command.economy.PayCommand;
 import it.einjojo.akani.essentials.command.economy.ThalerCommand;
+import it.einjojo.akani.essentials.command.msg.MsgCommand;
+import it.einjojo.akani.essentials.command.msg.ReplyCommand;
+import it.einjojo.akani.essentials.command.msg.SocialSpyCommand;
 import it.einjojo.akani.essentials.listener.ChatListener;
 import it.einjojo.akani.essentials.listener.MessageListener;
 import it.einjojo.akani.essentials.listener.ScoreboardListener;
@@ -19,8 +21,10 @@ import it.einjojo.akani.essentials.scoreboard.AsyncScoreboardUpdateTask;
 import it.einjojo.akani.essentials.scoreboard.ScoreboardManager;
 import it.einjojo.akani.essentials.scoreboard.defaults.DefaultScoreboardProvider;
 import it.einjojo.akani.essentials.scoreboard.defaults.PlotworldScoreboardProvider;
+import it.einjojo.akani.essentials.service.MessageService;
+import it.einjojo.akani.essentials.util.EssentialKey;
+import it.einjojo.akani.essentials.util.EssentialsConfig;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
-import it.einjojo.akani.essentials.util.MessageKey;
 import it.einjojo.akani.essentials.warp.WarpManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -44,15 +48,15 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
     private WarpManager warpManager;
     private PaperCommandManager commandManager;
     private ScoreboardManager scoreboardManager;
+    private MessageService messageService;
     private Gson gson;
+    private EssentialsConfig config;
 
-    public ScoreboardManager scoreboardManager() {
-        return scoreboardManager;
-    }
 
     @Override
     public void onEnable() {
         try {
+            config = new EssentialsConfig(this);
             initClasses();
             registerCommands();
         } catch (Exception e) {
@@ -63,9 +67,40 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         }
     }
 
-    public PaperCommandManager commandManager() {
-        return commandManager;
+    private void initClasses() {
+        core = (PaperAkaniCore) AkaniCoreProvider.get();
+        core.registerMessageProvider(new EssentialsMessageProvider());
+        gson = new Gson();
+        warpManager = new WarpManager(this);
+        warpManager.load();
+        //scoreboard
+        DefaultScoreboardProvider defaultScoreboardProvider = new DefaultScoreboardProvider(this);
+        scoreboardManager = new ScoreboardManager(defaultScoreboardProvider);
+        scoreboardManager.registerProvider(new PlotworldScoreboardProvider());
+        getServer().getServicesManager().register(ScoreboardManager.class, scoreboardManager, this, ServicePriority.Normal);
+        //services
+        messageService = new MessageService(core().brokerService(), this, core().jedisPool());
+
+
+        // Listener
+        new ChatListener(this);
+        new ScoreboardListener(this);
+        new MessageListener(this);
+        //new BlockThrower(this);
+
+        //Tasks
+        new AsyncScoreboardUpdateTask(scoreboardManager).start(this);
     }
+
+
+    @Override
+    public void onDisable() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.closeInventory();
+            player.kick();
+        }
+    }
+
 
     private void registerCommands() {
         getLogger().info("Registering commands");
@@ -85,7 +120,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         });
         commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
             if (t instanceof TargetNotFoundException) {
-                sendMessage((CommandSender) sender.getIssuer(), MessageKey.PLAYER_NOT_FOUND);
+                sendMessage((CommandSender) sender.getIssuer(), EssentialKey.PLAYER_NOT_FOUND);
                 return true;
             }
             getLogger().severe("Error while executing command " + registeredCommand.getCommand() + " " + String.join(" ", args));
@@ -123,8 +158,16 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         new BackCommand(this);
         new GiveCommand(this);
         new BackCommand(this);
+        new ServerCommand(this);
+        new MsgCommand(this);
+        new ReplyCommand(this);
+        new SocialSpyCommand(this);
+
+
     }
 
+
+    // Utility
 
     /**
      * Sends a translated message
@@ -159,6 +202,11 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         sender.sendMessage(Component.text("[TEMP-DEV] Usage: ").append(Component.text(syntax)));
     }
 
+    // Getters
+    public PaperCommandManager commandManager() {
+        return commandManager;
+    }
+
     public MiniMessage miniMessage() {
         return miniMessage;
     }
@@ -176,33 +224,15 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         return gson;
     }
 
-    private void initClasses() {
-        core = (PaperAkaniCore) AkaniCoreProvider.get();
-        core.registerMessageProvider(new EssentialsMessageProvider());
-        gson = new Gson();
-        warpManager = new WarpManager(this);
-        warpManager.load();
-        DefaultScoreboardProvider defaultScoreboardProvider = new DefaultScoreboardProvider(this);
-        scoreboardManager = new ScoreboardManager(defaultScoreboardProvider);
-        scoreboardManager.registerProvider(new PlotworldScoreboardProvider());
-        getServer().getServicesManager().register(ScoreboardManager.class, scoreboardManager, this, ServicePriority.Normal);
-
-        // Listener
-        new ChatListener(this);
-        new ScoreboardListener(this);
-        new MessageListener(this);
-
-        //Tasks
-        new AsyncScoreboardUpdateTask(scoreboardManager).start(this);
+    public ScoreboardManager scoreboardManager() {
+        return scoreboardManager;
     }
 
-
-    @Override
-    public void onDisable() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.closeInventory();
-            player.kick();
-        }
+    public MessageService messageService() {
+        return messageService;
     }
 
+    public EssentialsConfig config() {
+        return config;
+    }
 }

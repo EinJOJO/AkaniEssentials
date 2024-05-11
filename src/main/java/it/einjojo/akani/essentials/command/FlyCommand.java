@@ -4,7 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
-import it.einjojo.akani.essentials.util.MessageKey;
+import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.entity.Player;
 
 @CommandAlias("fly")
@@ -27,13 +27,13 @@ public class FlyCommand extends BaseCommand {
         if (target.getAllowFlight()) {
             target.setAllowFlight(false);
             if (other)
-                plugin.sendMessage(sender, MessageKey.FLY_DISABLED_OTHER, (s) -> s.replaceAll("%player%", target.getName()));
-            plugin.sendMessage(target, MessageKey.FLY_DISABLED);
+                plugin.sendMessage(sender, EssentialKey.FLY_DISABLED_OTHER, (s) -> s.replaceAll("%player%", target.getName()));
+            plugin.sendMessage(target, EssentialKey.FLY_DISABLED);
         } else {
             target.setAllowFlight(true);
             if (other)
-                plugin.sendMessage(sender, MessageKey.FLY_ENABLED_OTHER, (s) -> s.replaceAll("%player%", target.getName()));
-            plugin.sendMessage(target, MessageKey.FLY_ENABLED);
+                plugin.sendMessage(sender, EssentialKey.FLY_ENABLED_OTHER, (s) -> s.replaceAll("%player%", target.getName()));
+            plugin.sendMessage(target, EssentialKey.FLY_ENABLED);
         }
     }
 

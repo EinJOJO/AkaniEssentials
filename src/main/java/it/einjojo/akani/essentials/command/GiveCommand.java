@@ -5,34 +5,30 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Syntax;
-import io.th0rgal.oraxen.api.OraxenItems;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
-import it.einjojo.akani.essentials.util.MessageKey;
+import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Optional;
 
 
 @CommandAlias("give")
 public class GiveCommand extends BaseCommand {
-
     private final AkaniEssentialsPlugin plugin;
 
     public GiveCommand(AkaniEssentialsPlugin plugin) {
         this.plugin = plugin;
         plugin.commandManager().getCommandCompletions().registerStaticCompletion("items",
                 Arrays.stream(Material.values()).map(Enum::name).toList());
-        plugin.commandManager().getCommandCompletions().registerAsyncCompletion("oraxenitem",
-                c -> OraxenItems.entryStream().map(Map.Entry::getKey).toList());
         plugin.commandManager().registerCommand(this);
     }
 
+
     @Default
-    @CommandCompletion("@items @range:1-64 @akaniplayers:includeSender")
+    @CommandCompletion("@items @range:1-64 @players")
     @Syntax("<item> [amount] [player]")
     public void giveItem(CommandSender sender, Material material, @Default(value = "1") String amount, @co.aikar.commands.annotation.Optional String target) {
         try {
@@ -58,16 +54,16 @@ public class GiveCommand extends BaseCommand {
         if (player != null) {
             giveItemToPlayer(player, material, amount);
         } else {
-            plugin.sendMessage(sender, MessageKey.PLAYER_NOT_ONLINE);
+            plugin.sendMessage(sender, EssentialKey.PLAYER_NOT_ONLINE);
         }
     }
 
     public void sendSuccessMessage(Player player, Material material, int amount, Optional<String> targetName) {
         if (targetName.isPresent())
-            plugin.sendMessage(player, MessageKey.of("give.success"), s -> s.replaceAll("%player%", targetName.get())
+            plugin.sendMessage(player, EssentialKey.of("give.success"), s -> s.replaceAll("%player%", targetName.get())
                     .replaceAll("%amount%", String.valueOf(amount)).replaceAll("%item%", material.name()));
         else
-            plugin.sendMessage(player, MessageKey.of("give.success"), s -> s.replaceAll("%player%", player.getName())
+            plugin.sendMessage(player, EssentialKey.of("give.success"), s -> s.replaceAll("%player%", player.getName())
                     .replaceAll("%amount%", String.valueOf(amount)).replaceAll("%item%", material.name()));
     }
 
@@ -75,23 +71,5 @@ public class GiveCommand extends BaseCommand {
         player.getInventory().addItem(new org.bukkit.inventory.ItemStack(material, amount));
     }
 
-    /*
-        @CommandCompletion("@oraxenitem @akaniplayers:includeSender @range:1-64")
-        @Syntax("<oraxenitem> [amount] [player]")
-        public void giveOraxenItem(Player player, String itemId, @co.aikar.commands.annotation.Optional int amount) {
-            if (amount == 0) {
-                amount = 1;
-            }
-            int finalAmount = amount;
-            Optional<ItemStack> oraxenItem = OraxenItems.getOptionalItemById(itemId).map(item -> item.setAmount(finalAmount).build());
-            if (oraxenItem.isPresent()) {
-                player.getInventory().addItem(oraxenItem.get());
-                plugin.sendMessage(player, MessageKey.of("give.success"), s -> s.replaceAll("%player%", player.getName())
-                        .replaceAll("%amount%", String.valueOf(finalAmount)).replaceAll("%item%", MiniMessage.miniMessage().serialize(oraxenItem.get().displayName())));
-            } else {
-                plugin.sendMessage(player, MessageKey.of("give.item_not_found"), s -> s.replaceAll("%item%", itemId));
-            }
-        }
 
-    */
 }

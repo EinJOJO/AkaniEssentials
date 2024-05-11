@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "it.einjojo.akani"
-version = "1.4.0"
+version = "1.5.0"
 
 repositories {
 
@@ -19,7 +19,7 @@ dependencies {
     compileOnly(libs.akanicore) // clone https://github.com/EinJojo/AkaniCore and run `./gradlew api:publishMavenLocal` so that this works
     compileOnly(libs.caffeine)
     compileOnly(libs.paper)
-    compileOnly(libs.oraxen)
+
     implementation(libs.acf)
     implementation(libs.fastboard)
     annotationProcessor(libs.acf)
