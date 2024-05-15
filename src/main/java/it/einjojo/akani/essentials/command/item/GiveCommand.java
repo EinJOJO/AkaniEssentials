@@ -1,4 +1,4 @@
-package it.einjojo.akani.essentials.command;
+package it.einjojo.akani.essentials.command.item;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;

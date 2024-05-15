@@ -94,5 +94,8 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("cmdspy.target"), "%prefix% <yellow>Commandspy für %player% aktiviert!");
         s.registerMessage("de", EssentialKey.of("cmdspy.disabled"), "%prefix% <yellow>Commandspy deaktiviert!");
 
+        // hat
+        s.registerMessage("de", EssentialKey.of("hat.success"), "%prefix% <yellow>Hut aufgesetzt!");
+        s.registerMessage("de", EssentialKey.of("hat.success.other"), "%prefix% <yellow>Hut %player% aufgesetzt!");
     }
 }
