@@ -21,6 +21,7 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.PLAYER_NOT_FOUND, "%prefix% <red>Der Spieler wurde nicht gefunden!");
         s.registerMessage("de", EssentialKey.PLAYER_NOT_ONLINE, "%prefix% <red>Der Spieler ist nicht online!");
         s.registerMessage("de", EssentialKey.NO_PERMISSION, "%prefix% <red>Du hast keine Berechtigung für diesen Befehl!");
+        s.registerMessage("de", EssentialKey.NOT_ENOUGH_MONEY, "%prefix% <red>Du hast nicht genügend Coins!");
 
         //teleport
         s.registerMessage("de", EssentialKey.of("teleport.not_self"), "%prefix% <red>Du kannst dich nicht zu dir selbst teleportieren!");
@@ -50,6 +51,10 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("thaler.add"), "%prefix% <yellow>Dem Konto von %player% wurden %balance% Thaler hinzugefügt!");
         s.registerMessage("de", EssentialKey.of("thaler.remove"), "%prefix% <yellow>Dem Konto von %player% wurden %balance% Thaler abgezogen!");
 
+        //back
+        s.registerMessage("de", EssentialKey.of("back.announce-costs"), "<newline>%prefix% <gray>Das teleportieren kostet <yellow>300 Coins.<newline>%prefix% <yellow>Klicke um zum <u><green><click:run_command:'/back confirm'>[Bestätigen]</click></green></u><newline>");
+        s.registerMessage("de", EssentialKey.of("back.success"), "%prefix% <yellow>Du wurdest zurück teleportiert!");
+        s.registerMessage("de", EssentialKey.of("back.no_location"), "%prefix% <red>Kein Rückteleportationsort gefunden!");
 
         //heal/feed
         s.registerMessage("de", EssentialKey.HEAL_SELF, "%prefix% <yellow>Du wurdest geheilt!");
@@ -84,6 +89,10 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("socialspy.enabled"), "%prefix% <yellow>Socialspy für %player% aktiviert!");
         s.registerMessage("de", EssentialKey.of("socialspy.disabled"), "%prefix% <yellow>Socialspy für %player% deaktiviert!");
 
+        //cmdspy
+        s.registerMessage("de", EssentialKey.of("cmdspy.all"), "%prefix% <yellow>Commandspy (ALLE SPIELER) aktiviert!");
+        s.registerMessage("de", EssentialKey.of("cmdspy.target"), "%prefix% <yellow>Commandspy für %player% aktiviert!");
+        s.registerMessage("de", EssentialKey.of("cmdspy.disabled"), "%prefix% <yellow>Commandspy deaktiviert!");
 
     }
 }
