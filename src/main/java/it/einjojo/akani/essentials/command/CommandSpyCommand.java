@@ -30,7 +30,7 @@ public class CommandSpyCommand extends BaseCommand {
             commandSpyOff(sender);
         } else {
             registry.subscribeToAllPlayerCommands(sender.getUniqueId());
-            plugin.sendMessage(sender, EssentialKey.of("commandspy.all"));
+            plugin.sendMessage(sender, EssentialKey.of("cmdspy.all"));
         }
 
     }
@@ -47,10 +47,10 @@ public class CommandSpyCommand extends BaseCommand {
                     }
                 }).findAny().ifPresentOrElse((present -> {
                     registry.observers().remove(present);
-                    plugin.sendMessage(sender, EssentialKey.of("commandspy.off"));
+                    plugin.sendMessage(sender, EssentialKey.of("cmdspy.off"));
                 }), () -> {
                     registry.subscribeToPlayerCommands(sender.getUniqueId(), target.player.getUniqueId());
-                    plugin.sendMessage(sender, EssentialKey.of("commandspy.target"), (s) -> s.replaceAll("%player%", target.player.getName()));
+                    plugin.sendMessage(sender, EssentialKey.of("cmdspy.target"), (s) -> s.replaceAll("%player%", target.player.getName()));
                 });
 
     }
@@ -58,7 +58,7 @@ public class CommandSpyCommand extends BaseCommand {
     @Subcommand("off")
     public void commandSpyOff(Player sender) {
         registry.unsubscribe(sender.getUniqueId());
-        plugin.sendMessage(sender, EssentialKey.of("commandspy.off"));
+        plugin.sendMessage(sender, EssentialKey.of("cmdspy.off"));
     }
 
 

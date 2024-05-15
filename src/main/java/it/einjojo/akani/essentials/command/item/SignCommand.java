@@ -8,10 +8,13 @@ import co.aikar.commands.annotation.Optional;
 import it.einjojo.akani.core.paper.util.TextUtil;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,12 +56,17 @@ public class SignCommand extends BaseCommand {
                 Component l = plugin.miniMessage().deserialize(
                         HIDDEN_SIGNATURE_PREFIX + TextUtil.transformAmpersandToMiniMessage(line
                                 .replaceAll("%player%", playerPrefix + " " + player.getName())
-                                .replaceAll("%message%", (message.orElse("")))));
+                                .replaceAll("%timestamp%", getTimestamp())
+                                .replaceAll("%message%", (message.orElse(""))))).decoration(TextDecoration.ITALIC, false);
                 newLore.add(l);
             }
             meta.lore(newLore);
             item.setItemMeta(meta);
         });
+    }
+
+    private String getTimestamp() {
+        return new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date());
     }
 
     public void unsignItem(ItemStack itemStack) {

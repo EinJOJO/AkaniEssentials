@@ -90,9 +90,10 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("socialspy.disabled"), "%prefix% <yellow>Socialspy für %player% deaktiviert!");
 
         //cmdspy
+        s.registerMessage("de", EssentialKey.of("cmdspy.format"), "<yellow>[CMDSPY] <gray>%player%: <red>%command%");
         s.registerMessage("de", EssentialKey.of("cmdspy.all"), "%prefix% <yellow>Commandspy (ALLE SPIELER) aktiviert!");
         s.registerMessage("de", EssentialKey.of("cmdspy.target"), "%prefix% <yellow>Commandspy für %player% aktiviert!");
-        s.registerMessage("de", EssentialKey.of("cmdspy.disabled"), "%prefix% <yellow>Commandspy deaktiviert!");
+        s.registerMessage("de", EssentialKey.of("cmdspy.off"), "%prefix% <yellow>Commandspy deaktiviert!");
 
         // hat
         s.registerMessage("de", EssentialKey.of("hat.success"), "%prefix% <yellow>Hut aufgesetzt!");
@@ -101,13 +102,15 @@ public record EssentialsMessageProvider() implements MessageProvider {
         // sign
         s.registerMessage("de", EssentialKey.of("item-signature.no-item-in-hand"), "%prefix% <red>Es wurde kein Item in der Hand gefunden!");
         s.registerMessage("de", EssentialKey.of("item-signature.success"), "%prefix <yellow>Item signiert!");
-        s.registerMessage("de", EssentialKey.of("item-signature.removed-success"), "%prefix <yellow>Item entsigniert!");
+        s.registerMessage("de", EssentialKey.of("item-signature.remove-success"), "%prefix <yellow>Item entsigniert!");
 
 
         // rename
         s.registerMessage("de", EssentialKey.of("rename.success"), "%prefix% <yellow>Item umbenannt!");
         s.registerMessage("de", EssentialKey.of("rename.remove-success"), "%prefix% <yellow>Item zurück umbenannt!");
         s.registerMessage("de", EssentialKey.of("rename.no-item-in-hand"), "%prefix% <red>Es wurde kein Item in der Hand gefunden!");
+
+
 
     }
 }

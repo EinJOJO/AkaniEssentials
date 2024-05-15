@@ -10,6 +10,7 @@ import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 @CommandAlias("rename|unrename")
 @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "rename")
@@ -29,13 +30,15 @@ public class RenameCommand extends BaseCommand {
             plugin.sendMessage(player, EssentialKey.of("rename.no-item-in-hand"));
             return;
         }
+        ItemMeta im = itemInHand.getItemMeta();
         if (getExecCommandLabel().equalsIgnoreCase("rename")) {
-            itemInHand.getItemMeta().displayName(plugin.miniMessage().deserialize(TextUtil.transformAmpersandToMiniMessage(rename)));
+            im.displayName(plugin.miniMessage().deserialize(TextUtil.transformAmpersandToMiniMessage(rename)));
             plugin.sendMessage(player, EssentialKey.of("rename.success"));
         } else {
-            itemInHand.getItemMeta().displayName(null);
+            im.displayName(null);
             plugin.sendMessage(player, EssentialKey.of("rename.remove-success"));
         }
+        itemInHand.setItemMeta(im);
     }
 
 }
