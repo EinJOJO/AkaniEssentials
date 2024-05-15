@@ -1,12 +1,10 @@
 package it.einjojo.akani.essentials.command;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.*;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.util.EssentialKey;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -46,6 +44,17 @@ public class GiveCommand extends BaseCommand {
             } else if (sender instanceof Player) {
                 processGiveItem(sender, material, 1, null);
             }
+        }
+    }
+
+    @Subcommand("all|*")
+    @CommandPermission("akani.essentials.give.all")
+    @CommandCompletion("@items @range:1-64")
+    @Syntax("<item> [amount]")
+    public void giveAll(CommandSender sender, Material material, @Default(value = "1") int amount) {
+        sendSuccessMessage((Player) sender, material, amount, Optional.of("ALL"));
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            giveItemToPlayer(onlinePlayer, material, amount);
         }
     }
 
