@@ -27,9 +27,11 @@ public class HatCommand extends BaseCommand {
         ItemStack hatItem = sender.getInventory().getItemInMainHand();
         if (target == null) {
             setHat(sender, hatItem);
+            sender.getInventory().setItemInMainHand(null);
             plugin.sendMessage(sender, EssentialKey.of("hat.success"));
         } else {
             setHat(target.player, hatItem);
+            sender.getInventory().setItemInMainHand(null);
             plugin.sendMessage(sender, EssentialKey.of("hat.success.other"), (s) -> s.replaceAll("%player%", target.player.getName()));
         }
     }
@@ -37,7 +39,7 @@ public class HatCommand extends BaseCommand {
     private void setHat(Player player, ItemStack item) {
         ItemStack helmet = player.getInventory().getHelmet();
         if (helmet != null && !helmet.getType().isAir()) {
-            player.getInventory().addItem(helmet);
+            player.getInventory().setItemInMainHand(helmet);
         }
         player.getInventory().setHelmet(item);
     }
