@@ -26,6 +26,10 @@ public class WarpCommand extends BaseCommand {
     public void listWarpsOrWarp(Player sender, @Optional Warp warp) {
         if (warp == null && getExecCommandLabel().equalsIgnoreCase("spawn")) {
             Warp spawn = plugin.warpManager().warp("spawn");
+            if (spawn == null) {
+                sender.sendMessage(plugin.miniMessage().deserialize("<red>Der Spawn wurde noch nicht gesetzt."));
+                return;
+            }
             listWarpsOrWarp(sender, spawn);
         }
         if (warp == null) {

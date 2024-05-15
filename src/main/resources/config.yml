@@ -6,6 +6,6 @@ back-cost: 100
 
 item-signature:
   - "&e"
-  - "<gray>⋆ Signiert von </gray> <white>%player%"
+  - "<gray>⋆ Signiert von </gray><white>%player%"
   - "<gray>⋆ Datum: %timestamp% "
   - "&f"

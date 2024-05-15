@@ -44,6 +44,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -107,6 +108,11 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
                 if (t instanceof TargetNotFoundException) {
                     sendMessage((CommandSender) sender.getIssuer(), EssentialKey.PLAYER_NOT_FOUND);
                     return true;
+                }
+                if (t instanceof NoSuchElementException ) {
+                    ((CommandSender) sender.getIssuer()).sendMessage("§cEingabe nicht gefunden");
+                    return true;
+
                 }
                 getLogger().severe("Error while executing command " + registeredCommand.getCommand() + " " + String.join(" ", args));
                 t.printStackTrace();
