@@ -13,6 +13,7 @@ import it.einjojo.akani.essentials.command.economy.MoneyCommand;
 import it.einjojo.akani.essentials.command.economy.PayCommand;
 import it.einjojo.akani.essentials.command.economy.ThalerCommand;
 import it.einjojo.akani.essentials.command.item.GiveCommand;
+import it.einjojo.akani.essentials.command.item.SignCommand;
 import it.einjojo.akani.essentials.command.msg.MsgCommand;
 import it.einjojo.akani.essentials.command.msg.ReplyCommand;
 import it.einjojo.akani.essentials.command.msg.SocialSpyCommand;
@@ -149,6 +150,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             new EnderChestCommand(this);
             new CommandSpyCommand(this, commandObserverRegistry);
             new HatCommand(this);
+            new SignCommand(this);
         } catch (Exception e) {
             getLogger().severe("Error while enabling AkaniEssentials");
             getLogger().severe(e.getMessage());

@@ -97,5 +97,14 @@ public record EssentialsMessageProvider() implements MessageProvider {
         // hat
         s.registerMessage("de", EssentialKey.of("hat.success"), "%prefix% <yellow>Hut aufgesetzt!");
         s.registerMessage("de", EssentialKey.of("hat.success.other"), "%prefix% <yellow>Hut %player% aufgesetzt!");
+
+        // sign
+        s.registerMessage("de", EssentialKey.of("item-signature.no-item-in-hand"), "%prefix% <red>Es wurde kein Item in der Hand gefunden!");
+        s.registerMessage("de", EssentialKey.of("item-signature.success"), "%prefix <yellow>Item signiert!");
+
+        // rename
+        s.registerMessage("de", EssentialKey.of("rename.success"), "%prefix% <yellow>Item umbenannt!");
+        s.registerMessage("de", EssentialKey.of("rename.no-item-in-hand"), "%prefix% <red>Es wurde kein Item in der Hand gefunden!");
+
     }
 }

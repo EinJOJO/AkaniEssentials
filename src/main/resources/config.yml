@@ -3,3 +3,9 @@ chat:
   private: "<gray>[<red>MSG</red>]</gray> <white>%sender% <dark_gray>» <white>%receiver% <gray>» <white>%message%"
 
 back-cost: 100
+
+item-signature:
+  - "&e"
+  - "<gray>⋆</gray> <white>%player%"
+  - "<gray>⋆</gray> <white>%message%"
+  - "&f"
