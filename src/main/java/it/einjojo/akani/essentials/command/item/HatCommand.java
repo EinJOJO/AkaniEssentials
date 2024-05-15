@@ -24,7 +24,7 @@ public class HatCommand extends BaseCommand {
 
     @Default
     public void setHat(Player sender, @Optional OnlinePlayer target) {
-        ItemStack hatItem = sender.getInventory().getItemInMainHand().clone();
+        ItemStack hatItem = sender.getInventory().getItemInMainHand();
         if (target == null) {
             setHat(sender, hatItem);
             plugin.sendMessage(sender, EssentialKey.of("hat.success"));
