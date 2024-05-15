@@ -11,7 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-@CommandAlias("rename")
+@CommandAlias("rename|unrename")
 @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "rename")
 public class RenameCommand extends BaseCommand {
 
@@ -29,8 +29,13 @@ public class RenameCommand extends BaseCommand {
             plugin.sendMessage(player, EssentialKey.of("rename.no-item-in-hand"));
             return;
         }
-        itemInHand.getItemMeta().displayName(plugin.miniMessage().deserialize(TextUtil.transformAmpersandToMiniMessage(rename)));
-        plugin.sendMessage(player, EssentialKey.of("rename.success"));
+        if (getExecCommandLabel().equalsIgnoreCase("rename")) {
+            itemInHand.getItemMeta().displayName(plugin.miniMessage().deserialize(TextUtil.transformAmpersandToMiniMessage(rename)));
+            plugin.sendMessage(player, EssentialKey.of("rename.success"));
+        } else {
+            itemInHand.getItemMeta().displayName(null);
+            plugin.sendMessage(player, EssentialKey.of("rename.remove-success"));
+        }
     }
 
 }

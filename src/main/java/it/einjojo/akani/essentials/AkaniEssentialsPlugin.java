@@ -13,6 +13,8 @@ import it.einjojo.akani.essentials.command.economy.MoneyCommand;
 import it.einjojo.akani.essentials.command.economy.PayCommand;
 import it.einjojo.akani.essentials.command.economy.ThalerCommand;
 import it.einjojo.akani.essentials.command.item.GiveCommand;
+import it.einjojo.akani.essentials.command.item.HatCommand;
+import it.einjojo.akani.essentials.command.item.RenameCommand;
 import it.einjojo.akani.essentials.command.item.SignCommand;
 import it.einjojo.akani.essentials.command.msg.MsgCommand;
 import it.einjojo.akani.essentials.command.msg.ReplyCommand;
@@ -151,6 +153,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             new CommandSpyCommand(this, commandObserverRegistry);
             new HatCommand(this);
             new SignCommand(this);
+            new RenameCommand(this);
         } catch (Exception e) {
             getLogger().severe("Error while enabling AkaniEssentials");
             getLogger().severe(e.getMessage());

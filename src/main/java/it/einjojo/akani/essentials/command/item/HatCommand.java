@@ -1,4 +1,4 @@
-package it.einjojo.akani.essentials.command;
+package it.einjojo.akani.essentials.command.item;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -26,11 +26,19 @@ public class HatCommand extends BaseCommand {
     public void setHat(Player sender, @Optional OnlinePlayer target) {
         ItemStack hatItem = sender.getInventory().getItemInMainHand().clone();
         if (target == null) {
-            sender.getInventory().setHelmet(hatItem);
+            setHat(sender, hatItem);
             plugin.sendMessage(sender, EssentialKey.of("hat.success"));
         } else {
-            target.player.getInventory().setHelmet(hatItem);
+            setHat(target.player, hatItem);
             plugin.sendMessage(sender, EssentialKey.of("hat.success.other"), (s) -> s.replaceAll("%player%", target.player.getName()));
         }
+    }
+
+    private void setHat(Player player, ItemStack item) {
+        ItemStack helmet = player.getInventory().getHelmet();
+        if (helmet != null && !helmet.getType().isAir()) {
+            player.getInventory().addItem(helmet);
+        }
+        player.getInventory().setHelmet(item);
     }
 }
