@@ -8,5 +8,4 @@ item-signature:
   - "&e"
   - "<gray>⋆ Signiert von </gray> <white>%player%"
   - "<gray>⋆ Datum: %timestamp% "
-  - "<gray>⋆</gray> <white>%message%"
   - "&f"
