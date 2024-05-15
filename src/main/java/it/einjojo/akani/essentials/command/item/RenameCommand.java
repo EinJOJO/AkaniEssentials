@@ -7,6 +7,7 @@ import co.aikar.commands.annotation.Default;
 import it.einjojo.akani.core.paper.util.TextUtil;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.util.EssentialKey;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -32,7 +33,7 @@ public class RenameCommand extends BaseCommand {
         }
         ItemMeta im = itemInHand.getItemMeta();
         if (getExecCommandLabel().equalsIgnoreCase("rename")) {
-            im.displayName(plugin.miniMessage().deserialize(TextUtil.transformAmpersandToMiniMessage(rename)));
+            im.displayName(plugin.miniMessage().deserialize(TextUtil.transformAmpersandToMiniMessage(rename)).decoration(TextDecoration.ITALIC, false));
             plugin.sendMessage(player, EssentialKey.of("rename.success"));
         } else {
             im.displayName(null);
