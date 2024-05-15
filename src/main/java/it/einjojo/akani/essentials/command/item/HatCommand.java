@@ -39,7 +39,7 @@ public class HatCommand extends BaseCommand {
     private void setHat(Player player, ItemStack item) {
         ItemStack helmet = player.getInventory().getHelmet();
         if (helmet != null && !helmet.getType().isAir()) {
-            player.getInventory().setItemInMainHand(helmet);
+            player.getInventory().addItem(helmet);
         }
         player.getInventory().setHelmet(item);
     }
