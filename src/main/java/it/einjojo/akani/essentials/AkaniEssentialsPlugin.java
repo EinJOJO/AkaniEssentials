@@ -70,9 +70,8 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             warpManager = new WarpManager(this);
             warpManager.load();
             //scoreboard
-            DefaultScoreboardProvider defaultScoreboardProvider = new DefaultScoreboardProvider(this);
-            scoreboardManager = new ScoreboardManager(defaultScoreboardProvider);
-            scoreboardManager.registerProvider(new PlotworldScoreboardProvider());
+            scoreboardManager = new ScoreboardManager(new DefaultScoreboardProvider(this));
+            scoreboardManager.registerProvider(new PlotworldScoreboardProvider(this));
             getServer().getServicesManager().register(ScoreboardManager.class, scoreboardManager, this, ServicePriority.Normal);
             //services
             messageService = new MessageService(core().brokerService(), this, core().jedisPool());
@@ -87,6 +86,9 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
 
             //Tasks
             new AsyncScoreboardUpdateTask(scoreboardManager).start(this);
+
+            // PAPI
+            new EssentialsPlaceholderExpansion(this).register();
 
             // commands
             getLogger().info("Registering commands");
@@ -109,7 +111,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
                     sendMessage((CommandSender) sender.getIssuer(), EssentialKey.PLAYER_NOT_FOUND);
                     return true;
                 }
-                if (t instanceof NoSuchElementException ) {
+                if (t instanceof NoSuchElementException) {
                     ((CommandSender) sender.getIssuer()).sendMessage("§cEingabe nicht gefunden");
                     return true;
 

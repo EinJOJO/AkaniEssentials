@@ -11,6 +11,7 @@ gson = "2.10.1"
 jedis = "5.1.0"
 hikaricp = "5.1.0"
 fastboard="2.1.0"
+placeholderapi = "2.11.5"
 
 [libraries]
 acf = { group = "co.aikar", name = "acf-paper", version.ref = "acf" }
@@ -24,6 +25,7 @@ hikaricp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikaricp" }
 akanicore = { group = "it.einjojo.akani.core", name = "paper", version.ref = "akanicore" }
 caffeine = { group = "com.github.ben-manes.caffeine", name = "caffeine", version.ref = "caffeine" }
 fastboard = { group = "fr.mrmicky", name = "fastboard", version.ref = "fastboard" }
+placeholderapi = { group = "me.clip", name = "placeholderapi", version.ref = "placeholderapi" }
 
 
 [plugins]
