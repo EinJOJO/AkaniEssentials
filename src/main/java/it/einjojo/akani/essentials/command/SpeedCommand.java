@@ -7,7 +7,7 @@ import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.entity.Player;
 
 
-@CommandAlias("speed|flyspeed")
+@CommandAlias("speed|flyspeed|walkspeed")
 @Description("Ändert die Lauf- oder Fluggeschwindigkeit.")
 public class SpeedCommand extends BaseCommand {
     private final AkaniEssentialsPlugin plugin;
@@ -34,15 +34,21 @@ public class SpeedCommand extends BaseCommand {
                 if (sender.isFlying()) {
                     setFlightSpeed(sender, speedFloat);
                 } else {
-                    sender.setWalkSpeed(speedFloat);
-                    plugin.sendMessage(sender, EssentialKey.of("speed.walk-changed"));
+                    setWalkSpeed(sender, speedFloat);
                 }
+            } else if (getExecCommandLabel().equals("walkspeed")) {
+                setWalkSpeed(sender, speedFloat);
             } else {
                 setFlightSpeed(sender, speedFloat);
             }
         } catch (NumberFormatException e) {
             plugin.sendMessage(sender, EssentialKey.of("speed.invalid"));
         }
+    }
+
+    public void setWalkSpeed(Player sender, float speedFloat) {
+        sender.setWalkSpeed(speedFloat);
+        plugin.sendMessage(sender, EssentialKey.of("speed.walk-changed"));
     }
 
     public void setFlightSpeed(Player sender, float speedFloat) {
