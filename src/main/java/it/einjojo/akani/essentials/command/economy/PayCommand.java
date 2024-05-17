@@ -9,6 +9,8 @@ import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 @CommandAlias("pay")
 public class PayCommand extends BaseCommand {
 
@@ -17,6 +19,7 @@ public class PayCommand extends BaseCommand {
     public PayCommand(AkaniEssentialsPlugin plugin) {
         this.plugin = plugin;
         plugin.commandManager().registerCommand(this);
+
     }
 
 
@@ -52,7 +55,22 @@ public class PayCommand extends BaseCommand {
     }
 
     @Subcommand("*")
+    @CommandCompletion("1|20|50")
+    @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "pay.all")
     public void payAll(Player sender, int amount) {
+        List<AkaniPlayer> akaniPlayerList = plugin.core().playerManager().onlinePlayers();
+        int totalAmount = amount * akaniPlayerList.size();
+        AkaniPlayer akaniSender = plugin.core().playerManager().onlinePlayer(sender.getUniqueId()).orElseThrow(IllegalArgumentException::new);
+        if (totalAmount > akaniSender.coins().balance()) {
+            plugin.sendMessage(sender, EssentialKey.NOT_ENOUGH_COINS);
+            return;
+        }
+        for (AkaniPlayer receiver : akaniPlayerList) {
+            if (receiver.equals(akaniSender)) {
+                continue;
+            }
+            pay(akaniSender, receiver, amount);
+        }
 
     }
 

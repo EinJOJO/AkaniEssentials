@@ -1,13 +1,11 @@
 package it.einjojo.akani.essentials.util;
 
-public interface EssentialKey {
+import it.einjojo.akani.core.api.message.AkaniMessageKey;
+
+public interface EssentialKey extends AkaniMessageKey {
     String PREFIX = "essentials.";
-    String NO_PERMISSION = "no_permission";
-    String GENERIC_ERROR = "generic_error";
-    String SPECIFY_PLAYER = "specify_player";
-    String NOT_ENOUGH_COINS = "essentials.coins.not_enough";
-    String PLAYER_NOT_FOUND = "player_not_found";
-    String PLAYER_NOT_ONLINE = "player_not_online";
+
+
     String HEAL_SELF = "heal_self";
     String HEAL_OTHER = "heal_other";
     String FEED_SELF = "feed_self";
