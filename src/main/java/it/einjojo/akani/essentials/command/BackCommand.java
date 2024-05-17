@@ -22,11 +22,18 @@ public class BackCommand extends BaseCommand {
 
     @Default
     public void preCheckPermission(Player sender) {
-        if (sender.hasPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "back")) {
-            sendBack(sender);
-        } else {
-            plugin.sendMessage(sender, EssentialKey.of("back.announce-costs"));
-        }
+        plugin.core().backService().loadBackLocation(sender.getUniqueId()).thenAccept((loc)-> {
+            if (loc != null) {
+                if (sender.hasPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "back")) {
+                    sendBack(sender);
+                } else {
+                    plugin.sendMessage(sender, EssentialKey.of("back.announce-costs"));
+                }
+            } else {
+                plugin.sendMessage(sender, EssentialKey.of("back.no_location"));
+            }
+        });
+
     }
 
     @Subcommand("confirm")
