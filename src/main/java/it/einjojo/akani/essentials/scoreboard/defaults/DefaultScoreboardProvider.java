@@ -9,6 +9,9 @@ import it.einjojo.akani.essentials.util.EssentialKey;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class DefaultScoreboardProvider implements ScoreboardProvider {
     private final AkaniEssentialsPlugin plugin;
 
@@ -34,12 +37,10 @@ public class DefaultScoreboardProvider implements ScoreboardProvider {
         }
 
         sb.updateTitle(messageManager().message(EssentialKey.of("sb.default.title")));
-        sb.updateLines(
-                deserialize("  <dark_gray>◆<st>                                  </st>◆  "),
-                deserialize("   <#f8c1a1><b>ᴘʟᴀʏᴇʀ"),
-                deserialize("    <dark_gray>▪ <gray>ʀᴀɴɢ: <white>" + akaniPlayer.plainPrefix().join()),
-                deserialize("    <dark_gray>▪ <gray>ᴄᴏɪɴs: <white>" + akaniPlayer.coins().balance()),
-                deserialize("    <dark_gray>▪ <gray>ᴛᴀʟᴇʀ: <white>" + akaniPlayer.thaler().balance()),
+        List<Component> list = new LinkedList<>();
+        list.add(ScoreboardDefaults.BAR);
+        list.addAll(ScoreboardDefaults.playerSection(akaniPlayer));
+        list.addAll(List.of(
                 Component.empty(),
                 deserialize("   <#f8c1a1><b>ꜱᴇʀᴠᴇʀ"),
                 deserialize("    <dark_gray>▪ <gray>ɴᴀᴍᴇ: <white>" + plugin.core().serverName()),
@@ -48,11 +49,12 @@ public class DefaultScoreboardProvider implements ScoreboardProvider {
                 Component.empty(),
                 deserialize("   <#f8c1a1><b>ᴇᴠᴇɴᴛꜱ"),
                 deserialize("    <dark_gray>▪ <red>ɴᴏɴᴇ"),
-                deserialize("  <dark_gray>◆<st>                                  </st>◆   ")
-        );
-
+                ScoreboardDefaults.BAR
+        ));
+        sb.updateLines(list);
 
     }
+
 
     protected Component deserialize(String message) {
         return messageManager().miniMessage().deserialize(message);

@@ -41,12 +41,11 @@ public class PlotworldScoreboardProvider implements ScoreboardProvider {
         Player bukkitPlayer = sb.getPlayer();
         String plotOwner = placeholders(bukkitPlayer, "%plotsquared_currentplot_owner%");
         sb.updateTitle(plugin.core().messageManager().message(EssentialKey.of("sb.default.title")));
-        var content = new LinkedList<>(List.of(
-                deserialize("  <dark_gray>◆<st>                                  </st>◆  "),
-                deserialize("   <#f8c1a1><b>ᴘʟᴀʏᴇʀ"),
-                deserialize(placeholders(bukkitPlayer, "    <dark_gray>▪ <gray>ʀᴀɴɢ: <white> %luckperms_prefix%")),
-                deserialize("    <dark_gray>▪ <gray>ᴄᴏɪɴs: <white>" + akaniPlayer.coins().balance()),
-                deserialize(TextUtil.transformAmpersandToMiniMessage(placeholders(bukkitPlayer, "    &8▪ &7ᴘʟᴏᴛꜱ: &f%plotsquared_plot_count%&8/&7%plotsquared_allowed_plot_count%"))),
+        List<Component> content = new LinkedList<>();
+        content.add(ScoreboardDefaults.BAR);
+        content.addAll(ScoreboardDefaults.playerSection(akaniPlayer));
+        content.add(deserialize(TextUtil.transformAmpersandToMiniMessage(placeholders(bukkitPlayer, "    &8▪ &7ᴘʟᴏᴛꜱ: &f%plotsquared_plot_count%&8/&7%plotsquared_allowed_plot_count%"))));
+        content.addAll(List.of(
                 Component.empty(),
                 deserialize("   <#f8c1a1><b>ᴘʟᴏᴛɪɴꜰᴏ"),
                 deserialize("    <dark_gray>▪ <gray>ᴘᴏꜱɪᴛɪᴏɴ: <gray>" + (plotOwner.isBlank() ? "-" : placeholders(bukkitPlayer, "%plotsquared_currentplot_xy%"))),
@@ -60,7 +59,7 @@ public class PlotworldScoreboardProvider implements ScoreboardProvider {
         } else {
             content.add(deserialize(placeholders(bukkitPlayer, "    <dark_gray>▪ <yellow>Nichts")));
         }
-        content.add(deserialize("  <dark_gray>◆<st>                                  </st>◆   "));
+        content.add(ScoreboardDefaults.BAR);
         sb.updateLines(content);
     }
 
