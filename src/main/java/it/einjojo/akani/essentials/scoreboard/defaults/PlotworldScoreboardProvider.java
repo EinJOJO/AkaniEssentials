@@ -55,9 +55,10 @@ public class PlotworldScoreboardProvider implements ScoreboardProvider {
         ));
 
         if (placeholders(bukkitPlayer, "%plotsquared_has_plot%").equals("false")) {
-            content.add(deserialize(placeholders(bukkitPlayer, "    <dark_gray>▪ <yellow>Nutze /p auto")));
+            content.add(deserialize("    <dark_gray>▪ <yellow>Nutze /p auto"));
         } else {
-            content.add(deserialize(placeholders(bukkitPlayer, "    <dark_gray>▪ <yellow>Nichts")));
+            content.add(deserialize("    <dark_gray>▪ <gray>Materialien findest du"));
+            content.add(deserialize("    <dark_gray>▪ <gray>auf <red>Dungeons</red>!"));
         }
         content.add(ScoreboardDefaults.BAR);
         sb.updateLines(content);

@@ -8,10 +8,8 @@ public class EssentialsConfig {
 
     public EssentialsConfig(JavaPlugin plugin) {
         this.plugin = plugin;
-
-        plugin.getConfig().options().copyDefaults(true);
         plugin.saveDefaultConfig();
-        plugin.reloadConfig();
+        plugin.getConfig().options().copyDefaults(true);
 
     }
 
