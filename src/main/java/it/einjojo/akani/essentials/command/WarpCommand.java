@@ -9,7 +9,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
 
-@CommandAlias("warp|warps")
+@CommandAlias("warp|warps|spawn")
 public class WarpCommand extends BaseCommand {
     private final AkaniEssentialsPlugin plugin;
 
@@ -23,7 +23,15 @@ public class WarpCommand extends BaseCommand {
 
     @Default
     @CommandCompletion("@warps")
-    public void listWarps(Player sender, @Optional Warp warp) {
+    public void listWarpsOrWarp(Player sender, @Optional Warp warp) {
+        if (warp == null && getExecCommandLabel().equalsIgnoreCase("spawn")) {
+            Warp spawn = plugin.warpManager().warp("spawn");
+            if (spawn == null) {
+                sender.sendMessage(plugin.miniMessage().deserialize("<red>Der Spawn wurde noch nicht gesetzt."));
+                return;
+            }
+            listWarpsOrWarp(sender, spawn);
+        }
         if (warp == null) {
             for (String warpName : plugin.warpManager().warpNames()) {
                 Component c = plugin.miniMessage().deserialize("<click:suggest_command:'/warp %s'><hover:show_text:'<yellow>Klicke zum Teleportieren.'><gray>- <green>%s</hover></click>".formatted(warpName, warpName));

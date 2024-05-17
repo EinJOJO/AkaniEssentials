@@ -1,21 +1,20 @@
-package it.einjojo.akani.essentials.command;
+package it.einjojo.akani.essentials.command.item;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.*;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.util.EssentialKey;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.Optional;
 
 
-@CommandAlias("give")
+@CommandAlias("give|giveall")
 public class GiveCommand extends BaseCommand {
     private final AkaniEssentialsPlugin plugin;
 
@@ -31,6 +30,10 @@ public class GiveCommand extends BaseCommand {
     @CommandCompletion("@items @range:1-64 @players")
     @Syntax("<item> [amount] [player]")
     public void giveItem(CommandSender sender, Material material, @Default(value = "1") String amount, @co.aikar.commands.annotation.Optional String target) {
+        if (getExecCommandLabel().equalsIgnoreCase("giveall")) {
+            giveAllItemInHand((Player) sender);
+            return;
+        }
         try {
             int amountInt = Integer.parseInt(amount);
             if (amountInt < 1 || amountInt > 64) {
@@ -49,6 +52,31 @@ public class GiveCommand extends BaseCommand {
         }
     }
 
+    @Subcommand("all|*")
+    @CommandPermission("akani.essentials.give.all")
+    @CommandCompletion("@items @range:1-64")
+    @Syntax("<item> [amount]")
+    public void giveAll(CommandSender sender, Material material, @Default(value = "1") int amount) {
+        sendSuccessMessage((Player) sender, material, amount, Optional.of("ALL"));
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            giveItemToPlayer(onlinePlayer, material, amount);
+        }
+    }
+
+    @Subcommand("all|* itemInHand")
+    public void giveAllItemInHand(Player sender) {
+        ItemStack is = sender.getInventory().getItemInMainHand();
+        if (is.getType().isAir()) {
+            plugin.sendMessage(sender, EssentialKey.of("give.no-item-in-hand"));
+            return;
+        }
+        //TODO CrossServer
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            onlinePlayer.getInventory().addItem(is);
+        }
+        sendSuccessMessage(sender, is.getType(), 1, Optional.of("ALL"));
+    }
+
     private void processGiveItem(CommandSender sender, Material material, int amount, String targetName) {
         Player player = targetName != null ? plugin.getServer().getPlayer(targetName) : sender instanceof Player ? (Player) sender : null;
         if (player != null) {
@@ -56,6 +84,11 @@ public class GiveCommand extends BaseCommand {
         } else {
             plugin.sendMessage(sender, EssentialKey.PLAYER_NOT_ONLINE);
         }
+    }
+
+    @CatchUnknown
+    public void onUnknownCommand(CommandSender sender) {
+        sender.sendMessage("Give catcher");
     }
 
     public void sendSuccessMessage(Player player, Material material, int amount, Optional<String> targetName) {

@@ -1,3 +1,11 @@
 chat:
   public: "%prefix% <gray>⋆</gray> %player% <gray>» <white>%message%"
   private: "<gray>[<red>MSG</red>]</gray> <white>%sender% <dark_gray>» <white>%receiver% <gray>» <white>%message%"
+
+back-cost: 100
+
+item-signature:
+  - "&e"
+  - "<gray>⋆ Signiert von </gray><white>%player%"
+  - "<gray>⋆ Datum: %timestamp% "
+  - "&f"

@@ -9,7 +9,7 @@ import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-
+//TODO Cooldown
 public class HealFeedCommand extends BaseCommand {
 
     private final AkaniEssentialsPlugin plugin;

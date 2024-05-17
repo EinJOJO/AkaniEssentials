@@ -5,6 +5,7 @@ public interface EssentialKey {
     String NO_PERMISSION = "no_permission";
     String GENERIC_ERROR = "generic_error";
     String SPECIFY_PLAYER = "specify_player";
+    String NOT_ENOUGH_MONEY = "not_enough_money";
     String PLAYER_NOT_FOUND = "player_not_found";
     String PLAYER_NOT_ONLINE = "player_not_online";
     String HEAL_SELF = "heal_self";
