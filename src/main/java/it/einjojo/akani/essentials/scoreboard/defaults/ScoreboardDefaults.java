@@ -1,6 +1,7 @@
 package it.einjojo.akani.essentials.scoreboard.defaults;
 
 import it.einjojo.akani.core.api.player.AkaniPlayer;
+import it.einjojo.akani.core.api.player.playtime.PlaytimeHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
@@ -25,14 +26,19 @@ public class ScoreboardDefaults {
     }
 
     public static String playtimeString(AkaniPlayer player) {
-        long millis = player.playtime().playtimeMillis();
-        if (millis == 0) {
-            return "0m";
-        }
+        PlaytimeHolder holder = player.playtime();
+        long deltaMillis = System.currentTimeMillis() - holder.lastJoin().toEpochMilli();
+        long millis = holder.playtimeMillis() + deltaMillis;
         Duration duration = Duration.ofMillis(millis);
         long hours = duration.toHours();
         if (hours <= 2) {
-            return duration.toMinutes() + "m";
+            long minutes = duration.toMinutes();
+            if (minutes < 2) {
+                return duration.getSeconds() + "s";
+            } else {
+                return minutes + "m";
+            }
+
         } else {
             return hours + "h";
         }
