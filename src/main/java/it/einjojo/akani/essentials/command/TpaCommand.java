@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-@CommandAlias("tpa|tpadeny|tpaaccept")
+@CommandAlias("tpa")
 public class TpaCommand extends BaseCommand {
     private final AkaniEssentialsPlugin plugin;
 
@@ -20,22 +20,20 @@ public class TpaCommand extends BaseCommand {
 
     @Default
     @CommandCompletion("@akaniplayers")
-    public void router(Player sender, @Optional AkaniPlayer receiver) {
-        if (!plugin.core().serverName().equals("Citybuild-1")) {
-            plugin.sendMessage(sender, EssentialKey.of("tpa.not-available"));
+    public void router(Player sender, AkaniPlayer receiver) {
+        if (receiver == null) {
+            plugin.sendMessage(sender, EssentialKey.SPECIFY_PLAYER);
             return;
         }
-        if (getExecCommandLabel().equals("tpa")) {
-            if (receiver == null) {
-                plugin.sendMessage(sender, EssentialKey.SPECIFY_PLAYER);
-                return;
-            }
-            tpa(sender, receiver);
-        } else if (getExecCommandLabel().equals("tpadeny")) {
-            deny(sender);
-        } else if (getExecCommandLabel().equals("tpaaccept")) {
-            accept(sender);
+        if (checkServer(sender)) tpa(sender, receiver);
+    }
+
+    private boolean checkServer(Player commandSender) {
+        if (!plugin.core().serverName().equals("Citybuild-1")) {
+            plugin.sendMessage(commandSender, EssentialKey.of("tpa.not-available"));
+            return false;
         }
+        return true;
     }
 
     public void tpa(Player sender, AkaniPlayer receiver) {
@@ -49,33 +47,78 @@ public class TpaCommand extends BaseCommand {
 
     }
 
+    @Subcommand("here")
+    @CommandAlias("tpahere")
+    @CommandCompletion("@akaniplayers|*")
+    public void preTpaHere(Player sender, @Single String target) {
+        if (!checkServer(sender)) return;
+        AkaniPlayer akaniSender = plugin.core().playerManager().onlinePlayer(sender.getUniqueId()).orElseThrow(IllegalStateException::new);
+        if (target.equals("*")) {
+            for (AkaniPlayer akaniPlayer : plugin.core().playerManager().onlinePlayers()) {
+                if (akaniPlayer.uuid().equals(akaniSender.uuid())) continue;
+                tpaHere(akaniSender, akaniPlayer);
+            }
+        } else {
+            AkaniPlayer akaniReceiver = plugin.core().playerManager().onlinePlayerByName(target).orElseThrow(() -> new TargetNotFoundException(target));
+            tpaHere(akaniSender, akaniReceiver);
+        }
+    }
 
-    @Subcommand("deny")
-    public void deny(Player player) {
-        UUID senderUuid = plugin.tpaService().getTpa(player.getUniqueId());
-        if (senderUuid == null) {
-            plugin.sendMessage(player, EssentialKey.of("tpa.no-request"));
+    public void tpaHere(AkaniPlayer sender, AkaniPlayer receiver) {
+        if (sender.uuid().equals(receiver.uuid())) {
+            plugin.sendMessage(sender, EssentialKey.SPECIFY_PLAYER);
             return;
         }
-        plugin.tpaService().removeTpa(player.getUniqueId());
-        plugin.sendMessage(player, EssentialKey.of("tpa.request-denied"));
+        plugin.tpaService().storeTpaHere(sender.uuid(), receiver.uuid());
+        plugin.sendMessage(receiver, EssentialKey.of("tpahere.request-received"), s -> s.replaceAll("%player%", sender.name()));
+        plugin.sendMessage(sender, EssentialKey.of("tpahere.request-sent"), s -> s.replaceAll("%player%", receiver.name()));
+    }
+
+
+    @Subcommand("deny")
+    @CommandAlias("tpadeny|tpdeny")
+    public void deny(Player player) {
+        if (!checkServer(player)) return;
+        UUID tpaSender = plugin.tpaService().getTpa(player.getUniqueId());
+        UUID tpaHereSender = plugin.tpaService().getTpaHere(player.getUniqueId());
+        if (tpaSender != null) {
+            plugin.tpaService().removeTpa(player.getUniqueId());
+            plugin.sendMessage(player, EssentialKey.of("tpa.request-denied"));
+        } else if (tpaHereSender != null) {
+            plugin.tpaService().removeTpaHere(player.getUniqueId());
+            plugin.sendMessage(player, EssentialKey.of("tpa.request-denied"));
+        } else {
+            plugin.sendMessage(player, EssentialKey.of("tpa.no-request"));
+        }
+
     }
 
     @Subcommand("accept")
+    @CommandAlias("tpaaccept|tpaccept")
     public void accept(Player player) {
+        if (!checkServer(player)) return;
         UUID senderUuid = plugin.tpaService().getTpa(player.getUniqueId());
-        if (senderUuid == null) {
-            plugin.sendMessage(player, EssentialKey.of("tpa.no-request"));
-            return;
-        }
+        UUID senderHereUuid = plugin.tpaService().getTpaHere(player.getUniqueId());
         AkaniPlayer tpaReceiver = plugin.core().playerManager().onlinePlayer(player.getUniqueId()).orElseThrow(IllegalStateException::new);
-        plugin.tpaService().removeTpa(player.getUniqueId());
-        plugin.core().playerManager().onlinePlayer(senderUuid).ifPresentOrElse((sender) -> {
-            tpaReceiver.location().thenAccept(sender::teleport);
-            plugin.sendMessage(player, EssentialKey.of("tpa.request-accepted"), s -> s.replaceAll("%player%", sender.name()));
-        }, () -> {
+        if (senderUuid != null) {
+            plugin.tpaService().removeTpa(player.getUniqueId());
+            plugin.core().playerManager().onlinePlayer(senderUuid).ifPresentOrElse((sender) -> {
+                tpaReceiver.location().thenAccept(sender::teleport);
+                plugin.sendMessage(player, EssentialKey.of("tpa.request-accepted"), s -> s.replaceAll("%player%", sender.name()));
+            }, () -> {
 
-        });
+            });
+        } else if (senderHereUuid != null) {
+            plugin.tpaService().removeTpaHere(player.getUniqueId());
+            plugin.core().playerManager().onlinePlayer(senderHereUuid).ifPresentOrElse((sender) -> {
+                sender.location().thenAccept(tpaReceiver::teleport);
+                plugin.sendMessage(player, EssentialKey.of("tpa.request-accepted"), s -> s.replaceAll("%player%", sender.name()));
+            }, () -> {
+
+            });
+        } else {
+            plugin.sendMessage(player, EssentialKey.of("tpa.no-request"));
+        }
     }
 
 

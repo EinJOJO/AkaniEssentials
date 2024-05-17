@@ -8,8 +8,31 @@ import java.util.UUID;
 
 public record TpaService(JedisPool pool) {
     private static final String REDIS_PREFIX = "akani:essentials:tpa:"; // uuid -> tpa-sender
+    private static final String REDIS_HERE_PREFIX = "akani:essentials:tpa_here:"; // uuid -> tpa-sender
     private static final int TPA_TIMEOUT = 60; // 60 seconds
 
+
+    public void storeTpaHere(UUID sender, UUID receiver) {
+        try (Jedis jedis = pool.getResource()) {
+            jedis.set(REDIS_HERE_PREFIX + receiver, sender.toString(), SetParams.setParams().ex(TPA_TIMEOUT));
+        }
+    }
+
+    public UUID getTpaHere(UUID receiver) {
+        try (Jedis jedis = pool.getResource()) {
+            String sender = jedis.get(REDIS_HERE_PREFIX + receiver);
+            if (sender == null) {
+                return null;
+            }
+            return UUID.fromString(sender);
+        }
+    }
+
+    public void removeTpaHere(UUID receiver) {
+        try (Jedis jedis = pool.getResource()) {
+            jedis.del(REDIS_HERE_PREFIX + receiver);
+        }
+    }
 
     public void storeTpa(UUID sender, UUID receiver) {
         try (Jedis jedis = pool.getResource()) {

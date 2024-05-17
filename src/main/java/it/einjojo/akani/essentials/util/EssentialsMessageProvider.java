@@ -117,8 +117,9 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("tpa.request-received"), "%prefix% <yellow>%player% möchte sich zu dir teleportieren!");
         s.registerMessage("de", EssentialKey.of("tpa.request-accepted"), "%prefix% <yellow>Du hast die Anfrage von %player% angenommen!");
         s.registerMessage("de", EssentialKey.of("tpa.request-denied"), "%prefix% <yellow>Du hast die Anfrage von %player% abgelehnt!");
-
-
+        // tpahere
+        s.registerMessage("de", EssentialKey.of("tpahere.request-sent"), "%prefix% <yellow>Anfrage an %player% gesendet!");
+        s.registerMessage("de", EssentialKey.of("tpahere.request-received"), "%prefix% <yellow>%player% möchte, dass du dich zu ihm teleportierst!");
 
     }
 }
