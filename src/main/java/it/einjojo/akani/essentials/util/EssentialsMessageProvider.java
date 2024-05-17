@@ -110,6 +110,14 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("rename.remove-success"), "%prefix% <yellow>Item zurück umbenannt!");
         s.registerMessage("de", EssentialKey.of("rename.no-item-in-hand"), "%prefix% <red>Es wurde kein Item in der Hand gefunden!");
 
+        // tpa
+        s.registerMessage("de", EssentialKey.of("tpa.not-available"), "%prefix% <red>Der Befehl ist auf diesem Server nicht verfügbar!");
+        s.registerMessage("de", EssentialKey.of("tpa.no-request"), "%prefix% <red>Du hast keine Anfragen!");
+        s.registerMessage("de", EssentialKey.of("tpa.request-sent"), "%prefix% <yellow>Anfrage an %player% gesendet!");
+        s.registerMessage("de", EssentialKey.of("tpa.request-received"), "%prefix% <yellow>%player% möchte sich zu dir teleportieren!");
+        s.registerMessage("de", EssentialKey.of("tpa.request-accepted"), "%prefix% <yellow>Du hast die Anfrage von %player% angenommen!");
+        s.registerMessage("de", EssentialKey.of("tpa.request-denied"), "%prefix% <yellow>Du hast die Anfrage von %player% abgelehnt!");
+
 
 
     }

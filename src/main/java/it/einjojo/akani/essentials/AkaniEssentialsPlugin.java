@@ -28,6 +28,7 @@ import it.einjojo.akani.essentials.scoreboard.ScoreboardManager;
 import it.einjojo.akani.essentials.scoreboard.defaults.DefaultScoreboardProvider;
 import it.einjojo.akani.essentials.scoreboard.defaults.PlotworldScoreboardProvider;
 import it.einjojo.akani.essentials.service.MessageService;
+import it.einjojo.akani.essentials.service.TpaService;
 import it.einjojo.akani.essentials.util.EssentialKey;
 import it.einjojo.akani.essentials.util.EssentialsConfig;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
@@ -56,6 +57,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
     private PaperCommandManager commandManager;
     private ScoreboardManager scoreboardManager;
     private MessageService messageService;
+    private TpaService tpaService;
     private Gson gson;
     private EssentialsConfig config;
 
@@ -74,6 +76,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             scoreboardManager.registerProvider(new PlotworldScoreboardProvider(this));
             getServer().getServicesManager().register(ScoreboardManager.class, scoreboardManager, this, ServicePriority.Normal);
             //services
+            tpaService = new TpaService(core.jedisPool());
             messageService = new MessageService(core().brokerService(), this, core().jedisPool());
             CommandObserverRegistry commandObserverRegistry = new CommandObserverRegistry(this);
 
@@ -162,6 +165,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             new HatCommand(this);
             new SignCommand(this);
             new RenameCommand(this);
+            new TpaCommand(this);
         } catch (Exception e) {
             getLogger().severe("Error while enabling AkaniEssentials");
             getLogger().severe(e.getMessage());
@@ -179,6 +183,9 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         }
     }
 
+    public TpaService tpaService() {
+        return tpaService;
+    }
 
     // Utility
 
