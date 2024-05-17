@@ -21,7 +21,6 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.PLAYER_NOT_FOUND, "%prefix% <red>Der Spieler wurde nicht gefunden!");
         s.registerMessage("de", EssentialKey.PLAYER_NOT_ONLINE, "%prefix% <red>Der Spieler ist nicht online!");
         s.registerMessage("de", EssentialKey.NO_PERMISSION, "%prefix% <red>Du hast keine Berechtigung für diesen Befehl!");
-        s.registerMessage("de", EssentialKey.NOT_ENOUGH_MONEY, "%prefix% <red>Du hast nicht genügend Coins!");
 
         //teleport
         s.registerMessage("de", EssentialKey.of("teleport.not_self"), "%prefix% <red>Du kannst dich nicht zu dir selbst teleportieren!");
@@ -36,13 +35,19 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("warp.success"), "%prefix% <yellow>Du wurdest zum Warp teleportiert!");
         // economy
         s.registerMessage("de", EssentialKey.of("economy.error"), "%prefix% <red>Der Kontostand von %player% konnte nicht auf %balance% Coins gesetzt werden!");
+        //pay
+        s.registerMessage("de", EssentialKey.of("pay.self"), "%prefix% <red>Du hast das Geld bereits!");
+        s.registerMessage("de", EssentialKey.of("pay.success"), "%prefix% <yellow>%player%<gray> hat <yellow>%amount% Coins<gray> erhalten!");
+        s.registerMessage("de", EssentialKey.of("pay.success.other"), "%prefix% <gray>Du hast <yellow>%amount% Coins</yellow> von <yellow>%player%</yellow> erhalten!");
+
         //coins
         s.registerMessage("de", EssentialKey.of("coins.not_enough"), "%prefix% <red>Du hast nicht genügend Coins!");
-        s.registerMessage("de", EssentialKey.of("coins.balance.own"), "%prefix% <yellow>Du hast %balance% Coins!");
-        s.registerMessage("de", EssentialKey.of("coins.balance.other"), "%prefix% <yellow>%player% hat %balance% Coins!");
+        s.registerMessage("de", EssentialKey.of("coins.balance.own"), "%prefix% <gray>Du hast <yellow>%balance% Coins</yellow>!");
+        s.registerMessage("de", EssentialKey.of("coins.balance.other"), "%prefix% <gray><yellow>%player%</yellow> hat <yellow>%balance% Coins!</yellow>");
         s.registerMessage("de", EssentialKey.of("coins.set"), "%prefix% <yellow>Der Kontostand von %player% wurde auf %balance% Coins gesetzt!");
         s.registerMessage("de", EssentialKey.of("coins.add"), "%prefix% <yellow>Dem Konto von %player% wurden %balance% Coins hinzugefügt!");
         s.registerMessage("de", EssentialKey.of("coins.remove"), "%prefix% <yellow>Dem Konto von %player% wurden %balance% Coins abgezogen!");
+        s.registerMessage("de", EssentialKey.of("coins.bad-value"), "%prefix% <red>Ungültiger Wert!");
         // thaler
         s.registerMessage("de", EssentialKey.of("thaler.not_enough"), "%prefix% <red>Du hast nicht genug Thaler!");
         s.registerMessage("de", EssentialKey.of("thaler.balance.own"), "%prefix% <yellow>Dein Kontostand beträgt %balance% Thaler!");
@@ -126,7 +131,6 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("speed.success"), "%prefix% <yellow>Deine Geschwindigkeit wurde geändert!");
         s.registerMessage("de", EssentialKey.of("speed.fly-changed"), "%prefix% <yellow>Deine Fluggeschwindigkeit wurde geändert!");
         s.registerMessage("de", EssentialKey.of("speed.walk-changed"), "%prefix% <yellow>Deine Geschwindigkeit wurde geändert!");
-
 
     }
 }

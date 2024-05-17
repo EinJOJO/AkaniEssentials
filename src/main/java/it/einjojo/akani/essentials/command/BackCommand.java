@@ -38,7 +38,7 @@ public class BackCommand extends BaseCommand {
             try {
                 player.coins().removeBalance(300);
             } catch (BadBalanceException ex) {
-                plugin.sendMessage(sender, EssentialKey.NOT_ENOUGH_MONEY);
+                plugin.sendMessage(sender, EssentialKey.NOT_ENOUGH_COINS);
                 return;
             }
         }

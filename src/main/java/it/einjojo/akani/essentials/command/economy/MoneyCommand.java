@@ -8,7 +8,7 @@ import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.entity.Player;
 
-@CommandAlias("money|balance")
+@CommandAlias("money|balance|coins")
 public class MoneyCommand extends BaseCommand {
 
     private final AkaniEssentialsPlugin plugin;
