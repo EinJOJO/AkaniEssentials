@@ -57,6 +57,7 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("thaler.remove"), "%prefix% <yellow>Dem Konto von %player% wurden %balance% Thaler abgezogen!");
 
         //back
+        s.registerMessage("de", EssentialKey.of("back.death"), "%prefix% <gray>Nutze <yellow><u><click:run_command:'/back'>/back</click></u></yellow> um zurückzukehren!");
         s.registerMessage("de", EssentialKey.of("back.announce-costs"), "<newline>%prefix% <gray>Das teleportieren kostet <yellow>300 Coins.<newline>%prefix% <yellow>Klicke um zum <u><green><click:run_command:'/back confirm'>[Bestätigen]</click></green></u><newline>");
         s.registerMessage("de", EssentialKey.of("back.success"), "%prefix% <yellow>Du wurdest zurück teleportiert!");
         s.registerMessage("de", EssentialKey.of("back.no_location"), "%prefix% <red>Kein Rückteleportationsort gefunden!");
@@ -131,6 +132,10 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("speed.success"), "%prefix% <yellow>Deine Geschwindigkeit wurde geändert!");
         s.registerMessage("de", EssentialKey.of("speed.fly-changed"), "%prefix% <yellow>Deine Fluggeschwindigkeit wurde geändert!");
         s.registerMessage("de", EssentialKey.of("speed.walk-changed"), "%prefix% <yellow>Deine Geschwindigkeit wurde geändert!");
+
+        // time
+        s.registerMessage("de", EssentialKey.of("time.set"), "%prefix% <yellow>Die Zeit wurde auf %time% gesetzt!");
+        s.registerMessage("de", EssentialKey.of("time.invalid"), "%prefix% <red>Ungültige Zeit!");
 
     }
 }

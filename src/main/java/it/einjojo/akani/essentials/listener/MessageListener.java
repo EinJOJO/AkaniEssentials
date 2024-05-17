@@ -3,6 +3,7 @@ package it.einjojo.akani.essentials.listener;
 
 import it.einjojo.akani.core.paper.event.AsyncBackCreateEvent;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
+import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -41,7 +42,7 @@ public record MessageListener(AkaniEssentialsPlugin plugin) implements Listener 
     @EventHandler(priority = EventPriority.MONITOR)
     public void notifyBackUsage(AsyncBackCreateEvent event) {
         if (event.isCancelled()) return;
-        event.player().sendMessage("Back location set: use /back"); //TODO
+        plugin.sendMessage(event.player(), EssentialKey.of("back.death"));
     }
 
 

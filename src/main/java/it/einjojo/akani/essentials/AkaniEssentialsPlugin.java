@@ -3,6 +3,7 @@ package it.einjojo.akani.essentials;
 import co.aikar.commands.PaperCommandManager;
 import com.google.gson.Gson;
 import it.einjojo.akani.core.api.AkaniCoreProvider;
+import it.einjojo.akani.core.api.economy.BadBalanceException;
 import it.einjojo.akani.core.api.player.AkaniOfflinePlayer;
 import it.einjojo.akani.core.api.player.AkaniPlayer;
 import it.einjojo.akani.core.paper.PaperAkaniCore;
@@ -110,18 +111,27 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
                         .limit(limit).toList();
             });
             commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
+                CommandSender commandSender = sender.getIssuer();
                 if (t instanceof TargetNotFoundException) {
-                    sendMessage((CommandSender) sender.getIssuer(), EssentialKey.PLAYER_NOT_FOUND);
+                    sendMessage(commandSender, EssentialKey.PLAYER_NOT_FOUND);
                     return true;
                 }
                 if (t instanceof NoSuchElementException) {
-                    ((CommandSender) sender.getIssuer()).sendMessage("§cEingabe nicht gefunden");
+                    commandSender.sendMessage("§cEingabe nicht gefunden");
                     return true;
-
+                }
+                if (t instanceof BadBalanceException ex) {
+                    if (ex.type().equals(BadBalanceException.Type.NOT_ENOUGH_FUNDS)) {
+                        sendMessage(commandSender, EssentialKey.NOT_ENOUGH_COINS);
+                        return true;
+                    } else {
+                        sendMessage(commandSender, EssentialKey.of("coins.bad-value"));
+                    }
                 }
                 getLogger().severe("Error while executing command " + registeredCommand.getCommand() + " " + String.join(" ", args));
                 t.printStackTrace();
-                return false;
+                sendMessage(commandSender, EssentialKey.GENERIC_ERROR);
+                return true;
             }, false);
 
             commandManager.getCommandContexts().registerContext(AkaniOfflinePlayer.class, c -> {
