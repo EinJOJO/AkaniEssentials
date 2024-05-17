@@ -1,7 +1,10 @@
 package it.einjojo.akani.essentials.command;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Subcommand;
 import it.einjojo.akani.core.api.player.AkaniPlayer;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.util.EssentialKey;
@@ -49,11 +52,11 @@ public class TpaCommand extends BaseCommand {
 
     @Subcommand("here")
     @CommandAlias("tpahere")
-    @CommandCompletion("@akaniplayers|*")
-    public void preTpaHere(Player sender, @Single String target) {
+    @CommandCompletion("@akaniplayers|all")
+    public void preTpaHere(Player sender, String target) {
         if (!checkServer(sender)) return;
         AkaniPlayer akaniSender = plugin.core().playerManager().onlinePlayer(sender.getUniqueId()).orElseThrow(IllegalStateException::new);
-        if (target.equals("*")) {
+        if (target.equals("all")) {
             for (AkaniPlayer akaniPlayer : plugin.core().playerManager().onlinePlayers()) {
                 if (akaniPlayer.uuid().equals(akaniSender.uuid())) continue;
                 tpaHere(akaniSender, akaniPlayer);
