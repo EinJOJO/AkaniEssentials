@@ -121,5 +121,12 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("tpahere.request-sent"), "%prefix% <yellow>Anfrage an %player% gesendet!");
         s.registerMessage("de", EssentialKey.of("tpahere.request-received"), "%prefix% <yellow>%player% möchte, dass du dich zu ihm teleportierst!");
 
+        // speed
+        s.registerMessage("de", EssentialKey.of("speed.invalid"), "%prefix% <red>Ungültige Geschwindigkeit!");
+        s.registerMessage("de", EssentialKey.of("speed.success"), "%prefix% <yellow>Deine Geschwindigkeit wurde geändert!");
+        s.registerMessage("de", EssentialKey.of("speed.fly-changed"), "%prefix% <yellow>Deine Fluggeschwindigkeit wurde geändert!");
+        s.registerMessage("de", EssentialKey.of("speed.walk-changed"), "%prefix% <yellow>Deine Geschwindigkeit wurde geändert!");
+
+
     }
 }

@@ -3,6 +3,7 @@ package it.einjojo.akani.essentials.command;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
+import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.entity.Player;
 
 
@@ -25,19 +26,27 @@ public class SpeedCommand extends BaseCommand {
         try {
             int speedInt = Integer.parseInt(speed);
             if (speedInt < 1 || speedInt > 10) {
-                sender.sendMessage(plugin.miniMessage().deserialize("<red>Die Geschwindigkeit muss zwischen <yellow>1 <red>und <yellow>1 <red>liegen."));
+                plugin.sendMessage(sender, EssentialKey.of("speed.invalid"));
                 return;
             }
             float speedFloat = (float) speedInt / 10;
             if (getExecCommandLabel().equals("speed")) {
-                sender.setWalkSpeed(speedFloat);
-                sender.sendMessage(plugin.miniMessage().deserialize("<green>Deine Laufgeschwindigkeit wurde auf <yellow>%s <green>gesetzt.".formatted(speedInt)));
+                if (sender.isFlying()) {
+                    setFlightSpeed(sender, speedFloat);
+                } else {
+                    sender.setWalkSpeed(speedFloat);
+                    plugin.sendMessage(sender, EssentialKey.of("speed.walk-changed"));
+                }
             } else {
-                sender.setFlySpeed(speedFloat);
-                sender.sendMessage(plugin.miniMessage().deserialize("<green>Deine Fluggeschwindigkeit wurde auf <yellow>%s <green>gesetzt.".formatted(speedInt)));
+                setFlightSpeed(sender, speedFloat);
             }
         } catch (NumberFormatException e) {
-            sender.sendMessage(plugin.miniMessage().deserialize("<red>Die Geschwindigkeit muss eine Zahl sein."));
+            plugin.sendMessage(sender, EssentialKey.of("speed.invalid"));
         }
+    }
+
+    public void setFlightSpeed(Player sender, float speedFloat) {
+        sender.setFlySpeed(speedFloat);
+        plugin.sendMessage(sender, EssentialKey.of("speed.fly-changed"));
     }
 }
