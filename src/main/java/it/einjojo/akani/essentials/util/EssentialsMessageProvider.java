@@ -32,7 +32,6 @@ public record EssentialsMessageProvider() implements MessageProvider {
         // warp
         s.registerMessage("de", EssentialKey.of("warp.not_found"), "%prefix% <red>Der Warp wurde nicht gefunden!");
         s.registerMessage("de", EssentialKey.of("warp.teleporting"), "%prefix% <yellow>Du wirst zum Warp %warp% teleportiert!");
-        s.registerMessage("de", EssentialKey.of("warp.success"), "%prefix% <yellow>Du wurdest zum Warp teleportiert!");
         // economy
         s.registerMessage("de", EssentialKey.of("economy.error"), "%prefix% <red>Der Kontostand von %player% konnte nicht auf %balance% Coins gesetzt werden!");
         //pay

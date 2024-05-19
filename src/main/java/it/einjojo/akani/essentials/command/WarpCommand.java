@@ -4,12 +4,13 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import it.einjojo.akani.core.api.network.NetworkLocation;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
+import it.einjojo.akani.essentials.util.EssentialKey;
 import it.einjojo.akani.essentials.warp.Warp;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
 
-@CommandAlias("warp|warps|spawn")
+@CommandAlias("warp|warps")
 public class WarpCommand extends BaseCommand {
     private final AkaniEssentialsPlugin plugin;
 
@@ -24,22 +25,14 @@ public class WarpCommand extends BaseCommand {
     @Default
     @CommandCompletion("@warps")
     public void listWarpsOrWarp(Player sender, @Optional Warp warp) {
-        if (warp == null && getExecCommandLabel().equalsIgnoreCase("spawn")) {
-            Warp spawn = plugin.warpManager().warp("spawn");
-            if (spawn == null) {
-                sender.sendMessage(plugin.miniMessage().deserialize("<red>Der Spawn wurde noch nicht gesetzt."));
-                return;
-            }
-            listWarpsOrWarp(sender, spawn);
-        }
         if (warp == null) {
             for (String warpName : plugin.warpManager().warpNames()) {
-                Component c = plugin.miniMessage().deserialize("<click:suggest_command:'/warp %s'><hover:show_text:'<yellow>Klicke zum Teleportieren.'><gray>- <green>%s</hover></click>".formatted(warpName, warpName));
+                Component c = plugin.miniMessage().deserialize("<click:run_command:'/warp %s'><hover:show_text:'<yellow>Klicke zum Teleportieren.'><gray>- <green>%s</hover></click>".formatted(warpName, warpName));
                 sender.sendMessage(c);
             }
         } else {
             plugin.core().playerManager().onlinePlayer(sender.getUniqueId()).ifPresentOrElse((p) -> {
-                plugin.sendMessage(sender, "warp.teleporting", (s) -> s.replaceAll("%warp%", warp.name()));
+                plugin.sendMessage(sender, EssentialKey.of("warp.teleporting"), (s) -> s.replaceAll("%warp%", warp.name()));
                 warp.warp(p);
             }, () -> {
                 sender.sendMessage(plugin.miniMessage().deserialize("<red>Es ist ein Fehler aufgetreten."));
@@ -48,6 +41,25 @@ public class WarpCommand extends BaseCommand {
         }
     }
 
+    @CommandAlias("spawn")
+    public void warpSpawn(Player sender) {
+        Warp spawn = plugin.warpManager().warp("spawn");
+        if (spawn == null) {
+            sender.sendMessage(plugin.miniMessage().deserialize("<red>Der Spawn (spawn) wurde noch nicht gesetzt."));
+            return;
+        }
+        listWarpsOrWarp(sender, spawn);
+    }
+
+    @CommandAlias("dungeons|dungeon")
+    public void warpDungeon(Player sender) {
+        Warp dungeon = plugin.warpManager().warp("dungeon");
+        if (dungeon == null) {
+            sender.sendMessage(plugin.miniMessage().deserialize("<red>Der Dungeon-Spawn (dungeon) wurde noch nicht gesetzt."));
+            return;
+        }
+        listWarpsOrWarp(sender, dungeon);
+    }
 
     @Subcommand("create")
     @Syntax("<name> [--groupSpecific]")
