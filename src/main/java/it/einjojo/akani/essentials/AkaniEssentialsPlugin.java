@@ -8,6 +8,7 @@ import it.einjojo.akani.core.api.player.AkaniOfflinePlayer;
 import it.einjojo.akani.core.api.player.AkaniPlayer;
 import it.einjojo.akani.core.paper.PaperAkaniCore;
 import it.einjojo.akani.core.paper.player.PaperAkaniPlayer;
+import it.einjojo.akani.core.paper.scoreboard.ScoreboardManager;
 import it.einjojo.akani.essentials.cmdspy.CommandObserverRegistry;
 import it.einjojo.akani.essentials.command.*;
 import it.einjojo.akani.essentials.command.economy.MoneyCommand;
@@ -36,6 +37,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,6 +56,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
     private MessageService messageService;
     private TpaService tpaService;
     private Gson gson;
+    private ScoreboardManager scoreboardManager;
     private EssentialsConfig config;
 
 
@@ -77,6 +80,15 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             new MessageListener(this);
             new CommandSpyListener(this, commandObserverRegistry);
             //new BlockThrower(this);
+
+            RegisteredServiceProvider<ScoreboardManager> scoreboardManagerProvider = Bukkit.getServicesManager().getRegistration(ScoreboardManager.class);
+            if (scoreboardManagerProvider != null) {
+                scoreboardManager = scoreboardManagerProvider.getProvider();
+            } else {
+                getLogger().severe("ScoreboardManager not found");
+                getServer().getPluginManager().disablePlugin(this);
+                return;
+            }
 
 
             // PAPI
@@ -183,6 +195,10 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
 
     public TpaService tpaService() {
         return tpaService;
+    }
+
+    public ScoreboardManager scoreboardManager() {
+        return scoreboardManager;
     }
 
     // Utility
