@@ -24,10 +24,6 @@ import it.einjojo.akani.essentials.listener.ChatListener;
 import it.einjojo.akani.essentials.listener.CommandSpyListener;
 import it.einjojo.akani.essentials.listener.MessageListener;
 import it.einjojo.akani.essentials.listener.ScoreboardListener;
-import it.einjojo.akani.essentials.scoreboard.AsyncScoreboardUpdateTask;
-import it.einjojo.akani.essentials.scoreboard.ScoreboardManager;
-import it.einjojo.akani.essentials.scoreboard.defaults.DefaultScoreboardProvider;
-import it.einjojo.akani.essentials.scoreboard.defaults.PlotworldScoreboardProvider;
 import it.einjojo.akani.essentials.service.MessageService;
 import it.einjojo.akani.essentials.service.TpaService;
 import it.einjojo.akani.essentials.util.EssentialKey;
@@ -40,7 +36,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,7 +51,6 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
     private PaperAkaniCore core;
     private WarpManager warpManager;
     private PaperCommandManager commandManager;
-    private ScoreboardManager scoreboardManager;
     private MessageService messageService;
     private TpaService tpaService;
     private Gson gson;
@@ -72,10 +66,6 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             gson = new Gson();
             warpManager = new WarpManager(this);
             warpManager.load();
-            //scoreboard
-            scoreboardManager = new ScoreboardManager(new DefaultScoreboardProvider(this));
-            scoreboardManager.registerProvider(new PlotworldScoreboardProvider(this));
-            getServer().getServicesManager().register(ScoreboardManager.class, scoreboardManager, this, ServicePriority.Normal);
             //services
             tpaService = new TpaService(core.jedisPool());
             messageService = new MessageService(core().brokerService(), this, core().jedisPool());
@@ -88,8 +78,6 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             new CommandSpyListener(this, commandObserverRegistry);
             //new BlockThrower(this);
 
-            //Tasks
-            new AsyncScoreboardUpdateTask(scoreboardManager).start(this);
 
             // PAPI
             new EssentialsPlaceholderExpansion(this).register();
@@ -129,7 +117,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
                     }
                 }
                 getLogger().severe("Error while executing command " + registeredCommand.getCommand() + " " + String.join(" ", args));
-                t.printStackTrace();
+                t.fillInStackTrace();
                 sendMessage(commandSender, EssentialKey.GENERIC_ERROR);
                 return true;
             }, false);
@@ -179,7 +167,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         } catch (Exception e) {
             getLogger().severe("Error while enabling AkaniEssentials");
             getLogger().severe(e.getMessage());
-            e.printStackTrace();
+            e.fillInStackTrace();
             getServer().getPluginManager().disablePlugin(this);
         }
     }
@@ -254,9 +242,6 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
         return gson;
     }
 
-    public ScoreboardManager scoreboardManager() {
-        return scoreboardManager;
-    }
 
     public MessageService messageService() {
         return messageService;
