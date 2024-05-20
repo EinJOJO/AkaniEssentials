@@ -50,7 +50,6 @@ public class HomeCommand extends BaseCommand {
         plugin.core().homeManager().homesAsync(sender.getUniqueId()).thenAccept(homeHolder -> {
             plugin.sendMessage(sender, EssentialKey.of("home.list.title"));
             for (Home home : homeHolder.homes()) {
-                sender.sendMessage("§7" + homeHolder.homeCount());
                 plugin.sendMessage(sender, EssentialKey.of("home.list.entry"), (s) -> s.replaceAll("%home%", home.name()));
             }
         }).exceptionally((e) -> {
