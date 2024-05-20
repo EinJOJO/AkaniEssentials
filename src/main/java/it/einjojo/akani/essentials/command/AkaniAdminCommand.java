@@ -25,6 +25,12 @@ public class AkaniAdminCommand extends BaseCommand {
         plugin.commandManager().registerCommand(this);
     }
 
+    @Subcommand("reload-messages")
+    public void reloadMessages(CommandSender sender) {
+        plugin.core().messageManager().load();
+        sender.sendMessage("§aMessages reloaded.");
+    }
+
     @Subcommand("redis")
     public void showRedisStatus(CommandSender sender) {
         JedisPool pool = plugin.core().jedisPool();
