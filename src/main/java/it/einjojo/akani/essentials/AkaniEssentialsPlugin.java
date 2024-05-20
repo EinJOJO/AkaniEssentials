@@ -24,7 +24,6 @@ import it.einjojo.akani.essentials.command.msg.SocialSpyCommand;
 import it.einjojo.akani.essentials.listener.ChatListener;
 import it.einjojo.akani.essentials.listener.CommandSpyListener;
 import it.einjojo.akani.essentials.listener.MessageListener;
-import it.einjojo.akani.essentials.listener.ScoreboardListener;
 import it.einjojo.akani.essentials.service.MessageService;
 import it.einjojo.akani.essentials.service.TpaService;
 import it.einjojo.akani.essentials.util.EssentialKey;
@@ -76,7 +75,6 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
 
             // Listener
             new ChatListener(this);
-            new ScoreboardListener(this);
             new MessageListener(this);
             new CommandSpyListener(this, commandObserverRegistry);
             //new BlockThrower(this);
@@ -177,6 +175,9 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             new RenameCommand(this);
             new TpaCommand(this);
             new HomeCommand(this);
+            if (Bukkit.getServer().getPluginManager().getPlugin("PlotSquared") == null) {
+                new PlotSquaredCommand(this);
+            }
         } catch (Exception e) {
             getLogger().severe("Error while enabling AkaniEssentials");
             getLogger().severe(e.getMessage());
