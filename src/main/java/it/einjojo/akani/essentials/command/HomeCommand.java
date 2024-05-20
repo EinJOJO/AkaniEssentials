@@ -1,10 +1,7 @@
 package it.einjojo.akani.essentials.command;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.*;
 import it.einjojo.akani.core.api.home.Home;
 import it.einjojo.akani.core.api.home.HomeHolder;
 import it.einjojo.akani.core.api.network.NetworkLocation;
@@ -31,7 +28,8 @@ public class HomeCommand extends BaseCommand {
 
     @Default
     @CommandCompletion("@homes")
-    public void teleportHome(Player sender, String homeName) {
+    @Description("teleport to a home")
+    public void teleportHome(Player sender, @Optional @Single String homeName) {
         plugin.core().homeManager().homesAsync(sender.getUniqueId()).thenAcceptAsync((homeHolder -> {
             homeHolder.home(homeName).ifPresentOrElse((home) -> {
                 home.teleport(sender);
@@ -47,6 +45,7 @@ public class HomeCommand extends BaseCommand {
     }
 
     @Subcommand("list")
+    @Description("List your homes")
     public void listHomes(Player sender) {
         plugin.core().homeManager().homesAsync(sender.getUniqueId()).thenAccept(homeHolder -> {
             plugin.sendMessage(sender, EssentialKey.of("home.list.title"));
@@ -54,11 +53,16 @@ public class HomeCommand extends BaseCommand {
                 sender.sendMessage("§7" + homeHolder.homeCount());
                 plugin.sendMessage(sender, EssentialKey.of("home.list.entry"), (s) -> s.replaceAll("%home%", home.name()));
             }
+        }).exceptionally((e) -> {
+            plugin.sendMessage(sender, EssentialKey.GENERIC_ERROR);
+            plugin.getSLF4JLogger().error("Error while listing homes", e);
+            return null;
         });
     }
 
     @Subcommand("set")
     @CommandCompletion("<name>")
+    @Description("Set a home")
     public void setHome(Player sender, String name) {
         if (name.length() > 16) {
             plugin.sendMessage(sender, EssentialKey.of("home.name-too-long"));
@@ -92,9 +96,7 @@ public class HomeCommand extends BaseCommand {
         for (String permission : player.getEffectivePermissions().stream().map(PermissionAttachmentInfo::getPermission).toList()) {
             Matcher matcher = PERMISSION_PATTERN.matcher(permission);
             if (matcher.matches()) {
-                int count = Integer.parseInt(matcher.group(1));
-
-                return count;
+                return Integer.parseInt(matcher.group(1));
             }
         }
         return 3;
@@ -102,6 +104,7 @@ public class HomeCommand extends BaseCommand {
 
     @Subcommand("remove")
     @CommandCompletion("@homes")
+    @Description("Remove a home")
     public void removeHome(Player sender, String name) {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             if (plugin.core().homeManager().homes(sender.getUniqueId()).removeHome(name)) {

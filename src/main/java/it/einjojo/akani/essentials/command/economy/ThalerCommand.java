@@ -70,8 +70,10 @@ public class ThalerCommand extends BaseCommand {
             } catch (BadBalanceException e) {
                 plugin.sendMessage(sender, EssentialKey.of("economy.error"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
             }
+        }).exceptionally((ex) -> {
+            plugin.sendMessage(sender, EssentialKey.GENERIC_ERROR);
+            return null;
         });
-        plugin.sendMessage(sender, EssentialKey.of("thaler.set"), (s) -> s.replaceAll("%player%", target.name()).replaceAll("%balance%", String.valueOf(coins)));
     }
 
     @Subcommand("remove")
