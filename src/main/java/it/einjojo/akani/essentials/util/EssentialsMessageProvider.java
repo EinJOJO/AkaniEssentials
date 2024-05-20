@@ -139,6 +139,10 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("home.remove"), "%prefix% <yellow>Das Zuhause %home% wurde entfernt!");
         s.registerMessage("de", EssentialKey.of("home.limit"), "%prefix% <red>Das Limit von %limit% wurde erreicht!");
 
+        // plot adapter command
+        s.registerMessage("de", EssentialKey.of("plots.connecting.title"), "<yellow>Verbinde...");
+        s.registerMessage("de", EssentialKey.of("plots.connecting.subtitle"), "<gray>Bitte warte einen Moment...");
+        s.registerMessage("de", EssentialKey.of("plots.connecting.failed"), "%prefix% <red>Verbindung zum Citybuild-Server fehlgeschlagen!");
 
     }
 }
