@@ -176,6 +176,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             new SignCommand(this);
             new RenameCommand(this);
             new TpaCommand(this);
+            new HomeCommand(this);
         } catch (Exception e) {
             getLogger().severe("Error while enabling AkaniEssentials");
             getLogger().severe(e.getMessage());

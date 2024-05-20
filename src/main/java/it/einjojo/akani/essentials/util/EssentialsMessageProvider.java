@@ -16,11 +16,7 @@ public record EssentialsMessageProvider() implements MessageProvider {
 
     @Override
     public void insertMessages(MessageStorage s) {
-        s.registerMessage("de", EssentialKey.GENERIC_ERROR, "%prefix% <red>Ein Fehler ist aufgetreten!");
-        s.registerMessage("de", EssentialKey.SPECIFY_PLAYER, "%prefix% <red>Du musst einen Spieler angeben!");
-        s.registerMessage("de", EssentialKey.PLAYER_NOT_FOUND, "%prefix% <red>Der Spieler wurde nicht gefunden!");
-        s.registerMessage("de", EssentialKey.PLAYER_NOT_ONLINE, "%prefix% <red>Der Spieler ist nicht online!");
-        s.registerMessage("de", EssentialKey.NO_PERMISSION, "%prefix% <red>Du hast keine Berechtigung für diesen Befehl!");
+
 
         //teleport
         s.registerMessage("de", EssentialKey.of("teleport.not_self"), "%prefix% <red>Du kannst dich nicht zu dir selbst teleportieren!");
@@ -62,7 +58,7 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("back.no_location"), "%prefix% <red>Kein Rückteleportationsort gefunden!");
 
         //heal/feed
-        s.registerMessage("de", EssentialKey.HEAL_SELF, "%prefix% <yellow>Du wurdest geheilt!");
+        s.registerMessage("de", EssentialKey.HEAL_SELF, "%prefix% <yellow>Du wurdest geheilt!"); //TODO: consistency!
         s.registerMessage("de", EssentialKey.HEAL_OTHER, "%prefix% <yellow>%player% wurde geheilt!");
         s.registerMessage("de", EssentialKey.FEED_SELF, "%prefix% <yellow>Dein Hunger wurde gestillt!");
         s.registerMessage("de", EssentialKey.FEED_OTHER, "%prefix% <yellow>%player% Hunger wurde gestillt!");
@@ -76,10 +72,6 @@ public record EssentialsMessageProvider() implements MessageProvider {
         //give
         s.registerMessage("de", EssentialKey.of("give.success"), "%prefix% <yellow>Das Item %item% wurde %amount%x an %player% gegeben!");
         s.registerMessage("de", EssentialKey.of("give.item_not_found"), "%prefix% <red>Das OraxenItem mit der ID %item% wurde nicht gefunden!");
-
-        //scoreboard
-        s.registerMessage("de", EssentialKey.of("sb.default.title"), "<red><bold>ᴀᴋᴀɴɪ.ɴᴇᴛ <white>ɴᴇᴛᴢᴡᴇʀᴋ");
-        s.registerMessage("de", EssentialKey.of("sb.default.server_key"), "<red>Server");
 
         // server
         s.registerMessage("de", EssentialKey.of("server.connect"), "%prefix% <yellow>%player% wird auf %server% verbunden!");
@@ -135,6 +127,17 @@ public record EssentialsMessageProvider() implements MessageProvider {
         // time
         s.registerMessage("de", EssentialKey.of("time.set"), "%prefix% <yellow>Die Zeit wurde auf %time% gesetzt!");
         s.registerMessage("de", EssentialKey.of("time.invalid"), "%prefix% <red>Ungültige Zeit!");
+
+        // home
+        s.registerMessage("de", EssentialKey.of("home.exists"), "%prefix% <red>Das Zuhause %home% existiert bereits!");
+        s.registerMessage("de", EssentialKey.of("home.name-too-long"), "%prefix% <red>Der Name des Zuhauses ist zu lang!");
+        s.registerMessage("de", EssentialKey.of("home.teleport"), "%prefix% <yellow>Du wurdest zum Zuhause %home% teleportiert!");
+        s.registerMessage("de", EssentialKey.of("home.not-found"), "%prefix% <red>Das Zuhause %home% wurde nicht gefunden!");
+        s.registerMessage("de", EssentialKey.of("home.list.title"), "%prefix% <yellow>Deine Zuhause:");
+        s.registerMessage("de", EssentialKey.of("home.list.entry"), "<gray>-<yellow>%home% <click:run_command:/home %home%><hover:show_text:'§7Teleportiere dich zu deinem Zuhause'><u>[Teleportieren]</u></hover></click>");
+        s.registerMessage("de", EssentialKey.of("home.set"), "%prefix% <yellow>Das Zuhause %home% wurde gesetzt!");
+        s.registerMessage("de", EssentialKey.of("home.remove"), "%prefix% <yellow>Das Zuhause %home% wurde entfernt!");
+
 
     }
 }
