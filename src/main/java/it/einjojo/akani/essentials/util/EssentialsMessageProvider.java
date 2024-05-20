@@ -137,6 +137,7 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("home.list.entry"), "<gray>-<yellow>%home% <click:run_command:/home %home%><hover:show_text:'§7Teleportiere dich zu deinem Zuhause'><u>[Teleportieren]</u></hover></click>");
         s.registerMessage("de", EssentialKey.of("home.set"), "%prefix% <yellow>Das Zuhause %home% wurde gesetzt!");
         s.registerMessage("de", EssentialKey.of("home.remove"), "%prefix% <yellow>Das Zuhause %home% wurde entfernt!");
+        s.registerMessage("de", EssentialKey.of("home.limit"), "%prefix% <red>Das Limit von %limit% wurde erreicht!");
 
 
     }

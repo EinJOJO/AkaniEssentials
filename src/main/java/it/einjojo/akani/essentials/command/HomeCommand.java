@@ -6,15 +6,21 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
 import it.einjojo.akani.core.api.home.Home;
+import it.einjojo.akani.core.api.home.HomeHolder;
 import it.einjojo.akani.core.api.network.NetworkLocation;
 import it.einjojo.akani.core.paper.AkaniBukkitAdapter;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachmentInfo;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @CommandAlias("home|homes")
 public class HomeCommand extends BaseCommand {
 
+    private static final Pattern PERMISSION_PATTERN = Pattern.compile("essentials\\.homes\\.(\\d+)");
     private final AkaniEssentialsPlugin plugin;
 
     public HomeCommand(AkaniEssentialsPlugin plugin) {
@@ -46,7 +52,7 @@ public class HomeCommand extends BaseCommand {
             plugin.sendMessage(sender, EssentialKey.of("home.list.title"));
             for (Home home : homeHolder.homes()) {
                 sender.sendMessage("§7" + homeHolder.homeCount());
-                plugin.sendMessage(sender, EssentialKey.of("home.list.entry"), (s) -> s.replace("%home%", home.name()));
+                plugin.sendMessage(sender, EssentialKey.of("home.list.entry"), (s) -> s.replaceAll("%home%", home.name()));
             }
         });
     }
@@ -59,17 +65,40 @@ public class HomeCommand extends BaseCommand {
             return;
         }
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            if (plugin.core().homeManager().homes(sender.getUniqueId()).home(name).isPresent()) {
+            HomeHolder homeHolder = plugin.core().homeManager().homes(sender.getUniqueId());
+            if (homeHolder.home(name).isPresent()) {
                 plugin.sendMessage(sender, EssentialKey.of("home.exists"), (s) -> s.replace("%home%", name));
                 return;
             }
+            int limit = getMaxHomeCount(sender);
+            sender.sendMessage("§7" + homeHolder.homeCount() + "§8/ §7" + limit);
+            if (homeHolder.homeCount() >= limit) {
+                plugin.sendMessage(sender, EssentialKey.of("home.limit"), (s) -> s.replace("%limit%", limit + ""));
+                return;
+            }
+
             Home home = plugin.core().createHomeFactory().createHome(sender.getUniqueId(), name, AkaniBukkitAdapter.networkLocation(sender.getLocation()).referenceName(plugin.core().serverName()).type(NetworkLocation.Type.SERVER).build());
-            if (plugin.core().homeManager().homes(sender.getUniqueId()).addHome(home)) {
+            if (homeHolder.addHome(home)) {
                 plugin.sendMessage(sender, EssentialKey.of("home.set"), (s) -> s.replace("%home%", name));
             } else {
                 plugin.sendMessage(sender, EssentialKey.GENERIC_ERROR);
             }
         });
+    }
+
+    private int getMaxHomeCount(Player player) {
+        if (player.hasPermission("essentials.homes")) {
+            return Integer.MAX_VALUE;
+        }
+        for (String permission : player.getEffectivePermissions().stream().map(PermissionAttachmentInfo::getPermission).toList()) {
+            Matcher matcher = PERMISSION_PATTERN.matcher(permission);
+            if (matcher.matches()) {
+                int count = Integer.parseInt(matcher.group(1));
+
+                return count;
+            }
+        }
+        return 3;
     }
 
     @Subcommand("remove")
