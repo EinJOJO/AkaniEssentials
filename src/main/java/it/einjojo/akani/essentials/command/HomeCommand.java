@@ -71,7 +71,6 @@ public class HomeCommand extends BaseCommand {
                 return;
             }
             int limit = getMaxHomeCount(sender);
-            sender.sendMessage("§7" + homeHolder.homeCount() + "§8/ §7" + limit);
             if (homeHolder.homeCount() >= limit) {
                 plugin.sendMessage(sender, EssentialKey.of("home.limit"), (s) -> s.replace("%limit%", limit + ""));
                 return;
