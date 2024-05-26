@@ -22,7 +22,7 @@ public class WarpManager {
     private final AkaniEssentialsPlugin plugin;
 
     public WarpManager(AkaniEssentialsPlugin plugin) {
-        storage = new WarpStorage(plugin.core().dataSource(), plugin.gson());
+        storage = new WarpStorage(plugin.core().dataSourceProxy(), plugin.gson());
         storage.init();
         this.plugin = plugin;
     }

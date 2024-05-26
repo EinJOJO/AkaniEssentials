@@ -2,8 +2,8 @@ package it.einjojo.akani.essentials.warp;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.zaxxer.hikari.HikariDataSource;
 import it.einjojo.akani.core.api.network.NetworkLocation;
+import it.einjojo.akani.core.api.util.HikariDataSourceProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,12 +12,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public record WarpStorage(HikariDataSource dataSource, Gson gson) {
+public record WarpStorage(HikariDataSourceProxy akaniDataSource, Gson gson) {
     private static final String TABLE_NAME = "essentials_warps";
     private static final Logger log = LoggerFactory.getLogger(WarpStorage.class);
 
     public void init() {
-        try (var conn = dataSource.getConnection()) {
+        try (var conn = akaniDataSource.getConnection()) {
             conn.createStatement().execute("CREATE TABLE IF NOT EXISTS %s (name VARCHAR(100), icon JSON, location JSON, PRIMARY KEY (name), CHECK(JSON_VALID(icon)), CHECK(JSON_VALID(location)));".formatted(TABLE_NAME));
         } catch (SQLException e) {
             log.error("Error creating warps table", e);
@@ -25,18 +25,16 @@ public record WarpStorage(HikariDataSource dataSource, Gson gson) {
     }
 
     public List<Warp> loadWarps() {
-        try (var conn = dataSource.getConnection()) {
-            try (var ps = conn.prepareStatement("SELECT * FROM %s".formatted(TABLE_NAME))) {
-                var rs = ps.executeQuery();
-                var warps = new ArrayList<Warp>();
-                while (rs.next()) {
-                    var warp = parseWarpFromResultSet(rs);
-                    if (warp != null) warps.add(warp);
-                }
-                log.debug("Loaded {} warps from database.", warps.size());
-                return warps;
+        try (var conn = akaniDataSource.getConnection(); var ps = conn.prepareStatement("SELECT * FROM %s".formatted(TABLE_NAME))) {
+            var rs = ps.executeQuery();
+            var warps = new ArrayList<Warp>();
+            while (rs.next()) {
+                var warp = parseWarpFromResultSet(rs);
+                if (warp != null) warps.add(warp);
             }
-
+            log.debug("Loaded {} warps from database.", warps.size());
+            rs.close();
+            return warps;
         } catch (SQLException e) {
             log.error("Error loading warps", e);
             return List.of();
@@ -57,14 +55,14 @@ public record WarpStorage(HikariDataSource dataSource, Gson gson) {
     }
 
     public boolean createWarp(Warp warp) {
-        try (var conn = dataSource.getConnection()) {
-            try (var ps = conn.prepareStatement("INSERT INTO %s (name, icon, location) VALUES (?, ?, ?)".formatted(TABLE_NAME))) {
-                ps.setString(1, warp.name());
-                ps.setString(2, gson.toJson(warp.icon().toJsonObject()));
-                ps.setString(3, gson.toJson(warp.networkLocation()));
-                ps.execute();
-                return true;
-            }
+        try (var conn = akaniDataSource.getConnection();
+             var ps = conn.prepareStatement("INSERT INTO %s (name, icon, location) VALUES (?, ?, ?)".formatted(TABLE_NAME))) {
+            ps.setString(1, warp.name());
+            ps.setString(2, gson.toJson(warp.icon().toJsonObject()));
+            ps.setString(3, gson.toJson(warp.networkLocation()));
+            ps.execute();
+            return true;
+
         } catch (SQLException e) {
             log.error("Error creating warp", e);
             return false;
@@ -72,7 +70,7 @@ public record WarpStorage(HikariDataSource dataSource, Gson gson) {
     }
 
     public void deleteWarp(String warpName) {
-        try (var conn = dataSource.getConnection()) {
+        try (var conn = akaniDataSource.getConnection()) {
             try (var ps = conn.prepareStatement("DELETE FROM %s WHERE name = ?".formatted(TABLE_NAME))) {
                 ps.setString(1, warpName);
                 ps.execute();
@@ -83,7 +81,7 @@ public record WarpStorage(HikariDataSource dataSource, Gson gson) {
     }
 
     public void updateWarp(Warp warp) {
-        try (var conn = dataSource.getConnection()) {
+        try (var conn = akaniDataSource.getConnection()) {
             try (var ps = conn.prepareStatement("UPDATE %s SET icon = ?, location = ? WHERE name = ?".formatted(TABLE_NAME))) {
                 ps.setString(1, gson.toJson(warp.icon().toJsonObject()));
                 ps.setString(2, gson.toJson(warp.networkLocation()));
