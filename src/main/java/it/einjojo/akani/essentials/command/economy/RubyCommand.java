@@ -8,12 +8,12 @@ import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.entity.Player;
 
-@CommandAlias("thaler|taler")
-public class ThalerCommand extends BaseCommand {
+@CommandAlias("rubine|ruby|rubinen")
+public class RubyCommand extends BaseCommand {
 
     private final AkaniEssentialsPlugin plugin;
 
-    public ThalerCommand(AkaniEssentialsPlugin plugin) {
+    public RubyCommand(AkaniEssentialsPlugin plugin) {
         this.plugin = plugin;
         plugin.commandManager().registerCommand(this);
     }

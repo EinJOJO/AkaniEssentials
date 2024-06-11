@@ -13,7 +13,7 @@ import it.einjojo.akani.essentials.cmdspy.CommandObserverRegistry;
 import it.einjojo.akani.essentials.command.*;
 import it.einjojo.akani.essentials.command.economy.MoneyCommand;
 import it.einjojo.akani.essentials.command.economy.PayCommand;
-import it.einjojo.akani.essentials.command.economy.ThalerCommand;
+import it.einjojo.akani.essentials.command.economy.RubyCommand;
 import it.einjojo.akani.essentials.command.item.GiveCommand;
 import it.einjojo.akani.essentials.command.item.HatCommand;
 import it.einjojo.akani.essentials.command.item.RenameCommand;
@@ -156,7 +156,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             new SpeedCommand(this);
             new FlyCommand(this);
             new WorkbenchCommand(this);
-            new ThalerCommand(this);
+            new RubyCommand(this);
             new PayCommand(this);
             new AkaniAdminCommand(this);
             new BackCommand(this);
