@@ -59,6 +59,10 @@ public class PayCommand extends BaseCommand {
     @CommandCompletion("1|20|50")
     @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "pay.all")
     public void payAll(Player sender, int amount) {
+        if (amount <= 0) {
+            plugin.sendMessage(sender, EssentialKey.of("coins.bad-value"));
+            return;
+        }
         List<AkaniPlayer> akaniPlayerList = plugin.core().playerManager().onlinePlayers();
         int totalAmount = amount * akaniPlayerList.size();
         AkaniPlayer akaniSender = plugin.core().playerManager().onlinePlayer(sender.getUniqueId()).orElseThrow(IllegalArgumentException::new);
