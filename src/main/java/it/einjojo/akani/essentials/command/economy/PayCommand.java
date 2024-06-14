@@ -38,6 +38,7 @@ public class PayCommand extends BaseCommand {
     public void pay(AkaniPlayer sender, AkaniOfflinePlayer receiver, int amount) {
         if (amount <= 0) {
             plugin.sendMessage(sender, EssentialKey.of("coins.bad-value"));
+            return;
         }
         try {
             sender.coins().removeBalance(amount);
