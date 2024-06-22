@@ -12,6 +12,7 @@ jedis = "5.1.0"
 hikaricp = "5.1.0"
 fastboard="2.1.0"
 placeholderapi = "2.11.5"
+obliviateinv = "4.3.0"
 
 [libraries]
 acf = { group = "co.aikar", name = "acf-paper", version.ref = "acf" }
@@ -26,7 +27,9 @@ akanicore = { group = "it.einjojo.akani.core", name = "paper", version.ref = "ak
 caffeine = { group = "com.github.ben-manes.caffeine", name = "caffeine", version.ref = "caffeine" }
 fastboard = { group = "fr.mrmicky", name = "fastboard", version.ref = "fastboard" }
 placeholderapi = { group = "me.clip", name = "placeholderapi", version.ref = "placeholderapi" }
-
+obliviateinvcore = {group = "com.github.hamza-cskn.obliviate-invs", name = "core", version.ref = "obliviateinv"}
+obliviateinvpagination = {group = "com.github.hamza-cskn.obliviate-invs", name = "pagination", version.ref = "obliviateinv"}
+obliviateinvadvancedslot = {group = "com.github.hamza-cskn.obliviate-invs", name = "advancedslot", version.ref = "obliviateinv"}
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
