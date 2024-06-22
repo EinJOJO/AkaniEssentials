@@ -9,13 +9,13 @@ group = "it.einjojo.akani"
 version = "1.7.0"
 
 repositories {
-    mavenLocal()
     mavenCentral()
     maven("https://repo.aikar.co/content/groups/aikar/")
     maven("https://repo.oraxen.com/releases")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://jitpack.io")
     maven("https://repo.akani.dev/releases")
+    mavenLocal()
 
 }
 
