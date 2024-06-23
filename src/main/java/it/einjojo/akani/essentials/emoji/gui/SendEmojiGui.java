@@ -26,7 +26,7 @@ public class SendEmojiGui extends Gui {
         super(player, "emojiSelector", "§cSende einen Emoji", 6);
         this.emojiManager = emojiManager;
         this.messageService = messageService;
-        paginationManager.registerPageSlots(0, 9 * 5 - 1);
+        paginationManager.registerPageSlotsBetween(0, 9 * 5 - 1);
         emojiStream = emojiManager.allEmojis().stream().filter((emoji) -> emoji.isUnlocked(player));
     }
 
@@ -43,6 +43,7 @@ public class SendEmojiGui extends Gui {
                 onEmojiClick(emoji, clickEvent);
             }));
         });
+        paginationManager.update();
     }
 
 

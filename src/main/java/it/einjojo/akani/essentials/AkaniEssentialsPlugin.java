@@ -22,6 +22,7 @@ import it.einjojo.akani.essentials.command.msg.MsgCommand;
 import it.einjojo.akani.essentials.command.msg.ReplyCommand;
 import it.einjojo.akani.essentials.command.msg.SocialSpyCommand;
 import it.einjojo.akani.essentials.emoji.EmojiManager;
+import it.einjojo.akani.essentials.emoji.EmojiMessageProcessor;
 import it.einjojo.akani.essentials.listener.ChatListener;
 import it.einjojo.akani.essentials.listener.CommandSpyListener;
 import it.einjojo.akani.essentials.listener.MessageListener;
@@ -32,6 +33,7 @@ import it.einjojo.akani.essentials.util.EssentialKey;
 import it.einjojo.akani.essentials.util.EssentialsConfig;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
 import it.einjojo.akani.essentials.warp.WarpManager;
+import mc.obliviate.inventory.InventoryAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -65,6 +67,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        new InventoryAPI(this).init();
         try {
             config = new EssentialsConfig(this);
             core = (PaperAkaniCore) AkaniCoreProvider.get();
@@ -77,11 +80,6 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             messageService = new MessageService(core().brokerService(), this, core().jedisPool());
             CommandObserverRegistry commandObserverRegistry = new CommandObserverRegistry(this);
 
-            // Listener
-            new ChatListener(this);
-            new MessageListener(this);
-            new CommandSpyListener(this, commandObserverRegistry);
-            //new BlockThrower(this);
 
             RegisteredServiceProvider<ScoreboardManager> scoreboardManagerProvider = Bukkit.getServicesManager().getRegistration(ScoreboardManager.class);
             if (scoreboardManagerProvider != null) {
@@ -99,6 +97,13 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             // emoji
             emojiManager = new EmojiManager(new EmojiConfig(this));
             emojiManager.load();
+
+            // Listener
+            new ChatListener(this, new EmojiMessageProcessor(emojiManager));
+            new MessageListener(this);
+            new CommandSpyListener(this, commandObserverRegistry);
+            //new BlockThrower(this);
+
 
             // commands
             getLogger().info("Registering commands");
@@ -134,8 +139,8 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
                         sendMessage(commandSender, EssentialKey.of("coins.bad-value"));
                     }
                 }
-                getLogger().severe("Error while executing command " + registeredCommand.getCommand() + " " + String.join(" ", args));
-                t.fillInStackTrace();
+                getSLF4JLogger().error("Error while executing command {} {}", registeredCommand.getCommand(), String.join(" ", args), t);
+
                 sendMessage(commandSender, EssentialKey.GENERIC_ERROR);
                 return true;
             }, false);

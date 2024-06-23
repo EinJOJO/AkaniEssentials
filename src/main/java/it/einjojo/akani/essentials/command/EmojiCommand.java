@@ -63,7 +63,7 @@ public class EmojiCommand extends BaseCommand {
     @Description("Create a new emoji")
     @CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "emoji.create")
     @CommandCompletion("<name> <emoji> @emojiRarity <aliases> <permission>|chat.emoji. <customModelData>")
-    public void createEmoji(Player sender, @Single String name, @Single String emoji, @Values("@emojiRarity") EmojiRarity rarity, @Split(",") String[] aliases, @Single String permission, int customModelData) {
+    public void createEmoji(Player sender, @Single String name, @Single String emoji, @Values("@emojiRarity") EmojiRarity rarity, @Split(";") String[] aliases, @Single String permission, int customModelData) {
         emojiManager().addEmoji(new Emoji(name, permission, aliases, rarity, emoji, customModelData));
         plugin.sendMessage(sender, EssentialKey.of("emoji.create"), (s) -> s.replace("%emojiName%", name)
                 .replace("%rarity%", rarity.name())

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "it.einjojo.akani"
-version = "1.7.0"
+version = "1.7.1"
 
 repositories {
     mavenCentral()
@@ -65,6 +65,7 @@ tasks {
         archiveVersion.set("")
         relocate("co.aikar.commands", "it.einjojo.akani.essentials.command.acf")
         relocate("fr.mrmicky.fastboard", "it.einjojo.akani.essentials.scoreboard.fastboard")
+        relocate("mc.obliviate.inventory", "it.einjojo.akani.essentials.inventory")
 
     }
 
