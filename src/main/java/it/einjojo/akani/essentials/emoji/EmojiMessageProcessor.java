@@ -1,5 +1,7 @@
 package it.einjojo.akani.essentials.emoji;
 
+import org.bukkit.entity.Player;
+
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +14,7 @@ public class EmojiMessageProcessor {
         this.emojiManager = emojiManager;
     }
 
-    public String process(UUID sender, String message) {
+    public String process(Player sender, String message) {
         Matcher matcher = EMOJI_PATTERN.matcher(message);
         StringBuilder processedMessage = new StringBuilder();
 
@@ -22,7 +24,7 @@ public class EmojiMessageProcessor {
             String emojiName = placeholder.substring(1, placeholder.length() - 1); // Remove the surrounding colons
             Emoji emoji = emojiManager.emoji(emojiName);
 
-            if (emoji != null && emojiManager.container(sender).hasEmoji(emoji)) {
+            if (emoji != null && emoji.isUnlocked(sender)) {
                 matcher.appendReplacement(processedMessage, emoji.emoji());
             } else {
                 matcher.appendReplacement(processedMessage, placeholder);

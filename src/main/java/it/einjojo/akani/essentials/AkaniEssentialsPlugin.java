@@ -21,11 +21,13 @@ import it.einjojo.akani.essentials.command.item.SignCommand;
 import it.einjojo.akani.essentials.command.msg.MsgCommand;
 import it.einjojo.akani.essentials.command.msg.ReplyCommand;
 import it.einjojo.akani.essentials.command.msg.SocialSpyCommand;
+import it.einjojo.akani.essentials.emoji.EmojiManager;
 import it.einjojo.akani.essentials.listener.ChatListener;
 import it.einjojo.akani.essentials.listener.CommandSpyListener;
 import it.einjojo.akani.essentials.listener.MessageListener;
 import it.einjojo.akani.essentials.service.MessageService;
 import it.einjojo.akani.essentials.service.TpaService;
+import it.einjojo.akani.essentials.util.EmojiConfig;
 import it.einjojo.akani.essentials.util.EssentialKey;
 import it.einjojo.akani.essentials.util.EssentialsConfig;
 import it.einjojo.akani.essentials.util.EssentialsMessageProvider;
@@ -52,6 +54,8 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
     private PaperAkaniCore core;
     private WarpManager warpManager;
     private PaperCommandManager commandManager;
+
+    private EmojiManager emojiManager;
     private MessageService messageService;
     private TpaService tpaService;
     private Gson gson;
@@ -91,6 +95,10 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
 
             // PAPI
             new EssentialsPlaceholderExpansion(this).register();
+
+            // emoji
+            emojiManager = new EmojiManager(new EmojiConfig(this));
+            emojiManager.load();
 
             // commands
             getLogger().info("Registering commands");
@@ -175,6 +183,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             new RenameCommand(this);
             new TpaCommand(this);
             new HomeCommand(this);
+            new EmojiCommand(this);
             if (Bukkit.getServer().getPluginManager().getPlugin("PlotSquared") == null) {
                 new PlotSquaredCommand(this);
             }
@@ -267,5 +276,10 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
 
     public EssentialsConfig config() {
         return config;
+    }
+
+
+    public EmojiManager emojiManager() {
+        return emojiManager;
     }
 }

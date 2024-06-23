@@ -144,5 +144,12 @@ public record EssentialsMessageProvider() implements MessageProvider {
         s.registerMessage("de", EssentialKey.of("plots.connecting.subtitle"), "<gray>Bitte warte einen Moment...");
         s.registerMessage("de", EssentialKey.of("plots.connecting.failed"), "%prefix% <red>Verbindung zum Citybuild-Server fehlgeschlagen!");
 
+        // emoji
+        s.registerMessage("de", EssentialKey.of("emoji.reload"), "%prefix% <yellow>Emoji-Konfiguration neu geladen!");
+        s.registerMessage("de", EssentialKey.of("emoji.save"), "%prefix% <yellow>Emoji-Konfiguration gespeichert!");
+        s.registerMessage("de", EssentialKey.of("emoji.create"), "%prefix% <yellow>Emoji %emojiName% erstellt! <gray>(%rarity%, %permission%, %customModelData%, %aliases%, %emoji%)");
+        s.registerMessage("de", EssentialKey.of("emoji.remove"), "%prefix% <yellow>Emoji %emoji% entfernt!");
+        s.registerMessage("de", EssentialKey.of("emoji.notFound"), "%prefix% <red>Emoji nicht gefunden!");
+
     }
 }
