@@ -77,7 +77,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             warpManager.load();
             //services
             tpaService = new TpaService(core.jedisPool());
-            messageService = new MessageService(core().brokerService(), this, core().jedisPool());
+            messageService = new MessageService(core().brokerService(), this, core().jedisPool(), core().tagManager());
             CommandObserverRegistry commandObserverRegistry = new CommandObserverRegistry(this);
 
 
