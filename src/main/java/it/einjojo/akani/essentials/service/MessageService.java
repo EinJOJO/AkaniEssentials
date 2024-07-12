@@ -7,12 +7,18 @@ import it.einjojo.akani.core.api.messaging.BrokerService;
 import it.einjojo.akani.core.api.messaging.ChannelMessage;
 import it.einjojo.akani.core.api.messaging.ChannelReceiver;
 import it.einjojo.akani.core.api.messaging.MessageProcessor;
+import it.einjojo.akani.core.api.player.AkaniOfflinePlayer;
 import it.einjojo.akani.core.api.player.AkaniPlayer;
+import it.einjojo.akani.core.api.tags.Tag;
+import it.einjojo.akani.core.api.tags.TagManager;
 import it.einjojo.akani.core.paper.AkaniBukkitAdapter;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Blocking;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +32,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public record MessageService(BrokerService brokerService, AkaniEssentialsPlugin plugin,
-                             JedisPool pool) implements MessageProcessor {
+                             JedisPool pool, TagManager tagManager) implements MessageProcessor {
     public static final String SOCIALSPY_WILDCARD = "*";
     private static final String PUBLIC_MESSAGE_TYPE = "c";
     private static final String REDIS_PREFIX = "akani:essentials:chat:";
@@ -160,11 +166,12 @@ public record MessageService(BrokerService brokerService, AkaniEssentialsPlugin 
                 var uuid = payload.readUTF();
                 var plainMessage = payload.readUTF();
                 AkaniPlayer player = core().playerManager().onlinePlayer(UUID.fromString(uuid)).orElseThrow();
-                Component message = plugin.miniMessage().deserialize(plugin.config().chatFormat()
-                        .replaceAll("%player%", player.name())
-                        .replaceAll("%message%", plainMessage)
-                        .replaceAll("%prefix%", player.plainPrefix().join()
-                        ));
+                Component message = plugin.miniMessage().deserialize(plugin.config().chatFormat(),
+                        PlaceholderResolver.message(plainMessage),
+                        PlaceholderResolver.sender(player),
+                        PlaceholderResolver.prefix(player),
+                        PlaceholderResolver.tag(player)
+                );
                 for (Player bukkitPlayer : Bukkit.getOnlinePlayers()) {
                     bukkitPlayer.sendMessage(message);
                 }
@@ -175,10 +182,10 @@ public record MessageService(BrokerService brokerService, AkaniEssentialsPlugin 
                 var plainMessage = payload.readUTF();
                 AkaniPlayer sender = core().playerManager().onlinePlayer((senderUUID)).orElseThrow();
                 AkaniPlayer receiver = core().playerManager().onlinePlayer((receiverUUID)).orElseThrow();
-                Component message = plugin.miniMessage().deserialize(plugin.config().privateChatFormat()
-                        .replaceAll("%sender%", sender.name())
-                        .replaceAll("%receiver%", receiver.name())
-                        .replaceAll("%message%", plainMessage)
+                Component message = plugin.miniMessage().deserialize(plugin.config().privateChatFormat(),
+                        PlaceholderResolver.sender(sender),
+                        PlaceholderResolver.receiver(receiver),
+                        PlaceholderResolver.message(plainMessage)
                 );
                 AkaniBukkitAdapter.bukkitPlayer(senderUUID).ifPresent((bp) -> {
                     bp.sendMessage(message);
@@ -203,6 +210,32 @@ public record MessageService(BrokerService brokerService, AkaniEssentialsPlugin 
         } catch (Exception ex) {
             logger().warn("Could not process chat message: {}", channelMessage, ex);
         }
+    }
+
+    interface PlaceholderResolver {
+
+        @Blocking
+        static TagResolver prefix(AkaniOfflinePlayer player) {
+            return Placeholder.parsed("prefix", player.plainPrefix().join());
+        }
+
+        static TagResolver sender(AkaniOfflinePlayer akaniPlayer) {
+            return Placeholder.unparsed("sender", akaniPlayer.name());
+        }
+
+        static TagResolver tag(AkaniOfflinePlayer akaniOfflinePlayer) {
+            Tag selected = akaniOfflinePlayer.tagHolder().selectedTag();
+            return Placeholder.component("tag", selected == null ? Component.empty() : selected.displayText());
+        }
+
+        static TagResolver receiver(AkaniOfflinePlayer akaniPlayer) {
+            return Placeholder.unparsed("receiver", akaniPlayer.name());
+        }
+
+        static TagResolver message(String message) {
+            return Placeholder.unparsed("message", message);
+        }
+
     }
 
     public Logger logger() {

@@ -108,7 +108,7 @@ public class AkaniEssentialsPlugin extends JavaPlugin {
             // commands
             getLogger().info("Registering commands");
             commandManager = new PaperCommandManager(this);
-            commandManager.enableUnstableAPI("brigadier");
+            commandManager.enableUnstableAPI("help");
             // all online players except the sender
             commandManager.getCommandCompletions().registerAsyncCompletion("akaniplayers", c -> {
                 boolean includeSender = c.hasConfig("includeSender");
