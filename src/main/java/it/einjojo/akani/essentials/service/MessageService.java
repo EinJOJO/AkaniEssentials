@@ -39,12 +39,12 @@ public record MessageService(BrokerService brokerService, AkaniEssentialsPlugin 
     private static final String REDIS_LAST_CONVERSATION = REDIS_PREFIX + "last_conversation";
     private static final String REDIS_SOCIALSPY_LIST = REDIS_PREFIX + "socialspyer";
     private static final String PRIVATE_MESSAGE_TYPE = "msg";
-    private static final Logger logger = LoggerFactory.getLogger("Essentials-ChatService");
+    private static final Logger logger = LoggerFactory.getLogger("Essentials-MessageService");
 
 
     public MessageService {
         brokerService.registerMessageProcessor(this);
-        logger.info("Chat service initialized");
+        logger.info("Message service initialized");
     }
 
     public static String sanitizeMessage(String s) {
