@@ -22,7 +22,7 @@ public class InvseeCommand extends BaseCommand {
     @Default
     @CommandCompletion("@players")
     public void invsee(Player sender, OnlinePlayer target) {
-        sender.openInventory(target.getPlayer().getInventory()); // use husk-sync
+        sender.openInventory(target.getPlayer().getInventory()); //TODO use husk-sync
     }
 
 }

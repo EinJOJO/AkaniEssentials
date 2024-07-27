@@ -1,16 +1,14 @@
 package it.einjojo.akani.essentials.command;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Private;
-import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.*;
 import it.einjojo.akani.core.api.player.AkaniPlayer;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.entity.Player;
 
 @CommandAlias("back")
+@CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "back")
 public class BackCommand extends BaseCommand {
 
     private final AkaniEssentialsPlugin plugin;
@@ -40,7 +38,7 @@ public class BackCommand extends BaseCommand {
     @Private
     public void sendBack(Player sender) {
         AkaniPlayer player = plugin.core().playerManager().onlinePlayer(sender.getUniqueId()).orElseThrow();
-        if (!sender.hasPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "back")) {
+        if (!sender.hasPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "back.no-cost")) {
             player.coins().removeBalance(300);
         }
         plugin.core().backService().teleportBackAsync(player).thenAccept((success) -> {

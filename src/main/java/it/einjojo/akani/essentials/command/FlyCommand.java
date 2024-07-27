@@ -8,6 +8,7 @@ import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.entity.Player;
 
 @CommandAlias("fly")
+@CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "fly")
 public class FlyCommand extends BaseCommand {
     private final AkaniEssentialsPlugin plugin;
 

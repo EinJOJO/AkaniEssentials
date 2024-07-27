@@ -66,10 +66,4 @@ public class TeleportCommand extends BaseCommand {
         }
     }
 
-    @CatchUnknown
-    public void unknown(Player sender) {
-        plugin.sendCommandUsageMessage(sender, "/tp <player> [player]");
-    }
-
-
 }

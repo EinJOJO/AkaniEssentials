@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @CommandAlias("home|homes")
+@CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "home")
 public class HomeCommand extends BaseCommand {
 
     private static final Pattern PERMISSION_PATTERN = Pattern.compile("essentials\\.homes\\.(\\d+)");

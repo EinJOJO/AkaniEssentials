@@ -8,7 +8,8 @@ import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.entity.Player;
 
-@CommandAlias("eserver")
+@CommandAlias("eserver|servermanager")
+@CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "server")
 public class ServerCommand extends BaseCommand {
 
     private final AkaniEssentialsPlugin plugin;

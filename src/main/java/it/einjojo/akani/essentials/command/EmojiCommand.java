@@ -1,7 +1,6 @@
 package it.einjojo.akani.essentials.command;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.PaperCommandManager;
 import co.aikar.commands.annotation.*;
 import it.einjojo.akani.essentials.AkaniEssentialsPlugin;
 import it.einjojo.akani.essentials.emoji.Emoji;
@@ -9,16 +8,15 @@ import it.einjojo.akani.essentials.emoji.EmojiManager;
 import it.einjojo.akani.essentials.emoji.EmojiRarity;
 import it.einjojo.akani.essentials.emoji.gui.SendEmojiGui;
 import it.einjojo.akani.essentials.service.MessageService;
-import it.einjojo.akani.essentials.util.EmojiConfig;
 import it.einjojo.akani.essentials.util.EssentialKey;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 @CommandAlias("emoji|emojis")
+@CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "emoji")
 public class EmojiCommand extends BaseCommand {
 
     private final AkaniEssentialsPlugin plugin;

@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 
 @CommandAlias("gamemode|gm")
+@CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "gamemode")
 public class GamemodeCommand extends BaseCommand {
     private final static Map<String, GameMode> GAMEMODE_MAP = Map.ofEntries(
             Map.entry("survival", GameMode.SURVIVAL),
