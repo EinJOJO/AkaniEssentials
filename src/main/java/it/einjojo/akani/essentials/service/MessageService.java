@@ -233,7 +233,7 @@ public record MessageService(BrokerService brokerService, AkaniEssentialsPlugin 
         }
 
         static TagResolver message(String message) {
-            return Placeholder.unparsed("message", message);
+            return Placeholder.parsed("message", message);
         }
 
     }
