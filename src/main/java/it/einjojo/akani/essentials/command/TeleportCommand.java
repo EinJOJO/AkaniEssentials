@@ -29,14 +29,11 @@ public class TeleportCommand extends BaseCommand {
         }
         if (destinationPlayer != null) { // Tp target -> destination
             destinationPlayer.location().thenAccept((networkLocation) -> {
-
                 plugin.core().messageManager().sendMessage(target, EssentialKey.of("teleport.teleporting"), (s) -> s.replaceAll("%player%", destinationPlayer.name()));
                 target.teleport(networkLocation);
-
             }).exceptionally((ex) -> {
                 plugin.sendMessage(bukkitSender, EssentialKey.GENERIC_ERROR);
-                plugin.getLogger().warning("Could not teleport player " + target.name() + " to " + destinationPlayer.name() + ".");
-                plugin.getLogger().warning(ex.getMessage());
+                plugin.getSLF4JLogger().error("Could not teleport player {} to {}.", target.name(), destinationPlayer.name(), ex);
                 return null;
             });
         } else {
@@ -48,8 +45,7 @@ public class TeleportCommand extends BaseCommand {
                 });
             }).exceptionally((ex) -> {
                 plugin.sendMessage(bukkitSender, EssentialKey.GENERIC_ERROR);
-                plugin.getLogger().warning("Could not teleport player " + bukkitSender.name() + " to " + target.name() + ".");
-                plugin.getLogger().warning(ex.getMessage());
+                plugin.getSLF4JLogger().error("Could not teleport player {} to {}.", bukkitSender.name(), target.name(), ex);
                 return null;
             });
         }
