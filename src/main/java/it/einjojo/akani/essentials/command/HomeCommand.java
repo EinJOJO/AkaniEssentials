@@ -31,6 +31,10 @@ public class HomeCommand extends BaseCommand {
     @CommandCompletion("@homes")
     @Description("teleport to a home")
     public void teleportHome(Player sender, @Optional @Single String homeName) {
+        if (homeName == null) {
+            plugin.sendMessage(sender, EssentialKey.of("home.not-found"), (s) -> s.replace("%home%", "-"));
+            return;
+        }
         plugin.core().homeManager().homesAsync(sender.getUniqueId()).thenAcceptAsync((homeHolder -> {
             homeHolder.home(homeName).ifPresentOrElse((home) -> {
                 home.teleport(sender);
