@@ -65,6 +65,7 @@ public class HomeCommand extends BaseCommand {
     }
 
     @Subcommand("set")
+    @CommandAlias("sethome")
     @CommandCompletion("<name>")
     @Description("Set a home")
     public void setHome(Player sender, String name) {
@@ -106,6 +107,7 @@ public class HomeCommand extends BaseCommand {
         return 3;
     }
 
+    @CommandAlias("delhome")
     @Subcommand("remove")
     @CommandCompletion("@homes")
     @Description("Remove a home")

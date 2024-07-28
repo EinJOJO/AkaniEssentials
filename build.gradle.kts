@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "it.einjojo.akani"
-version = "1.7.4"
+version = "1.7.5"
 
 repositories {
     mavenCentral()
