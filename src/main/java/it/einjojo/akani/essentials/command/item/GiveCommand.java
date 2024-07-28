@@ -15,6 +15,7 @@ import java.util.Optional;
 
 
 @CommandAlias("give|giveall")
+@CommandPermission(AkaniEssentialsPlugin.PERMISSION_BASE + "give")
 public class GiveCommand extends BaseCommand {
     private final AkaniEssentialsPlugin plugin;
 
